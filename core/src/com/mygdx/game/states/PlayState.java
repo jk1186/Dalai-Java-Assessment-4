@@ -104,8 +104,8 @@ public class PlayState extends State {
 
             firetruck1pos = new Vector2(33 + 10 * 32, 212 + 6 * 32);
             firetruck2pos = new Vector2(33 + 11 * 32, 212 + 6 * 32);
-            firetruck3pos = new Vector2(33 + 12 * 32, 212 + 6 * 32);
-            firetruck4pos = new Vector2(33 + 13 * 32, 212 + 6 * 32);
+            firetruck3pos = new Vector2(33 + 10 * 32, 212 + 5 * 32);
+            firetruck4pos = new Vector2(33 + 11 * 32, 212 + 5 * 32);
 
             timeLimit = 90;
             map = new Texture("level1background.png");
@@ -253,7 +253,7 @@ public class PlayState extends State {
             firetruck1pos = new Vector2(33 + 27 * 32, 212 + 3 * 32);
             firetruck2pos = new Vector2(33 + 28 * 32, 212 + 3 * 32);
             firetruck3pos = new Vector2(33 + 29 * 32, 212 + 3 * 32);
-            firetruck4pos = new Vector2(33 + 26 * 32, 212 + 3 * 32);
+            firetruck4pos = new Vector2(33 + 27 * 32, 212 + 2 * 32);
 
             timeLimit = 60;
 
@@ -743,8 +743,10 @@ public class PlayState extends State {
         if (fortress.getAlienPositions().size() > 0) {
             Vector2 coordinate = fortress.getAlienPositions().get(rand.nextInt(fortress.getAlienPositions().size()));
             Alien alien = new Alien(coordinate, 32, 32, new Texture("alien.gif"), 30 + rand.nextInt(60),
-                    250, null, 1, 5 + rand.nextInt(15), new Vector2[]{new Vector2(coordinate.x, coordinate.y),
-                    new Vector2(coordinate.x, coordinate.y + 30)}, 5);
+                    250, null, 1, 5 + rand.nextInt(15), 
+                    new Vector2[]{new Vector2(coordinate.x, coordinate.y), new Vector2(coordinate.x + 200, coordinate.y - 200),
+                    		new Vector2(coordinate.x, coordinate.y - 400), new Vector2(coordinate.x - 200, coordinate.y - 200)}, 
+                    5);
             aliens.add(alien);
             fortress.getAlienPositions().remove(coordinate);
         }
