@@ -12,10 +12,10 @@ import com.badlogic.gdx.math.Vector2;
 public class Entity {
 
     private Texture texture;
-    private Vector2 position;
-    private int width;
-    private int height;
-    private Vector2 topRight;
+    protected Vector2 position;
+    protected int width;
+    protected int height;
+    protected Vector2 topRight;
 
     public Entity(Vector2 position, int width, int height, Texture texture) {
         this.position = position;
@@ -36,7 +36,7 @@ public class Entity {
         this.position = new Vector2(x, y);
         this.topRight = new Vector2(x + width, y + height);
     }
-
+    
     public Vector2 getPosition() {
         return position;
     }

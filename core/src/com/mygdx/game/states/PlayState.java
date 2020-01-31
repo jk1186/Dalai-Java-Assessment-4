@@ -2,6 +2,7 @@ package com.mygdx.game.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
@@ -406,6 +407,17 @@ public class PlayState extends State {
     @Override
     public void update(float deltaTime) {
 
+// ---------------------------------- Temporary ----------------------------------//
+
+    	if (Gdx.input.isKeyPressed(Keys.ENTER)){
+    		gameStateManager.push(new  MiniGameState(gameStateManager));
+    	}
+    	
+// ---------------------------------- Temporary ----------------------------------//    	
+    	
+    	
+    	
+    	
         // Calls input handler and updates timer each tick of the game.
         handleInput();
         timer.update();
