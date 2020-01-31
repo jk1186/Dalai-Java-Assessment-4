@@ -1,8 +1,6 @@
 package com.mygdx.game.states;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -11,14 +9,11 @@ import com.mygdx.game.minigame.Enemy;
 import com.mygdx.game.minigame.Fireman;
 import com.mygdx.game.minigame.MiniGameUnit;
 import com.mygdx.game.misc.Button;
-import com.mygdx.game.sprites.Firetruck;
-import com.mygdx.game.sprites.Projectile;
 
 /**
  * A state used to control the minigame phase of the game
  * @author lnt20
  * 
- *
  */
 public class MiniGameState extends State {
 	
@@ -123,7 +118,11 @@ public class MiniGameState extends State {
 	 */
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
+		background.dispose();
+		quitLevel.dispose();
+		quitGame.dispose();
+		fireMan.dispose();
+		enemy.dispose();
 
 	}
 
