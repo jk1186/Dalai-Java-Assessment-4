@@ -71,8 +71,8 @@ public class Enemy extends MiniGameUnit {
 	
 	private MoveDirection direction;
 	
-	public Enemy() {
-		super(new Vector2(800,211), 20, 20, new Texture("black.jpg"), 10, 5f);
+	public Enemy(Vector2 startPos,int height, int width, Texture texture, int maxHealthPoints, float speed) {
+		super(startPos, height, width, texture, maxHealthPoints, speed);
 		direction = MoveDirection.STAND;
 	}
 

@@ -50,8 +50,8 @@ public class Fireman extends MiniGameUnit {
 	private Jumping jumpState;
 	private final static float JUMP_TIME = 0.2f; // Amount of time the entity moves upwards in a jump
 	
-	public Fireman(int maxHealth) {
-		super(new Vector2(900,220), 20, 20, new Texture("blue.jpg"), maxHealth, 10f);
+	public Fireman() {
+		super(new Vector2(900,220), 20, 20, new Texture("blue.jpg"), 100, 10f);
 		jumpState = Jumping.NOT_JUMPING;
 	}	
 	

@@ -5,9 +5,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Kroy;
+import com.mygdx.game.minigame.Boss;
 import com.mygdx.game.minigame.Enemy;
 import com.mygdx.game.minigame.Fireman;
 import com.mygdx.game.minigame.MiniGameUnit;
+import com.mygdx.game.minigame.MiniGameUnitManager;
 import com.mygdx.game.misc.Button;
 
 /**
@@ -20,8 +22,7 @@ public class MiniGameState extends State {
 	private Texture background;
 	private Button quitLevel;
 	private Button quitGame;
-	private Fireman fireMan;
-	private Enemy enemy;
+	private MiniGameUnitManager unitManager;
 	
 	public MiniGameState(GameStateManager gameStateManager) {
 		super(gameStateManager);
@@ -35,12 +36,9 @@ public class MiniGameState extends State {
                 new Texture("NotPressedQuitGame.png"), 350 / 2, 100 / 2,
                 new Vector2(1920 - 30 - 350 / 2, 30), false, false);
         
-        fireMan = new Fireman(100);
-        enemy = new Enemy();
+        unitManager = new MiniGameUnitManager();
         
-	}
-
-	
+	}	
 
 	
 	/**
@@ -50,10 +48,7 @@ public class MiniGameState extends State {
 	@Override
 	public void update(float deltaTime) {
 		handleInput();
-		fireMan.updatePos(deltaTime);
-		enemy.updatePos(deltaTime);
-
-
+		unitManager.updateAll(deltaTime);
 	}
 	
 	
@@ -104,11 +99,9 @@ public class MiniGameState extends State {
         // Draws buttons onto play screen
         spriteBatch.draw(quitLevel.getTexture(), quitLevel.getPosition().x, quitLevel.getPosition().y, quitLevel.getWidth(), quitLevel.getHeight());
         spriteBatch.draw(quitGame.getTexture(), quitGame.getPosition().x, quitGame.getPosition().y, quitGame.getWidth(), quitGame.getHeight());
-
-        
-        // Draws MiniGameUnits
-        for (MiniGameUnit mg: new MiniGameUnit[] {fireMan,enemy}) {
-	        spriteBatch.draw(mg.getTexture(), mg.getPosition().x, mg.getPosition().y, mg.getWidth(), mg.getHeight());
+      
+		for (MiniGameUnit mg: unitManager) {
+        	spriteBatch.draw(mg.getTexture(), mg.getPosition().x, mg.getPosition().y, mg.getWidth(), mg.getHeight());
         }
         spriteBatch.end();
 	}
@@ -121,8 +114,7 @@ public class MiniGameState extends State {
 		background.dispose();
 		quitLevel.dispose();
 		quitGame.dispose();
-		fireMan.dispose();
-		enemy.dispose();
+		unitManager.dispose();
 
 	}
 
