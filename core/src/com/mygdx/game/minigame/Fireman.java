@@ -132,31 +132,6 @@ public class Fireman extends MiniGameUnit {
 		return verticalMov;
 	}
 	
-//	private void move(List<Integer> keys) {
-//		
-//		Vector2 mov = new Vector2(0,0);
-//		for (int key: keys) {
-//			mov.add(movementMap.get(key));
-//		}
-//
-//		mov.nor();
-//		Matrix3 mulMat = new Matrix3();
-//		mulMat.setToScaling(10, 10);
-//		mov.mul(mulMat);
-//		mov.add(new Vector2(0,-5));
-//		
-//		setPosition(position.x + mov.x,position.y + mov.y);
-//		
-//		boolean COLLISION = position.y <= 211f;
-//		
-//		if(COLLISION) {
-//			setPosition(position.x, 211f);
-//		}else {
-//		}
-//		
-//		
-//		
-//	}
 	
 	
 
