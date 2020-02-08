@@ -4,12 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Kroy;
+import com.mygdx.game.map.TiledGameMap;
 import com.mygdx.game.misc.Button;
 import com.mygdx.game.misc.Timer;
 import com.mygdx.game.sprites.*;
@@ -45,6 +47,8 @@ public class PlayState extends State {
     private float timeSinceLastFortressRegen;
     private float timeLimit;
     private float timeTaken;
+    
+    private Camera cam;
 
     private Entity fireStation;
     private Fortress fortress;
@@ -60,11 +64,13 @@ public class PlayState extends State {
     private BitmapFont ui;
     private BitmapFont healthBars;
     private String level;
+    private TiledGameMap gameMap;
 
     private Sound waterShoot = Gdx.audio.newSound(Gdx.files.internal("honk.wav"));
 
     public PlayState(GameStateManager gsm, int levelNumber) {
         super(gsm);
+        gameMap = new TiledGameMap();
 
         background = new Texture("LevelProportions.png");
 
@@ -540,7 +546,9 @@ public class PlayState extends State {
         // Draws background and map onto play screen
         spriteBatch.draw(background, 0, 0, Kroy.WIDTH, Kroy.HEIGHT);
         spriteBatch.draw(map, 33, 212, 1856, 832);
-
+        
+        gameMap.render(); // renders the tiled map
+        
         // Draws buttons onto play screen
         spriteBatch.draw(quitLevel.getTexture(), quitLevel.getPosition().x, quitLevel.getPosition().y,
                 quitLevel.getWidth(), quitLevel.getHeight());
@@ -621,6 +629,7 @@ public class PlayState extends State {
         quitLevel.dispose();
         quitGame.dispose();
         waterShoot.dispose();
+        gameMap.dispose();
 
         for (Firetruck firetruck : firetrucks) {
             firetruck.dispose();
