@@ -10,7 +10,9 @@ import com.mygdx.game.minigame.Enemy;
 import com.mygdx.game.minigame.Fireman;
 import com.mygdx.game.minigame.MiniGameUnit;
 import com.mygdx.game.minigame.MiniGameUnitManager;
+import com.mygdx.game.minigame.TextureManager;
 import com.mygdx.game.misc.Button;
+import com.mygdx.game.sprites.Entity;
 
 /**
  * A state used to control the minigame phase of the game
@@ -100,7 +102,7 @@ public class MiniGameState extends State {
         spriteBatch.draw(quitLevel.getTexture(), quitLevel.getPosition().x, quitLevel.getPosition().y, quitLevel.getWidth(), quitLevel.getHeight());
         spriteBatch.draw(quitGame.getTexture(), quitGame.getPosition().x, quitGame.getPosition().y, quitGame.getWidth(), quitGame.getHeight());
       
-		for (MiniGameUnit mg: unitManager) {
+		for (Entity mg: unitManager) {
         	spriteBatch.draw(mg.getTexture(), mg.getPosition().x, mg.getPosition().y, mg.getWidth(), mg.getHeight());
         }
         spriteBatch.end();

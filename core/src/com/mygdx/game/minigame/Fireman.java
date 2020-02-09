@@ -50,8 +50,8 @@ public class Fireman extends MiniGameUnit {
 	private Jumping jumpState;
 	private final static float JUMP_TIME = 0.2f; // Amount of time the entity moves upwards in a jump
 	
-	public Fireman() {
-		super(new Vector2(900,220), 20, 20, new Texture("blue.jpg"), 100, 10f);
+	public Fireman(Vector2 pos, Texture texture) {
+		super(pos, 20, 20, texture, 100, 10f);
 		jumpState = Jumping.NOT_JUMPING;
 	}	
 	
@@ -76,18 +76,16 @@ public class Fireman extends MiniGameUnit {
 		}
 		
 		move(movementNeeded);
-		
-		
 	}
 	
+	
 	/**
-	 * Used to get key press state as a boolean list
+	 * Used to get key press state of movement keys as a boolean list
 	 * @return List of booleans representing state of different keys, {W, A, D}
 	 */
 	private boolean[] checkInputKeys() {
 		return new boolean[] {Gdx.input.isKeyPressed(Keys.W),Gdx.input.isKeyPressed(Keys.A),Gdx.input.isKeyPressed(Keys.D)};
 	}
-
 
 	/**
 	 * Private method used to control and calculate the jumping sequence of the fireman
@@ -132,6 +130,13 @@ public class Fireman extends MiniGameUnit {
 		return verticalMov;
 	}
 	
+	/**
+	 * Method returns Vector2 of centre point of the fireman
+	 * @return Vector2 with centre position of the fireman
+	 */
+	public Vector2 getCentre() {
+		return new Vector2((position.x + topRight.x)/2,(position.y + topRight.y)/2);
+	}
 	
 	
 
