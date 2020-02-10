@@ -5,12 +5,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Kroy;
+import com.mygdx.game.map.TiledGameMap;
 import com.mygdx.game.misc.Button;
 import com.mygdx.game.misc.Timer;
 import com.mygdx.game.sprites.*;
@@ -61,11 +63,13 @@ public class PlayState extends State {
     private BitmapFont ui;
     private BitmapFont healthBars;
     private String level;
+    private TiledGameMap gameMap;
 
     private Sound waterShoot = Gdx.audio.newSound(Gdx.files.internal("honk.wav"));
 
     public PlayState(GameStateManager gsm, int levelNumber) {
         super(gsm);
+        gameMap = new TiledGameMap();
 
         background = new Texture("LevelProportions.png");
 
@@ -114,7 +118,7 @@ public class PlayState extends State {
             // of the bottom left corner of the hit box you want to create. These are multiplied by 32 as each grid
             // square is 32 pixels in both height and width.
 
-            { obstacles.add(new Entity(new Vector2(257, 628), 64, 64, new Texture("teal.jpg")));
+            obstacles.add(new Entity(new Vector2(257, 628), 64, 64, new Texture("teal.jpg")));
             obstacles.add(new Entity(new Vector2(257, 724), 64, 32, new Texture("teal.jpg")));
             obstacles.add(new Entity(new Vector2(289, 756), 32, 32, new Texture("teal.jpg")));
             obstacles.add(new Entity(new Vector2(257, 820), 64, 32, new Texture("teal.jpg")));
@@ -153,7 +157,7 @@ public class PlayState extends State {
             obstacles.add(new Entity(new Vector2(1345, 628), 64, 32, new Texture("teal.jpg")));
 
             obstacles.add(new Entity(new Vector2(33 + 24 * 32, 212 + 22 * 32), 6 * 32, 4 * 32,
-                    new Texture("teal.jpg"))); }
+                    new Texture("teal.jpg"))); 
 
             // Level 1 Firestation
             fireStation = new Entity(new Vector2(33 + 8 * 32, 212 + 4 * 32), 128, 128,
@@ -547,12 +551,19 @@ public class PlayState extends State {
      */
     @Override
     public void render(SpriteBatch spriteBatch) {
-        spriteBatch.begin();
-
-        // Draws background and map onto play screen
-        spriteBatch.draw(background, 0, 0, Kroy.WIDTH, Kroy.HEIGHT);
-        spriteBatch.draw(map, 33, 212, 1856, 832);
-
+    	
+    	//Creates seperate spriteBatch as to load background behind the map which needs to be loaded outside a spritebatch
+    	spriteBatch.begin();
+    	spriteBatch.draw(background, 0, 0, Kroy.WIDTH, Kroy.HEIGHT);
+    	spriteBatch.end();
+    	
+    	
+    	// Renders the tiled map
+    	gameMap.render();
+    	
+    	
+    	// Rest of the game objects are loaded and rendered above the tilemap
+        spriteBatch.begin();        
         // Draws buttons onto play screen
         spriteBatch.draw(quitLevel.getTexture(), quitLevel.getPosition().x, quitLevel.getPosition().y,
                 quitLevel.getWidth(), quitLevel.getHeight());
@@ -633,6 +644,7 @@ public class PlayState extends State {
         quitLevel.dispose();
         quitGame.dispose();
         waterShoot.dispose();
+        gameMap.dispose();
 
         for (Firetruck firetruck : firetrucks) {
             firetruck.dispose();
