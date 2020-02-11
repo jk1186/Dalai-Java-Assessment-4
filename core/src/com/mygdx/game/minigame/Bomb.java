@@ -35,7 +35,7 @@ public class Bomb extends Entity{
 	public Bomb(Vector2 pos, Texture texture) {
 		super(pos, 10, 10, texture);
 		this.damage = 10 	;
-		this.range = 50;
+		this.range = 200;
 		fuse = 2f;
 		currentTime = 0;
 		for (float f :new float[] {0.4f,0.8f,1.2f, 1.6f, 1.7f,1.8f,1.9f,2f}) {

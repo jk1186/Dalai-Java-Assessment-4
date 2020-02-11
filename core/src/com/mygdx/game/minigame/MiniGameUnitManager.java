@@ -175,12 +175,12 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 		
 		if (boss == null) {
 			for (Enemy enemy: enemies) {
-				if (enemy.getPosition().dst(point) > range) {
+				if (enemy.getPosition().dst(point) <= range) {
 					output.add(enemy);
 				}
 			}
 		}else {
-			if (boss.getPosition().dst(point) > range) {
+			if (boss.getPosition().dst(point) <= range) {
 				output.add(boss);
 			}
 		}

@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- * @author lnt20
+ * @author Luke Taylor
  *
  */
 public class Fireman extends MiniGameUnit {
@@ -14,7 +14,7 @@ public class Fireman extends MiniGameUnit {
 	/**
 	 * 
 	 * Used to keep track of the jumping of the Fireman. Possible states are UPWARDS, DOWNWARDS, NOT_JUMPING, START_JUMPINH
-	 * @author lnt20
+	 * @author Luke Taylor
 	 *
 	 */
 	private enum Jumping{
