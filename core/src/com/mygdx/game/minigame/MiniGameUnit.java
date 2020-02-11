@@ -46,4 +46,11 @@ public abstract class MiniGameUnit extends Unit {
 		}
 	}
 	
+	/**
+	 * MiniGameUnits initialise no textures so has nothing to dispose
+	 */
+	@Override
+	public void dispose() {
+	}
+	
 }

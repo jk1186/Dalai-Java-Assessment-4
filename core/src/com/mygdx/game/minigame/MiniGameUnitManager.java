@@ -25,7 +25,6 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	
 	public MiniGameUnitManager() {
 		fireman = new Fireman(new Vector2(800,211), TextureManager.getFireman());
-        boss = new Boss(new Vector2(400,211), TextureManager.getBoss(), 20, 7.5f);
 		enemies = new ArrayList<Enemy>();
 		addEnemy(new Vector2(800,211));
 	}
@@ -39,28 +38,54 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	}
 
 	/**
-	 * Method runs updateAll method of each MiniGameUnit stored.
+	 * Method runs update methods of each Entities stored. Also checks for death of Entities and controls spawning of other Entities
 	 * @param deltaTime amount of time passed since last function call
 	 */
 	public void updateAll(float deltaTime) {
+		
+		// Fireman updates
 		if (fireman != null) {
 			fireman.updatePos(deltaTime);
-			if (bomb == null && Gdx.input.isKeyPressed(Keys.SPACE)) {
-				spawnBomb(fireman.getCentre());
+			if (bomb == null && Gdx.input.isKeyPressed(Keys.SPACE)) { // Bomb spawning
+				spawnBomb(fireman.getPosition());
+			}
+			if (fireman.isDead()) { // Fireman death
+				fireman = null;
 			}
 		}
+		
+		// Bomb updates
 		if (bomb != null) {
 			bomb.updateTimer(deltaTime);
-			if (bomb.isExploding()) {
+			if (bomb.isExploding()) { // Bomb Exploding
 				bomb.explode(getEnemiesInRange(bomb.getPosition(), bomb.getRange()));
 				bomb = null;
 			}
 		}
+		
+		// Boss updates
 		if (boss != null) {
 			boss.updatePos(deltaTime);
+			if (boss.isDead()) { // Boss death
+				boss = null;
+			}
 		}
+		
+		// Enemy updates
+		ArrayList<Enemy> deadEnemies = new ArrayList<Enemy>();
+		
 		for (Enemy enemy: enemies) {
 			enemy.updatePos(deltaTime);
+			if (enemy.isDead()) { // Marking any enemy which dies
+				deadEnemies.add(enemy);
+			}
+		}
+
+		for (Enemy enemy: deadEnemies) {// Removing enemies from the code
+			enemies.remove(enemy);
+		}
+		if (enemies.isEmpty() && boss == null) { // Boss spawning once all enemies dead
+			spawnBoss();
 		}
 		
 	}
@@ -116,6 +141,12 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	}
 	
 	
+	/**
+	 * Summons and instantiates boss object
+	 */
+	public void spawnBoss() {
+        boss = new Boss(new Vector2(400,211), TextureManager.getBoss(), 20, 7.5f);
+	}
 	
 	/**
 	 * Spawns bomb at position of fireman
@@ -153,8 +184,6 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 				output.add(boss);
 			}
 		}
-		
-		
 		return output;		
 	}
 	
@@ -170,11 +199,6 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	 * Method disposes all objects from the screen
 	 */
 	public void dispose() {
-		fireman.dispose();
-		boss.dispose();
-		for (Enemy e: enemies) {
-			e.dispose();
-		}
-		bomb.dispose();
+		textureManager.dispose();
 	}
 }

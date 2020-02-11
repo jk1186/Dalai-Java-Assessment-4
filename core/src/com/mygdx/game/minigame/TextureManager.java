@@ -60,4 +60,16 @@ public class TextureManager {
 	}
 	
 	
+	/**
+	 * Disposes all textures used for the minigame entities
+	 */
+	public void dispose() {
+		fireman.dispose();
+		bomb1.dispose();
+		bomb2.dispose();
+		enemy.dispose();
+		boss.dispose();
+	}
+	
+	
 }

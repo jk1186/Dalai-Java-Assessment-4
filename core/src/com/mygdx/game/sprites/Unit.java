@@ -11,8 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public abstract class Unit extends Entity {
 
-    private int maxHealth;
-    private int currentHealth;
+    protected int maxHealth, currentHealth;
 
     public Unit(Vector2 position, int width, int height, Texture texture, int maxHealth) {
         super(position, width, height, texture);
@@ -71,8 +70,6 @@ public abstract class Unit extends Entity {
      */
     public void takeDamage(int damage) {
         int newHealth = getCurrentHealth() - damage;
-        if (!isDead()) {
-            setCurrentHealth(newHealth);
-        }
+        setCurrentHealth(newHealth);
     }
 }

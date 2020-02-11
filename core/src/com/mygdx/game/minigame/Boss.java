@@ -11,8 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Boss extends Enemy {
 
 	public Boss(Vector2 position, Texture texture, int maxHealth, float speed) {
-		super(position, 40, 40, texture, maxHealth, speed);
-		
+		super(position, 40, 40, texture, maxHealth, speed);	
 	}
 
 }

@@ -16,7 +16,7 @@ import com.mygdx.game.sprites.Entity;
 
 /**
  * A state used to control the minigame phase of the game
- * @author lnt20
+ * @author Luke Taylor
  * 
  */
 public class MiniGameState extends State {

@@ -130,14 +130,6 @@ public class Fireman extends MiniGameUnit {
 		return verticalMov;
 	}
 	
-	/**
-	 * Method returns Vector2 of centre point of the fireman
-	 * @return Vector2 with centre position of the fireman
-	 */
-	public Vector2 getCentre() {
-		return new Vector2((position.x + topRight.x)/2,(position.y + topRight.y)/2);
-	}
-	
 	
 
 }
