@@ -13,7 +13,7 @@ import com.mygdx.game.sprites.Unit;
 public abstract class MiniGameUnit extends Unit {
 
 	protected float speed;
-	protected boolean onFloor;
+	protected boolean onFloor, facingRight = false;
 	
 	public MiniGameUnit(Vector2 position, int width, int height, Texture texture, int maxHealth, float speed) {
 		super(position, width, height, texture, maxHealth);
@@ -34,14 +34,14 @@ public abstract class MiniGameUnit extends Unit {
 		direction.nor();
 		direction.mul(new Matrix3().setToScaling(speed, speed));
 		
-		Vector2 newPos = position.add(direction);
+		Vector2 newPos = getPosition().add(direction);
 		
 		setPosition(newPos.x,newPos.y);
 		
-		boolean COLLISION = position.y <= 211f;
+		boolean COLLISION = getPosition().y <= 211f;
 		
 		if(COLLISION) {
-			setPosition(position.x, 211f);
+			setPosition(getPosition().x, 211f);
 			onFloor = true;
 		}
 	}
@@ -51,6 +51,15 @@ public abstract class MiniGameUnit extends Unit {
 	 */
 	@Override
 	public void dispose() {
+	}
+	
+	/**
+	 * Getter facingRight
+	 * @return boolean returns true if entity should be facing right
+	 */
+	@Override
+	public boolean isFacingRight() {
+		return facingRight;
 	}
 	
 }

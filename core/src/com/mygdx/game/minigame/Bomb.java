@@ -33,7 +33,7 @@ public class Bomb extends Entity{
 	private ArrayList<Float> flashPattern = new ArrayList<Float>();
 	
 	public Bomb(Vector2 pos, Texture texture) {
-		super(pos, 10, 10, texture);
+		super(pos, 35, 35, texture);
 		this.damage = 10 	;
 		this.range = 200;
 		fuse = 2f;
@@ -99,11 +99,11 @@ public class Bomb extends Entity{
 	public void updateGraphics() {
 		switch(bombTexture) {
 		case FIRST:
-			setTexture(TextureManager.getFirstBomb());
+			setTexture(TextureManager.getFirstRedBomb());
 			bombTexture = BombTexture.SECOND;
 			break;
 		case SECOND:
-			setTexture(TextureManager.getSecondBomb());
+			setTexture(TextureManager.getSecondRedBomb());
 			bombTexture = BombTexture.FIRST;
 			break;
 		}

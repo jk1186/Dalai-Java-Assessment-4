@@ -26,7 +26,7 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	private boolean levelLost = false;
 	
 	public MiniGameUnitManager() {
-		fireman = new Fireman(new Vector2(800,211), TextureManager.getFireman());
+		fireman = new Fireman(new Vector2(800,211));
 		enemies = new ArrayList<Enemy>();
 		addEnemy(new Vector2(800,211));
 	}
@@ -121,16 +121,16 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	 */
 	public Iterator<Entity> iterator() {
 		ArrayList<Entity> output = new ArrayList<Entity>();
-		if (fireman != null) {
+		if (fireman != null) {// Checks fireman exists
 			output.add(fireman);
 		}
-		if (boss != null) {
+		if (boss != null) {// Checks boss exists
 			output.add(boss);
 		}
-		if (bomb != null) {
+		if (bomb != null) {// Checks bomb exists
 			output.add(bomb);
 		}
-		if (enemies.isEmpty() == false) {
+		if (enemies.isEmpty() == false) {// Checks enemies exist
 			output.addAll(enemies);
 		}
 		return output.iterator();
@@ -144,10 +144,13 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 		return boss;
 	}
 	
+	/**
+	 * Getter for levelWon
+	 * @return boolean true if level has been won
+	 */
 	public boolean isLevelWon() {
 		return levelWon;
 	}
-	
 	
 	/**
 	 * Summons and instantiates boss object
@@ -161,7 +164,7 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	 * @param pos of place to spawn bomb
 	 */
 	public void spawnBomb(Vector2 pos) {
-		bomb = new Bomb(pos, TextureManager.getFirstBomb());
+		bomb = new Bomb(pos, TextureManager.getFirstRedBomb());
 	}
 	
 	/**
@@ -181,15 +184,16 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	public List<Enemy> getEnemiesInRange(Vector2 point, float range){
 		ArrayList<Enemy> output = new ArrayList<Enemy>();
 		
-		if (boss == null) {
-			for (Enemy enemy: enemies) {
-				if (enemy.getPosition().dst(point) <= range) {
-					output.add(enemy);
-				}
-			}
-		}else {
+		if (boss != null) {
 			if (boss.getPosition().dst(point) <= range) {
 				output.add(boss);
+				return output;
+			}
+		}
+		
+		for (Enemy enemy: enemies) {
+			if (enemy.getPosition().dst(point) <= range) {
+				output.add(enemy);
 			}
 		}
 		return output;		
@@ -210,6 +214,10 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 		textureManager.dispose();
 	}
 
+	/**
+	 * Getter for levelLost
+	 * @return boolean returns true if level is lost
+	 */
 	public boolean isLevelLost() {
 		return levelLost ;
 	}

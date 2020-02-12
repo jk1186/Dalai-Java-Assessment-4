@@ -2,6 +2,7 @@ package com.mygdx.game.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -49,7 +50,7 @@ public class MiniGameState extends State {
 	 *@param deltaTime the amount of time which has passed since the last render() call
 	 */
 	@Override
-	public void update(float deltaTime) {
+	public void update(float deltaTime) {		
 		handleInput();
 		unitManager.updateAll(deltaTime);     
 		// Checks if user presses ENTER when game is over and takes them back to level select.
@@ -107,16 +108,27 @@ public class MiniGameState extends State {
         spriteBatch.draw(quitLevel.getTexture(), quitLevel.getPosition().x, quitLevel.getPosition().y, quitLevel.getWidth(), quitLevel.getHeight());
         spriteBatch.draw(quitGame.getTexture(), quitGame.getPosition().x, quitGame.getPosition().y, quitGame.getWidth(), quitGame.getHeight());
       
+        //Loop through all entities in unitManager and renders them
 		for (Entity mg: unitManager) {
-        	spriteBatch.draw(mg.getTexture(), mg.getPosition().x, mg.getPosition().y, mg.getWidth(), mg.getHeight());
+        	spriteBatch.draw(
+        			mg.getTexture(), 											//Gives texture that needs to be rendered 
+        			mg.getPosition().x, mg.getPosition().y, 					//Gives position of the entity
+        			mg.getCentre().y, mg.getCentre().y, 						//Gives the centre of the entity
+        			mg.getWidth(), mg.getHeight(), 								//Gives the height and width of the texture
+        			mg.getScaleX(), mg.getScaleY(), 							//Gives the relative scale of the texture
+        			mg.getRotation(), 1, 1, 									//Gives the angle of rotation
+        			mg.getTexture().getWidth(), mg.getTexture().getHeight(), 	//Gives the height and width of the texture
+        			mg.isFacingRight(), false									//Gives the direction it's meant to face
+        			);
         }
         
-        // If end game reached, draws level fail or level won images to the screen
+        // If fireman dead, display lossing splash screen
         if (unitManager.isLevelLost()) {
             spriteBatch.draw(new Texture("levelFail.png"), 0, 0);
             Kroy.INTRO.setPitch(Kroy.ID, 1f);
         }
 
+        // If boss defeated, display winning splash screen
         if (unitManager.isLevelWon()) {
             spriteBatch.draw(new Texture("LevelWon.png"), 0, 0);
             Kroy.INTRO.setPitch(Kroy.ID, 1f);
@@ -133,7 +145,7 @@ public class MiniGameState extends State {
 		background.dispose();
 		quitLevel.dispose();
 		quitGame.dispose();
-		unitManager.dispose();
+		unitManager.dispose(); //Calls disposal of all textures of units stored here
 
 	}
 

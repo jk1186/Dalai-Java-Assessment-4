@@ -2,7 +2,6 @@ package com.mygdx.game.minigame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -47,11 +46,17 @@ public class Fireman extends MiniGameUnit {
 		
 	}
 	
-	private Jumping jumpState;
-	private final static float JUMP_TIME = 0.2f; // Amount of time the entity moves upwards in a jump
+	private enum FiremanTexture{
+		TEXTURE1,TEXTURE2,JUMPING;
+	}
 	
-	public Fireman(Vector2 pos, Texture texture) {
-		super(pos, 20, 20, texture, 100, 10f);
+	private Jumping jumpState;
+	private FiremanTexture firemanTexture = FiremanTexture.TEXTURE1;;
+	private final static float JUMP_TIME = 0.2f; // Amount of time the entity moves upwards in a jump
+	private float nextGraphicUpdate = 0f, currentTime = 0f;
+	
+	public Fireman(Vector2 pos) {
+		super(pos, 60, 60, TextureManager.getFirstFireman(), 100, 10f);
 		jumpState = Jumping.NOT_JUMPING;
 	}	
 	
@@ -62,6 +67,8 @@ public class Fireman extends MiniGameUnit {
 	 */
 	public void updatePos(float deltaTime) {
 		
+		boolean moving = false;
+		
 		boolean[] keys = checkInputKeys(); // Stores boolean values for each key is needs the state of. Formatted like {UP (W), LEFT (A), RIGHT (D)}
 		Vector2 movementNeeded = new Vector2();
 		
@@ -70,14 +77,52 @@ public class Fireman extends MiniGameUnit {
 		// Calculate Horizontal Coordinates
 		if (keys[1]) {
 			movementNeeded.add(new Vector2(-1,0));// Adds left pointing directional vector
+			moving = true;
+			setFacingRight(true);
 		}
 		if(keys[2]) {
 			movementNeeded.add(new Vector2(1,0));// Adds right pointing directional vector
-		}
+			moving = true;
+			setFacingRight(false);
+		}		
 		
 		move(movementNeeded);
+		if (moving) {
+			textureSequence(deltaTime);
+		}
 	}
 	
+	public void setFacingRight(boolean val) {
+		facingRight = val;
+	}
+	
+	public void textureSequence(float deltaTime) {
+		currentTime += deltaTime;
+		switch(firemanTexture) {
+		case JUMPING:
+			setTexture(TextureManager.getFiremanJump());
+			if (currentTime >= nextGraphicUpdate) {
+				nextGraphicUpdate += 0.1f;
+			}
+			break;
+			
+		case TEXTURE1:
+			setTexture(TextureManager.getFirstFireman());
+			if (currentTime >= nextGraphicUpdate) {
+				firemanTexture = FiremanTexture.TEXTURE2;
+				nextGraphicUpdate += 0.1f;
+			}
+			break;
+		
+		case TEXTURE2:
+			setTexture(TextureManager.getSecondFireman());
+			if (currentTime >= nextGraphicUpdate) {
+				firemanTexture = FiremanTexture.TEXTURE1;
+				nextGraphicUpdate += 0.1f;
+			}
+			break;
+		}
+	}
 	
 	/**
 	 * Used to get key press state of movement keys as a boolean list
@@ -111,7 +156,9 @@ public class Fireman extends MiniGameUnit {
 			verticalMov = new Vector2(0,-1);
 			if (keyPressed) {
 				jumpState = Jumping.JUMPING;
+				firemanTexture = FiremanTexture.JUMPING;
 				jumpState.startTimer();
+				textureSequence(deltaTime);
 			}
 			break;
 	
@@ -119,6 +166,8 @@ public class Fireman extends MiniGameUnit {
 			verticalMov = new Vector2(0,-1);
 			if(onFloor) {
 				jumpState = Jumping.NOT_JUMPING;
+				firemanTexture = FiremanTexture.TEXTURE1;
+				textureSequence(deltaTime);
 			}
 			break;
 			
@@ -129,6 +178,7 @@ public class Fireman extends MiniGameUnit {
 		
 		return verticalMov;
 	}
+
 	
 	
 
