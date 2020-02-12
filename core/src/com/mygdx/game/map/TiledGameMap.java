@@ -17,7 +17,7 @@ public class TiledGameMap {
 			-(R+L)/(R-L),(T+B)/(T-B),0,1});
 	
 	public TiledGameMap (){
-		tiledMap = new TmxMapLoader().load("museumlevel.tmx");
+		tiledMap = new TmxMapLoader().load("level1map.tmx");
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 	}
 	
