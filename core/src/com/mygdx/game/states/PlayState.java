@@ -329,7 +329,9 @@ public class PlayState extends State {
      * The game logic which is executed due to specific user inputs. Is called in the update method.
      */
     public void handleInput() {
-
+    	System.out.println(gameMap.getTileTypeByScreenCoordinate(Gdx.input.getX(), 1080-Gdx.input.getY()).getName());
+    	System.out.println(Gdx.input.getX());
+    	System.out.println(Gdx.input.getY());
         // Checks for hover and clicks on the 2 buttons located on the play screen.
         if (quitGame.mouseInRegion()){
             quitGame.setActive(true);
