@@ -1,6 +1,7 @@
 package com.mygdx.game.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -50,7 +51,11 @@ public class MiniGameState extends State {
 	@Override
 	public void update(float deltaTime) {
 		handleInput();
-		unitManager.updateAll(deltaTime);
+		unitManager.updateAll(deltaTime);     
+		// Checks if user presses ENTER when game is over and takes them back to level select.
+        if ((unitManager.isLevelLost()|| unitManager.isLevelWon()) && Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+            gameStateManager.set(new LevelSelectState(gameStateManager));
+        }
 	}
 	
 	
@@ -105,8 +110,20 @@ public class MiniGameState extends State {
 		for (Entity mg: unitManager) {
         	spriteBatch.draw(mg.getTexture(), mg.getPosition().x, mg.getPosition().y, mg.getWidth(), mg.getHeight());
         }
+        
+        // If end game reached, draws level fail or level won images to the screen
+        if (unitManager.isLevelLost()) {
+            spriteBatch.draw(new Texture("levelFail.png"), 0, 0);
+            Kroy.INTRO.setPitch(Kroy.ID, 1f);
+        }
+
+        if (unitManager.isLevelWon()) {
+            spriteBatch.draw(new Texture("LevelWon.png"), 0, 0);
+            Kroy.INTRO.setPitch(Kroy.ID, 1f);
+        }
         spriteBatch.end();
-	}
+        }
+        
 
 	/**
 	 * Used to dispose all texture, music etc. when no longer required

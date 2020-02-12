@@ -386,7 +386,6 @@ public class PlayState extends State {
                         clearTruck.setSelected(false);
                     }
                     truck.setSelected(true);
-
                 }
             }
         }
@@ -398,10 +397,6 @@ public class PlayState extends State {
             truckMovement(firetruck2);
         }
 
-        // Checks if user presses ENTER when game is over and takes them back to level select.
-        if ((levelLost || levelWon) && Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            gameStateManager.set(new LevelSelectState(gameStateManager));
-        }
     }
 
     /**
@@ -410,17 +405,6 @@ public class PlayState extends State {
      */
     @Override
     public void update(float deltaTime) {
-
-// ---------------------------------- Temporary ----------------------------------//
-
-    	if (Gdx.input.isKeyPressed(Keys.ENTER)){
-    		gameStateManager.push(new  MiniGameState(gameStateManager));
-    	}
-    	
-// ---------------------------------- Temporary ----------------------------------//    	
-    	
-    	
-    	
     	
         // Calls input handler and updates timer each tick of the game.
         handleInput();
@@ -535,10 +519,14 @@ public class PlayState extends State {
         }
 
         // Forces user back to level select screen, even without needing to press ENTER after 4 seconds.
-        if (levelWon && timer.getTime() > timeTaken + 4) {
-            gameStateManager.set(new LevelSelectState(gameStateManager));
+        if (levelWon) {
+            gameStateManager.set(new MiniGameState(gameStateManager));
         }
 
+        if (levelLost && Gdx.input.isKeyPressed(Keys.ENTER)) {
+        	gameStateManager.set(new LevelSelectState(gameStateManager));
+        }
+        
         // Speeds up the background music when the player begins to run out of time.
         if ((14 < timeLimit - timer.getTime()) && (timeLimit - timer.getTime() < 16)){
             Kroy.INTRO.setPitch(Kroy.ID, 2f);
@@ -626,11 +614,11 @@ public class PlayState extends State {
             spriteBatch.draw(new Texture("levelFail.png"), 0, 0);
             Kroy.INTRO.setPitch(Kroy.ID, 1f);
         }
-
-        if (levelWon & !levelLost) {
-            spriteBatch.draw(new Texture("LevelWon.png"), 0, 0);
-            Kroy.INTRO.setPitch(Kroy.ID, 1f);
-        }
+//
+//        if (levelWon & !levelLost) {
+//            spriteBatch.draw(new Texture("LevelWon.png"), 0, 0);
+//            Kroy.INTRO.setPitch(Kroy.ID, 1f);
+//        }
         spriteBatch.end();
     }
 

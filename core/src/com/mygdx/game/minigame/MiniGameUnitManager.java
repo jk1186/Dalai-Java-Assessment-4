@@ -22,6 +22,8 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	private List<Enemy> enemies;
 	private TextureManager textureManager = new TextureManager();
 	private Bomb bomb;
+	private boolean levelWon = false;
+	private boolean levelLost = false;
 	
 	public MiniGameUnitManager() {
 		fireman = new Fireman(new Vector2(800,211), TextureManager.getFireman());
@@ -51,6 +53,7 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 			}
 			if (fireman.isDead()) { // Fireman death
 				fireman = null;
+				levelLost = true;
 			}
 		}
 		
@@ -68,6 +71,7 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 			boss.updatePos(deltaTime);
 			if (boss.isDead()) { // Boss death
 				boss = null;
+				levelWon = true;
 			}
 		}
 		
@@ -140,6 +144,10 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 		return boss;
 	}
 	
+	public boolean isLevelWon() {
+		return levelWon;
+	}
+	
 	
 	/**
 	 * Summons and instantiates boss object
@@ -200,5 +208,9 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	 */
 	public void dispose() {
 		textureManager.dispose();
+	}
+
+	public boolean isLevelLost() {
+		return levelLost ;
 	}
 }
