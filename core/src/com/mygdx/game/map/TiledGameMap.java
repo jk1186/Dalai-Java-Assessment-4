@@ -36,10 +36,8 @@ public class TiledGameMap {
 	}
 	
 	public TileType getTileTypeByScreenCoordinate(float posX, float posY) {
-//		float[] unprojectedCoords = (new Matrix4( new float[] {posX,0,0,0, posY,0,0,0, 0,0,0,0, 0,0,0,0}).mul(PROJECTMATRIX.inv())).getValues();
-		
 		return TileType.getTileTypeByID(((TiledMapTileLayer)tiledMap.getLayers().get(0)).getCell((int) (posX-33)/32,(int) (posY-212)/32).getTile().getId());
 		
 	}
-
+	
 }
