@@ -1,6 +1,7 @@
 package com.mygdx.game.map;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
@@ -8,23 +9,20 @@ import com.badlogic.gdx.math.Matrix4;
 public class TiledGameMap {
 	TiledMap tiledMap;
 	OrthogonalTiledMapRenderer tiledMapRenderer;
+	private final float L = -33, R = 1887, T = -212, B = 868; 
+	private final Matrix4 PROJECTMATRIX = new Matrix4(new float[]
+			{2/(R-L),0,0,0,
+			0,-2/(T-B),0,0,
+			0,0,1,0,
+			-(R+L)/(R-L),(T+B)/(T-B),0,1});
 	
 	public TiledGameMap (){
-		tiledMap = new TmxMapLoader().load("museumlevel.tmx");
+		tiledMap = new TmxMapLoader().load("level1map.tmx");
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 	}
 	
 	public void render (){ //Uses projection matrices to get the map to render in the right place
-		float l = -33;
-		float r = 1887;
-		float t = -211;
-		float b = 868;
-		
-		tiledMapRenderer.setView(new Matrix4(new float[]
-				{2/(r-l),0,0,0,
-				0,-2/(t-b),0,0,
-				0,0,1,0,
-				-(r+l)/(r-l),(t+b)/(t-b),0,1}), 0, 0, 1856, 832);
+		tiledMapRenderer.setView(PROJECTMATRIX, 0, 0, 1856, 832);
 		tiledMapRenderer.render();
 		
 	}
@@ -36,5 +34,10 @@ public class TiledGameMap {
 	public void dispose() {
 		tiledMap.dispose();
 	}
-
+	
+	public TileType getTileTypeByScreenCoordinate(float posX, float posY) {
+		return TileType.getTileTypeByID(((TiledMapTileLayer)tiledMap.getLayers().get(0)).getCell((int) (posX-33)/32,(int) (posY-212)/32).getTile().getId());
+		
+	}
+	
 }
