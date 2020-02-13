@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 /**
  * Class used to only have to instantiate textures once to minimise memory usage
- * @author lnt20
+ * @author Luke Taylor
  *
  */
 public class TextureManager {
@@ -12,6 +12,7 @@ public class TextureManager {
 	private static Texture fireman1, fireman2, firemanJump;
 	private static Texture enemy, boss;
 	private static Texture bombRed1, bombRed2, bombBlue1, bombBlue2;
+	private static Texture fullHeart, heart;
 	
 	public TextureManager() {
 		fireman1 = new Texture("firefighter1.png");
@@ -23,6 +24,8 @@ public class TextureManager {
 		bombRed2 = new Texture("bombRed2.png");
 		bombBlue1 = new Texture("bombBlue1.png");
 		bombBlue2 = new Texture("bombBlue2.png");
+		fullHeart = new Texture("fullHeart.png");
+		heart = new Texture("emptyHeart.png");
 	}	
 	
 	
@@ -95,6 +98,20 @@ public class TextureManager {
 	public static Texture getFiremanJump() {
 		return firemanJump;
 	}	
+	
+	/**
+	 * @return Texture Full heart texture
+	 */
+	public static Texture getFullHeart() {
+		return fullHeart;
+	}
+	
+	/**
+	 * @return Texture Heart texture
+	 */
+	public static Texture getEmptyHeart() {
+		return heart;
+	}
 	
 	
 	/**

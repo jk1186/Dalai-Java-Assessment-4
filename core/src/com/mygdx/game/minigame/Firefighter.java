@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
  * @author Luke Taylor
  *
  */
-public class Fireman extends MiniGameUnit {
+public class Firefighter extends MiniGameUnit {
 
 	/**
 	 * 
@@ -46,17 +46,17 @@ public class Fireman extends MiniGameUnit {
 		
 	}
 	
-	private enum FiremanTexture{
+	private enum FirefighterTexture{
 		TEXTURE1,TEXTURE2,JUMPING;
 	}
 	
 	private Jumping jumpState;
-	private FiremanTexture firemanTexture = FiremanTexture.TEXTURE1;;
+	private FirefighterTexture firemanTexture = FirefighterTexture.TEXTURE1;;
 	private final static float JUMP_TIME = 0.2f; // Amount of time the entity moves upwards in a jump
 	private float nextGraphicUpdate = 0f, currentTime = 0f;
 	
-	public Fireman(Vector2 pos) {
-		super(pos, 60, 60, TextureManager.getFirstFireman(), 100, 10f);
+	public Firefighter(Vector2 pos) {
+		super(pos, 60, 60, TextureManager.getFirstFireman(), 4, 10f);
 		jumpState = Jumping.NOT_JUMPING;
 	}	
 	
@@ -92,32 +92,36 @@ public class Fireman extends MiniGameUnit {
 		}
 	}
 	
-	public void setFacingRight(boolean val) {
+	private void setFacingRight(boolean val) {
 		facingRight = val;
 	}
 	
+	/**
+	 * Controls the texture of the Firefighter. Jump texture occurs when jumping, running textures otherwise
+	 * @param deltaTime amount of time since last update loop call
+	 */
 	public void textureSequence(float deltaTime) {
 		currentTime += deltaTime;
 		switch(firemanTexture) {
 		case JUMPING:
-			setTexture(TextureManager.getFiremanJump());
-			if (currentTime >= nextGraphicUpdate) {
+			setTexture(TextureManager.getFiremanJump()); // Jump Texture
+			if (currentTime >= nextGraphicUpdate) { // Keep nextGraphicUpdate updated as to not have a back log of updates when the jump is finished
 				nextGraphicUpdate += 0.1f;
 			}
 			break;
 			
 		case TEXTURE1:
-			setTexture(TextureManager.getFirstFireman());
+			setTexture(TextureManager.getFirstFireman()); // Texture 1
 			if (currentTime >= nextGraphicUpdate) {
-				firemanTexture = FiremanTexture.TEXTURE2;
+				firemanTexture = FirefighterTexture.TEXTURE2; // Swap if enough time has elapsed
 				nextGraphicUpdate += 0.1f;
 			}
 			break;
 		
 		case TEXTURE2:
-			setTexture(TextureManager.getSecondFireman());
+			setTexture(TextureManager.getSecondFireman());// Texture 2
 			if (currentTime >= nextGraphicUpdate) {
-				firemanTexture = FiremanTexture.TEXTURE1;
+				firemanTexture = FirefighterTexture.TEXTURE1; // Swap if enough time has elapsed
 				nextGraphicUpdate += 0.1f;
 			}
 			break;
@@ -143,43 +147,35 @@ public class Fireman extends MiniGameUnit {
 		
 		switch(jumpState){
 		case JUMPING: // Occurs when the fireman is currently moving upwards in the air
-			if (jumpState.hasTimeElapsed()) {
-				jumpState = Jumping.FALLING;
+			if (jumpState.hasTimeElapsed()) { // Checks amount of time moving upwards
+				jumpState = Jumping.FALLING; // Begins to fall once jump time has elapsed
 			}else {
-				jumpState.addTime(deltaTime);
+				jumpState.addTime(deltaTime); // Otherwise continues to move upwards
 				verticalMov = new Vector2(0,1);
 				onFloor = false;
 			}
 			break;
 			
 		case NOT_JUMPING: // Occurs when the fireman is on the floor/ place where he can jump
-			verticalMov = new Vector2(0,-1);
-			if (keyPressed) {
+			verticalMov = new Vector2(0,-1); // Apply gravity so player will fall when walking off a ledge
+			if (keyPressed) { // Starts jump when key is pressed
 				jumpState = Jumping.JUMPING;
-				firemanTexture = FiremanTexture.JUMPING;
+				firemanTexture = FirefighterTexture.JUMPING;
 				jumpState.startTimer();
-				textureSequence(deltaTime);
+				textureSequence(deltaTime); // Update graphics to load jumping texture
 			}
 			break;
 	
 		case FALLING: // Occurs when the fireman is falling from a jump he has just made
 			verticalMov = new Vector2(0,-1);
-			if(onFloor) {
+			if(onFloor) // Stops falling (ie has the ability to jump again) once on the floor
 				jumpState = Jumping.NOT_JUMPING;
-				firemanTexture = FiremanTexture.TEXTURE1;
+				firemanTexture = FirefighterTexture.TEXTURE1;
 				textureSequence(deltaTime);
-			}
 			break;
-			
-		default:
-			break;
-			
 		}
-		
 		return verticalMov;
 	}
-
-	
 	
 
 }

@@ -1,6 +1,7 @@
 package com.mygdx.game.minigame;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,27 +13,30 @@ import com.mygdx.game.sprites.Entity;
 
 /**
  * Class used to store all MiniGameUnits in a more convenient way. Iterable as to allow it to loop through all MiniGameUnits
- * @author lnt20
+ * @author Luke Taylor
  *
  */
 public class MiniGameUnitManager implements Iterable<Entity>{
 
-	private Fireman fireman;
+	private Firefighter fireman;
 	private Boss boss;
 	private List<Enemy> enemies;
 	private TextureManager textureManager = new TextureManager();
 	private Bomb bomb;
-	private boolean levelWon = false;
-	private boolean levelLost = false;
+	private boolean levelWon = false, levelLost = false;
+	private HealthBar healthBar;
+	private Vector2 spawnPoint = new Vector2(1800,211);
 	
 	public MiniGameUnitManager() {
-		fireman = new Fireman(new Vector2(800,211));
+		fireman = new Firefighter(spawnPoint);
 		enemies = new ArrayList<Enemy>();
 		addEnemy(new Vector2(800,211));
+		healthBar = new HealthBar(new Vector2(829,100));
+		
 	}
 
 	/**
-	 * Method adds an enemy into the game at positon of vector spawnPos
+	 * Method adds an enemy into the game at position of vector spawnPos
 	 * @param spawnPos
 	 */
 	public void addEnemy(Vector2 spawnPos) {
@@ -69,6 +73,15 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 		// Boss updates
 		if (boss != null) {
 			boss.updatePos(deltaTime);
+			if (boss.collisionWithEntity(fireman)) { // Player collisions with boss
+				fireman.setPosition(spawnPoint.x, spawnPoint.y);
+				if(!(healthBar.isDead())) {
+					healthBar.looseHealth();
+					fireman.takeDamage(1);
+				}else {
+					levelLost = true;
+				}
+			}
 			if (boss.isDead()) { // Boss death
 				boss = null;
 				levelWon = true;
@@ -80,6 +93,17 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 		
 		for (Enemy enemy: enemies) {
 			enemy.updatePos(deltaTime);
+			
+			if (enemy.collisionWithEntity(fireman)) { // Player Collisions
+				fireman.setPosition(spawnPoint.x, spawnPoint.y);
+				if (!(healthBar.isDead())) {
+					healthBar.looseHealth();
+					fireman.takeDamage(1);
+				}else {
+					levelLost = true;
+				}
+			}
+			
 			if (enemy.isDead()) { // Marking any enemy which dies
 				deadEnemies.add(enemy);
 			}
@@ -133,6 +157,7 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 		if (enemies.isEmpty() == false) {// Checks enemies exist
 			output.addAll(enemies);
 		}
+		output.addAll(healthBar.getHearts());
 		return output.iterator();
 	}
 	
@@ -183,7 +208,6 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	 */
 	public List<Enemy> getEnemiesInRange(Vector2 point, float range){
 		ArrayList<Enemy> output = new ArrayList<Enemy>();
-		
 		if (boss != null) {
 			if (boss.getPosition().dst(point) <= range) {
 				output.add(boss);
@@ -203,7 +227,7 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	 * Getter for Fireman object
 	 * @return Fireman object stored in manager
 	 */
-	public Fireman getFireman() {
+	public Firefighter getFireman() {
 		return fireman;
 	}
 

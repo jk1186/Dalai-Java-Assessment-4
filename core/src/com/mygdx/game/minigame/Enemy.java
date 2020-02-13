@@ -126,4 +126,30 @@ public class Enemy extends MiniGameUnit {
 		move(movementNeeded);
 	}
 	
+	/**
+	 * @param unit Firefighter entity to test if enemy collides with
+	 * @return true if Firefighter does collide with enemy
+	 */
+	public boolean collisionWithEntity(Firefighter unit) {
+			return (
+					// Checks if bottom left of unit is within the area of the enemy
+					isBetween(unit.getPosition().x,getPosition().x,getTopRight().x) &&  
+					isBetween(unit.getPosition().y,getPosition().y,getTopRight().y)) ||
+					(
+					//Checks if top right of unit is within the area of the enemy
+					isBetween(unit.getTopRight().x,getPosition().x,getTopRight().x) && 
+					isBetween(unit.getTopRight().y,getPosition().y,getTopRight().y));
+	}
+	
+	/**
+	 * Tests whether target is between point1 and point2
+	 * @param target target point
+	 * @param point1 one end of the scope
+	 * @param point2 other end of the scope
+	 * @return boolean returns true if target is between point1 and point2
+	 */
+	private boolean isBetween(float target, float point1, float point2) {
+		return ((target >= point1 && target <= point2 ) || (target <= point1 && target >= point2));
+	}
+	
 }

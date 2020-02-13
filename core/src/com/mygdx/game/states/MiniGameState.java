@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Kroy;
 import com.mygdx.game.minigame.Boss;
 import com.mygdx.game.minigame.Enemy;
-import com.mygdx.game.minigame.Fireman;
+import com.mygdx.game.minigame.Firefighter;
 import com.mygdx.game.minigame.MiniGameUnit;
 import com.mygdx.game.minigame.MiniGameUnitManager;
 import com.mygdx.game.minigame.TextureManager;
@@ -30,7 +30,7 @@ public class MiniGameState extends State {
 	
 	public MiniGameState(GameStateManager gameStateManager) {
 		super(gameStateManager);
-		background = new Texture("LevelProportions.png");
+		background = new Texture("miniGameLevelProportions.png");
 		
         quitLevel = new Button(new Texture("PressedQuitLevel.png"),
                 new Texture("NotPressedQuitLevel.png"),350 / 2, 100 / 2,
@@ -73,7 +73,6 @@ public class MiniGameState extends State {
                 System.exit(0);
                 }
             }
-
         else {
             quitGame.setActive(false);
         }

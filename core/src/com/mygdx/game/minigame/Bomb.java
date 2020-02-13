@@ -34,7 +34,7 @@ public class Bomb extends Entity{
 	
 	public Bomb(Vector2 pos, Texture texture) {
 		super(pos, 35, 35, texture);
-		this.damage = 10 	;
+		this.damage = 10 ;
 		this.range = 200;
 		fuse = 2f;
 		currentTime = 0;

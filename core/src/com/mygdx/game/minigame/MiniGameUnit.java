@@ -7,7 +7,7 @@ import com.mygdx.game.sprites.Unit;
 
 /**
  * Abstract class to define basic properties of MiniGameEntities
- * @author lnt20
+ * @author Luke Taylor
  *
  */
 public abstract class MiniGameUnit extends Unit {
