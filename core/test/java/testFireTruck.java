@@ -33,8 +33,7 @@ public class testFireTruck {
     Entity testEntity = new Entity(new Vector2(200, 200), 100, 100, null);
 
     //Instance of the FireTruck class to test on
-    Firetruck testFireTruck = new Firetruck(new Vector2(100, 100 ), 101, 102, null,
-            103, 10, null, 10, 12, 13, true);
+    Firetruck testFireTruck = new Firetruck(new Vector2(100, 100 ), 101, 102, 103, 10, 10, true);
 
 
     //Testing basic constructor functionality with getters

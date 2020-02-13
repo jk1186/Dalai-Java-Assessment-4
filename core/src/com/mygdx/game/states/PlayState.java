@@ -53,6 +53,8 @@ public class PlayState extends State {
     private Fortress fortress;
     private Firetruck firetruck1;
     private Firetruck firetruck2;
+    private Firetruck firetruck3;
+    private Firetruck firetruck4;
     private ArrayList<Entity> obstacles = new ArrayList<Entity>();
     public ArrayList<Firetruck> firetrucks = new ArrayList<Firetruck>();
     private ArrayList<Firetruck> destroyedFiretrucks = new ArrayList<Firetruck>();
@@ -100,14 +102,17 @@ public class PlayState extends State {
 
         Vector2 firetruck1pos = new Vector2(0,0);
         Vector2 firetruck2pos = null;
+        Vector2 firetruck3pos = null;
+        Vector2 firetruck4pos = null;
 
         if (levelNumber == 1) { // Bottom left coordinate of map --> (33, 212) Each grid square = 32px
 
             firetruck1pos = new Vector2(33 + 10 * 32, 212 + 6 * 32);
             firetruck2pos = new Vector2(33 + 11 * 32, 212 + 6 * 32);
-            
+            firetruck3pos = new Vector2(33 + 10 * 32, 212 + 5 * 32);
+            firetruck4pos = new Vector2(33 + 11 * 32, 212 + 5 * 32);
             timeLimit = 90;
-            
+
             // Level 1 Firestation
             fireStation = new Entity(new Vector2(33 + 8 * 32, 212 + 4 * 32), 128, 128,
                     new Texture("teal.jpg"));
@@ -121,6 +126,8 @@ public class PlayState extends State {
 
             firetruck1pos = new Vector2(33 + 2 * 32, 212 + 4 * 32);
             firetruck2pos = new Vector2(33 + 2 * 32, 212 + 5 * 32);
+            firetruck3pos = new Vector2(33 + 2 * 32, 212 + 6 * 32);
+            firetruck4pos = new Vector2(33 + 2 * 32, 212 + 7 * 32);
 
             timeLimit = 120;
 
@@ -138,8 +145,10 @@ public class PlayState extends State {
 
             firetruck1pos = new Vector2(33 + 27 * 32, 212 + 3 * 32);
             firetruck2pos = new Vector2(33 + 28 * 32, 212 + 3 * 32);
+            firetruck3pos = new Vector2(33 + 29 * 32, 212 + 3 * 32);
+            firetruck4pos = new Vector2(33 + 27 * 32, 212 + 2 * 32);
 
-            timeLimit = 60;            
+            timeLimit = 60;
 
             // For loops to create diagonal wall obstacle
             for (int i = 0; i<= 192; i += 32){
@@ -174,18 +183,16 @@ public class PlayState extends State {
                     15000, 2, 3);
         }
 
-        firetruck1 = new Firetruck(firetruck1pos, 25, 25,
-                new Texture("truck.png"), 100, 200,
-                null, 100, 2,  175,
-                true);
-
-        firetruck2 = new Firetruck(firetruck2pos, 25, 25,
-                new Texture("truck.png"), 50, 200,
-                null, 200, 2,  100,
-                false);
+        //Firetrucks created here | Health, range, speed, dps, capacity
+        firetruck1 = new Firetruck(firetruck1pos, 100, 200, 100, 2,  175, true);
+        firetruck2 = new Firetruck(firetruck2pos, 50, 200, 200, 2,  200, false);
+        firetruck3 = new Firetruck(firetruck3pos, 50, 300, 100, 2,  150, false);
+        firetruck4 = new Firetruck(firetruck4pos, 100, 150, 80, 4,  200, false);
 
         firetrucks.add(firetruck1);
         firetrucks.add(firetruck2);
+        firetrucks.add(firetruck3);
+        firetrucks.add(firetruck4);
         timer = new Timer(timeLimit);
     }
 
@@ -257,6 +264,10 @@ public class PlayState extends State {
             truckMovement(firetruck1);
         } else if (firetruck2.isSelected()) {
             truckMovement(firetruck2);
+        } else if (firetruck3.isSelected()) {
+            truckMovement(firetruck3);
+        } else if (firetruck4.isSelected()) {
+            truckMovement(firetruck4);
         }
 
     }
@@ -267,7 +278,7 @@ public class PlayState extends State {
      */
     @Override
     public void update(float deltaTime) {
-    	
+
         // Calls input handler and updates timer each tick of the game.
         handleInput();
         timer.update();
@@ -388,7 +399,7 @@ public class PlayState extends State {
         if (levelLost && Gdx.input.isKeyPressed(Keys.ENTER)) {
         	gameStateManager.set(new LevelSelectState(gameStateManager));
         }
-        
+
         // Speeds up the background music when the player begins to run out of time.
         if ((14 < timeLimit - timer.getTime()) && (timeLimit - timer.getTime() < 16)){
             Kroy.INTRO.setPitch(Kroy.ID, 2f);
@@ -401,19 +412,19 @@ public class PlayState extends State {
      */
     @Override
     public void render(SpriteBatch spriteBatch) {
-    	
+
     	//Creates seperate spriteBatch as to load background behind the map which needs to be loaded outside a spritebatch
     	spriteBatch.begin();
     	spriteBatch.draw(background, 0, 0, Kroy.WIDTH, Kroy.HEIGHT);
     	spriteBatch.end();
-    	
-    	
+
+
     	// Renders the tiled map
     	gameMap.render();
-    	
-    	
+
+
     	// Rest of the game objects are loaded and rendered above the tilemap
-        spriteBatch.begin();        
+        spriteBatch.begin();
         // Draws buttons onto play screen
         spriteBatch.draw(quitLevel.getTexture(), quitLevel.getPosition().x, quitLevel.getPosition().y,
                 quitLevel.getWidth(), quitLevel.getHeight());
@@ -464,12 +475,14 @@ public class PlayState extends State {
 
         // Draws UI Text onto the screen
         ui.setColor(Color.DARK_GRAY);
-        ui.draw(spriteBatch, "Truck 1 Health: " + Integer.toString(firetruck1.getCurrentHealth()), 70,
-                Kroy.HEIGHT - 920);
-        ui.draw(spriteBatch, "Truck 2 Health: " + Integer.toString(firetruck2.getCurrentHealth()), 546,
-                Kroy.HEIGHT - 920);
-        ui.draw(spriteBatch, "Truck 3 Health: N/A", 1023, Kroy.HEIGHT - 920);
-        ui.draw(spriteBatch, "Truck 4 Health: N/A", 1499, Kroy.HEIGHT - 920);
+        ui.draw(spriteBatch, "Truck 1 Health: " + Integer.toString(firetruck1.getCurrentHealth()),
+        		70, Kroy.HEIGHT - 920);
+        ui.draw(spriteBatch, "Truck 2 Health: " + Integer.toString(firetruck2.getCurrentHealth()),
+        		546, Kroy.HEIGHT - 920);
+        ui.draw(spriteBatch, "Truck 3 Health: " + Integer.toString(firetruck3.getCurrentHealth()),
+        		1023, Kroy.HEIGHT - 920);
+        ui.draw(spriteBatch, "Truck 4 Health: " + Integer.toString(firetruck4.getCurrentHealth()),
+        		1499, Kroy.HEIGHT - 920);
 
         // If end game reached, draws level fail or level won images to the screen
         if (levelLost) {
@@ -534,7 +547,7 @@ public class PlayState extends State {
             truck.setTexture(new Texture("truck.png"));
             truck.move(3);
         }
-        
+
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             truck.setTexture(new Texture("truckdown.png"));
             truck.move(4);
@@ -543,7 +556,7 @@ public class PlayState extends State {
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             truck.setTexture(new Texture("truckleft.png"));
             truck.move(1);
-            
+
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
@@ -561,8 +574,10 @@ public class PlayState extends State {
         if (fortress.getAlienPositions().size() > 0) {
             Vector2 coordinate = fortress.getAlienPositions().get(rand.nextInt(fortress.getAlienPositions().size()));
             Alien alien = new Alien(coordinate, 32, 32, new Texture("alien.gif"), 30 + rand.nextInt(60),
-                    250, null, 1, 5 + rand.nextInt(15), new Vector2[]{new Vector2(coordinate.x, coordinate.y),
-                    new Vector2(coordinate.x, coordinate.y + 30)}, 5);
+                    250, null, 1, 5 + rand.nextInt(15),
+                    new Vector2[]{new Vector2(coordinate.x, coordinate.y), new Vector2(coordinate.x + 200, coordinate.y - 200),
+                    		new Vector2(coordinate.x, coordinate.y - 400), new Vector2(coordinate.x - 200, coordinate.y - 200)},
+                    5);
             aliens.add(alien);
             fortress.getAlienPositions().remove(coordinate);
         }
