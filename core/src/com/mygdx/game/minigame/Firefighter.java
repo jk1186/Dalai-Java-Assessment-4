@@ -53,11 +53,12 @@ public class Firefighter extends MiniGameUnit {
 	
 	private Jumping jumpState;
 	private FirefighterTexture firemanTexture = FirefighterTexture.TEXTURE1;;
-	private final static float JUMP_TIME = 0.2f; // Amount of time the entity moves upwards in a jump
+	private final static float JUMP_TIME = 0.3f; // Amount of time the entity moves upwards in a jump
 	private float nextGraphicUpdate = 0f, currentTime = 0f;
+	private boolean onFloor = true;
 	
 	public Firefighter(Vector2 pos) {
-		super(pos, 60, 60, TextureManager.getFirstFireman(), 4, 10f);
+		super(pos, 50, 50, TextureManager.getFirstFireman(), 4, 500f);
 		jumpState = Jumping.NOT_JUMPING;
 	}	
 	
@@ -87,7 +88,20 @@ public class Firefighter extends MiniGameUnit {
 			setFacingRight(false);
 		}		
 		
-		move(movementNeeded);
+		if(movementNeeded.x < 0) {
+			move(1);
+		}
+		if(movementNeeded.x > 0) {
+			move(2);
+		}
+		
+		if(movementNeeded.y > 0) {
+			move(3);
+		}
+		if(movementNeeded.y < 0) {
+			move(4);
+		}
+		
 		if (moving) {
 			textureSequence(deltaTime);
 		}
@@ -183,8 +197,19 @@ public class Firefighter extends MiniGameUnit {
 	 * @param gameMap map the player is on
 	 * @return true if tile player is currently on is damaging
 	 */
-	public boolean onDamagingTile(TiledGameMap gameMap) {
-		return gameMap.getMiniGameTileTypeByScreenCoordinate(getPosition().x, getPosition().y).getDamaging();
+	public boolean onDamagingTile() {
+		return MiniGameUnitManager.getGameMap().getMiniGameTileTypeByScreenCoordinate(getPosition().x, getPosition().y).getDamaging();
+	}
+	
+	/**
+	 * Overwritten method to detect when firefighter is on the floor
+	 */
+	@Override
+	public void move(int direction) {
+		super.move(direction);
+        if (!isUncollidableTile(getPosition().x,getPosition().y-10)) {
+        	onFloor = true;
+        }
 	}
 
 }

@@ -80,12 +80,10 @@ public class Enemy extends MiniGameUnit {
 	 * Method updates the position of the enemy
 	 */
 	public void updatePos(float deltaTime) {
-		
-		Vector2 movementNeeded = new Vector2(0,-1);
-		
+		move(4);
 		switch(direction) {
 		case LEFT:
-			movementNeeded.add(new Vector2(-1,0));
+			move(1);
 			if (direction.hasWalkTimeElapsed()) {
 				direction = MoveDirection.STAND;
 				direction.setRightNext();
@@ -97,7 +95,7 @@ public class Enemy extends MiniGameUnit {
 			
 			
 		case RIGHT:		
-			movementNeeded.add(new Vector2(1,0));
+			move(2);
 			if(direction.hasWalkTimeElapsed()) {
 				direction = MoveDirection.STAND;
 				direction.setLeftNext();
@@ -122,8 +120,6 @@ public class Enemy extends MiniGameUnit {
 			}
 			break;
 		}
-		
-		move(movementNeeded);
 	}
 	
 	/**
@@ -131,6 +127,7 @@ public class Enemy extends MiniGameUnit {
 	 * @return true if Firefighter does collide with enemy
 	 */
 	public boolean collisionWithEntity(Firefighter unit) {
+		if (unit != null) {
 			return (
 					// Checks if bottom left of unit is within the area of the enemy
 					isBetween(unit.getPosition().x,getPosition().x,getTopRight().x) &&  
@@ -147,6 +144,9 @@ public class Enemy extends MiniGameUnit {
 					//Checks if top left of unit is within the area of the enemy
 					isBetween(unit.getPosition().x,getPosition().x,getTopRight().x) && 
 					isBetween(unit.getTopRight().y,getPosition().y,getTopRight().y));
+		}else {
+			return false;
+		}
 	}
 	
 	/**

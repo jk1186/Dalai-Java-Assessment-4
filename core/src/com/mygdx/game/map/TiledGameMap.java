@@ -5,10 +5,10 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * @author Martha Cartwright
- * @author Luke Taylor
  *
  */
 public class TiledGameMap {
@@ -44,13 +44,8 @@ public class TiledGameMap {
 	}
 	
 	public MiniGameTileType getMiniGameTileTypeByScreenCoordinate(float posX, float posY) {
-//		System.out.println("==========================");
-//		int x = ((TiledMapTileLayer)tiledMap.getLayers().get("Collisions")).getCell((int) (posX-33)/64,(int) (posY-212)/64).getTile().getId();
-//		System.out.println(x);
-//		System.out.println("==========================");
-//		System.out.println(MiniGameTileType.getTileTypeById(x));
-//		System.out.println("==========================");
 		return MiniGameTileType.getTileTypeById(((TiledMapTileLayer)tiledMap.getLayers().get("Collisions")).getCell((int) (posX-33)/64,(int) (posY-212)/64).getTile().getId());
 	}
+
 	
 }

@@ -20,20 +20,20 @@ import com.mygdx.game.sprites.Entity;
 public class MiniGameUnitManager implements Iterable<Entity>{
 
 	private Firefighter fireman;
-	private TiledGameMap gameMap;
+	private static TiledGameMap gameMap;
 	private Boss boss;
 	private List<Enemy> enemies;
 	private TextureManager textureManager = new TextureManager();
 	private Bomb bomb;
 	private boolean levelWon = false, levelLost = false;
 	private HealthBar healthBar;
-	private Vector2 spawnPoint = new Vector2(1800,211);
+	private Vector2 spawnPoint = new Vector2(1600,350);
 	
 	public MiniGameUnitManager(TiledGameMap map) {
 		gameMap = map;
 		fireman = new Firefighter(spawnPoint);
 		enemies = new ArrayList<Enemy>();
-		addEnemy(new Vector2(800,211));
+		addEnemy(new Vector2(800,300));
 		healthBar = new HealthBar(new Vector2(829,100));
 		
 	}
@@ -43,19 +43,18 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	 * @param spawnPos
 	 */
 	public void addEnemy(Vector2 spawnPos) {
-		enemies.add(new Enemy(spawnPos,20,20, TextureManager.getEnemy(),10,5f));
+		enemies.add(new Enemy(spawnPos,20,20, TextureManager.getEnemy(),10,300f));
 	}
 
 	/**
 	 * Method runs update methods of each Entities stored. Also checks for death of Entities and controls spawning of other Entities
 	 * @param deltaTime amount of time passed since last function call
 	 */
-	public void updateAll(float deltaTime) {
-		
+	public void updateAll(float deltaTime) {			
 		// Fireman updates
 		if (fireman != null) {
 			fireman.updatePos(deltaTime);
-			if (fireman.onDamagingTile(gameMap)) {// Should fireman take environmental damage
+			if (fireman.onDamagingTile()) {// Should fireman take environmental damage
 				firefighterDeath();
 			}
 			if (bomb == null && Gdx.input.isKeyPressed(Keys.SPACE)) { // Bomb spawning
@@ -75,7 +74,7 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 				bomb = null;
 			}
 		}
-		
+
 		// Boss updates
 		if (boss != null) {
 			boss.updatePos(deltaTime);
@@ -175,7 +174,7 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	 * Summons and instantiates boss object
 	 */
 	public void spawnBoss() {
-        boss = new Boss(new Vector2(400,211), TextureManager.getBoss(), 20, 7.5f);
+        boss = new Boss(new Vector2(200,600), TextureManager.getBoss(), 20, 450f);
 	}
 	
 	/**
@@ -251,5 +250,9 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	 */
 	public boolean isLevelLost() {
 		return levelLost ;
+	}
+
+	public static TiledGameMap getGameMap() {
+		return gameMap;
 	}
 }
