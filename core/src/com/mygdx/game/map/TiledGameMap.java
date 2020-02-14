@@ -16,8 +16,8 @@ public class TiledGameMap {
 			0,0,1,0,
 			-(R+L)/(R-L),(T+B)/(T-B),0,1});
 	
-	public TiledGameMap (){
-		tiledMap = new TmxMapLoader().load("level1map.tmx");
+	public TiledGameMap (String filename){
+		tiledMap = new TmxMapLoader().load(filename);
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 	}
 	

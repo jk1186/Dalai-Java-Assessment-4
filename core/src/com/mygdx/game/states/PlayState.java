@@ -68,7 +68,7 @@ public class PlayState extends State {
 
     public PlayState(GameStateManager gsm, int levelNumber) {
         super(gsm);
-        gameMap = new TiledGameMap();
+        
 
         background = new Texture("LevelProportions.png");
 
@@ -101,6 +101,8 @@ public class PlayState extends State {
         Vector2 firetruck2pos = null;
 
         if (levelNumber == 1) { // Bottom left coordinate of map --> (33, 212) Each grid square = 32px
+        	
+        	gameMap = new TiledGameMap("level1map.tmx");
 
             firetruck1pos = new Vector2(33 + 10 * 32, 212 + 6 * 32);
             firetruck2pos = new Vector2(33 + 11 * 32, 212 + 6 * 32);
@@ -117,6 +119,8 @@ public class PlayState extends State {
         }
 
         else if (levelNumber == 2) {
+        	
+        	gameMap = new TiledGameMap("level2map.tmx");
 
             firetruck1pos = new Vector2(33 + 2 * 32, 212 + 4 * 32);
             firetruck2pos = new Vector2(33 + 2 * 32, 212 + 5 * 32);
@@ -134,36 +138,13 @@ public class PlayState extends State {
         }
 
         else if (levelNumber == 3) {
+        	
+        	gameMap = new TiledGameMap("level3map.tmx");
 
             firetruck1pos = new Vector2(33 + 27 * 32, 212 + 3 * 32);
             firetruck2pos = new Vector2(33 + 28 * 32, 212 + 3 * 32);
 
             timeLimit = 60;            
-
-            // For loops to create diagonal wall obstacle
-            for (int i = 0; i<= 192; i += 32){
-                obstacles.add(new Entity(new Vector2(257 + i, 1012 - i), 64, 32, new Texture("teal.jpg")));
-            }
-
-            obstacles.add(new Entity(new Vector2(33 + 14 * 32, 212 + 18 * 32), 32, 32, new Texture("teal.jpg")));
-
-            for (int i = 0; i<= 192; i += 32){
-                obstacles.add(new Entity(new Vector2(1601 - i, 1012 - i), 64, 32, new Texture("teal.jpg")));
-            }
-
-            obstacles.add(new Entity(new Vector2(33 + 43 * 32, 212 + 18 * 32), 32, 32, new Texture("teal.jpg")));
-
-            for (int i = 0; i<= 352; i += 32){
-                obstacles.add(new Entity(new Vector2(577 + i, 692 - i), 64, 32, new Texture("teal.jpg")));
-            }
-
-            obstacles.add(new Entity(new Vector2(33 + 17 * 32, 212 + 16 * 32), 32, 32, new Texture("teal.jpg")));
-
-            for (int i = 0; i<= 320; i += 32){
-                obstacles.add(new Entity(new Vector2(1281 - i, 692 - i), 64, 32, new Texture("teal.jpg")));
-            }
-
-            obstacles.add(new Entity(new Vector2(33 + 40 * 32, 212 + 16 * 32), 32, 32, new Texture("teal.jpg")));
 
             // Level 3 Fire Station
             fireStation = new Entity(new Vector2(33 + 27*32, 212), 96, 128, new Texture("teal.jpg"));
