@@ -3,6 +3,7 @@ package com.mygdx.game.minigame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.map.TiledGameMap;
 
 /**
  * @author Luke Taylor
@@ -177,5 +178,13 @@ public class Firefighter extends MiniGameUnit {
 		return verticalMov;
 	}
 	
+	/**
+	 * Checks to see if player should take environmental damage
+	 * @param gameMap map the player is on
+	 * @return true if tile player is currently on is damaging
+	 */
+	public boolean onDamagingTile(TiledGameMap gameMap) {
+		return gameMap.getMiniGameTileTypeByScreenCoordinate(getPosition().x, getPosition().y).getDamaging();
+	}
 
 }

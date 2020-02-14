@@ -138,6 +138,14 @@ public class Enemy extends MiniGameUnit {
 					(
 					//Checks if top right of unit is within the area of the enemy
 					isBetween(unit.getTopRight().x,getPosition().x,getTopRight().x) && 
+					isBetween(unit.getTopRight().y,getPosition().y,getTopRight().y))||
+					(
+					//Checks if bottom right of unit is within the area of the enemy
+					isBetween(unit.getTopRight().x,getPosition().x,getTopRight().x) && 
+					isBetween(unit.getPosition().y,getPosition().y,getTopRight().y))||
+					(
+					//Checks if top left of unit is within the area of the enemy
+					isBetween(unit.getPosition().x,getPosition().x,getTopRight().x) && 
 					isBetween(unit.getTopRight().y,getPosition().y,getTopRight().y));
 	}
 	

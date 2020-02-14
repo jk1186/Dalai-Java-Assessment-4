@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Kroy;
+import com.mygdx.game.map.TiledGameMap;
 import com.mygdx.game.minigame.Boss;
 import com.mygdx.game.minigame.Enemy;
 import com.mygdx.game.minigame.Firefighter;
@@ -27,9 +28,11 @@ public class MiniGameState extends State {
 	private Button quitLevel;
 	private Button quitGame;
 	private MiniGameUnitManager unitManager;
+	private TiledGameMap gameMap;
 	
 	public MiniGameState(GameStateManager gameStateManager) {
 		super(gameStateManager);
+		gameMap = new TiledGameMap("MiniGameLevel1.tmx");
 		background = new Texture("miniGameLevelProportions.png");
 		
         quitLevel = new Button(new Texture("PressedQuitLevel.png"),
@@ -40,7 +43,8 @@ public class MiniGameState extends State {
                 new Texture("NotPressedQuitGame.png"), 350 / 2, 100 / 2,
                 new Vector2(1920 - 30 - 350 / 2, 30), false, false);
         
-        unitManager = new MiniGameUnitManager();
+        unitManager = new MiniGameUnitManager(gameMap);
+        
         
 	}	
 
@@ -99,10 +103,15 @@ public class MiniGameState extends State {
 	public void render(SpriteBatch spriteBatch) {
 		
 		spriteBatch.begin();
-		
-        // Draws background and map onto play screen
+		// Draws background and map onto play screen
         spriteBatch.draw(background, 0, 0, Kroy.WIDTH, Kroy.HEIGHT);
 
+		spriteBatch.end();
+
+		gameMap.render();
+		
+		spriteBatch.begin();
+        
         // Draws buttons onto play screen
         spriteBatch.draw(quitLevel.getTexture(), quitLevel.getPosition().x, quitLevel.getPosition().y, quitLevel.getWidth(), quitLevel.getHeight());
         spriteBatch.draw(quitGame.getTexture(), quitGame.getPosition().x, quitGame.getPosition().y, quitGame.getWidth(), quitGame.getHeight());

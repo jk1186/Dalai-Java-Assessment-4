@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -33,7 +32,6 @@ public class PlayState extends State {
     private final float GAME_HEIGHT = 832;
 
     private Texture background;
-    private Texture map;
 
     private boolean levelLost;
     private boolean levelWon;
@@ -71,7 +69,7 @@ public class PlayState extends State {
 
     public PlayState(GameStateManager gsm, int levelNumber) {
         super(gsm);
-        gameMap = new TiledGameMap();
+        gameMap = new TiledGameMap("level4map.tmx");
 
         background = new Texture("LevelProportions.png");
 
@@ -503,7 +501,6 @@ public class PlayState extends State {
     @Override
     public void dispose() {
         background.dispose();
-        //map.dispose();
         quitLevel.dispose();
         quitGame.dispose();
         waterShoot.dispose();

@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.map.TiledGameMap;
 import com.mygdx.game.sprites.Entity;
 
 /**
@@ -19,6 +20,7 @@ import com.mygdx.game.sprites.Entity;
 public class MiniGameUnitManager implements Iterable<Entity>{
 
 	private Firefighter fireman;
+	private TiledGameMap gameMap;
 	private Boss boss;
 	private List<Enemy> enemies;
 	private TextureManager textureManager = new TextureManager();
@@ -27,7 +29,8 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	private HealthBar healthBar;
 	private Vector2 spawnPoint = new Vector2(1800,211);
 	
-	public MiniGameUnitManager() {
+	public MiniGameUnitManager(TiledGameMap map) {
+		gameMap = map;
 		fireman = new Firefighter(spawnPoint);
 		enemies = new ArrayList<Enemy>();
 		addEnemy(new Vector2(800,211));
@@ -52,6 +55,9 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 		// Fireman updates
 		if (fireman != null) {
 			fireman.updatePos(deltaTime);
+			if (fireman.onDamagingTile(gameMap)) {// Should fireman take environmental damage
+				firefighterDeath();
+			}
 			if (bomb == null && Gdx.input.isKeyPressed(Keys.SPACE)) { // Bomb spawning
 				spawnBomb(fireman.getPosition());
 			}
@@ -74,13 +80,7 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 		if (boss != null) {
 			boss.updatePos(deltaTime);
 			if (boss.collisionWithEntity(fireman)) { // Player collisions with boss
-				fireman.setPosition(spawnPoint.x, spawnPoint.y);
-				if(!(healthBar.isDead())) {
-					healthBar.looseHealth();
-					fireman.takeDamage(1);
-				}else {
-					levelLost = true;
-				}
+				firefighterDeath();
 			}
 			if (boss.isDead()) { // Boss death
 				boss = null;
@@ -95,13 +95,7 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 			enemy.updatePos(deltaTime);
 			
 			if (enemy.collisionWithEntity(fireman)) { // Player Collisions
-				fireman.setPosition(spawnPoint.x, spawnPoint.y);
-				if (!(healthBar.isDead())) {
-					healthBar.looseHealth();
-					fireman.takeDamage(1);
-				}else {
-					levelLost = true;
-				}
+				firefighterDeath();
 			}
 			
 			if (enemy.isDead()) { // Marking any enemy which dies
@@ -236,6 +230,19 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	 */
 	public void dispose() {
 		textureManager.dispose();
+	}
+	
+	/**
+	 * Methods removes life from firefighter and updates graphics
+	 */
+	public void firefighterDeath() {
+		fireman.setPosition(spawnPoint.x, spawnPoint.y); // Reset fireman spawn point
+		if(!(healthBar.isDead())) { // Makes sure lives are left
+			healthBar.looseHealth();
+			fireman.takeDamage(1);
+		}else {
+			levelLost = true;
+		}
 	}
 
 	/**
