@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.map.MiniGameTileType;
 import com.mygdx.game.map.TiledGameMap;
 import com.mygdx.game.sprites.Entity;
 
@@ -27,7 +28,7 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	private Bomb bomb;
 	private boolean levelWon = false, levelLost = false;
 	private HealthBar healthBar;
-	private Vector2 spawnPoint = new Vector2(1600,350);
+	private Vector2 spawnPoint = new Vector2(1600,400);
 	
 	public MiniGameUnitManager(TiledGameMap map) {
 		gameMap = map;
@@ -108,7 +109,6 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 		if (enemies.isEmpty() && boss == null) { // Boss spawning once all enemies dead
 			spawnBoss();
 		}
-		
 	}
 	
 	/**

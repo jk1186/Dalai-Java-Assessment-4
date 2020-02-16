@@ -1,7 +1,10 @@
 package com.mygdx.game.minigame;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.map.MiniGameTileType;
 
 /**
  * 
@@ -126,7 +129,7 @@ public class Enemy extends MiniGameUnit {
 	 * @param unit Firefighter entity to test if enemy collides with
 	 * @return true if Firefighter does collide with enemy
 	 */
-	public boolean collisionWithEntity(Firefighter unit) {
+	public boolean collisionWithEntity(Firefighter unit) {		
 		if (unit != null) {
 			return (
 					// Checks if bottom left of unit is within the area of the enemy
@@ -143,7 +146,7 @@ public class Enemy extends MiniGameUnit {
 					(
 					//Checks if top left of unit is within the area of the enemy
 					isBetween(unit.getPosition().x,getPosition().x,getTopRight().x) && 
-					isBetween(unit.getTopRight().y,getPosition().y,getTopRight().y));
+					isBetween(unit.getTopRight().y,getPosition().y,getTopRight().y));					
 		}else {
 			return false;
 		}

@@ -5,6 +5,8 @@ package com.mygdx.game.map;
 
 import java.util.HashMap;
 
+import com.badlogic.gdx.math.Vector2;
+
 /**
  * Used to control minigame tile types
  * @author Luke Taylor
@@ -61,6 +63,5 @@ public enum MiniGameTileType {
 	public boolean getDamaging() {
 		return damaging;
 	}
-	
 	
 }

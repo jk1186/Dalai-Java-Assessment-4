@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.map.MiniGameTileType;
 import com.mygdx.game.map.TiledGameMap;
 import com.mygdx.game.sprites.Unit;
 
@@ -44,15 +45,20 @@ public abstract class MiniGameUnit extends Unit {
         } else if (direction == 3) {
             newPosition.set(getPosition().x, getPosition().y + speed * deltaTime);
         } else if (direction == 4) {
-            newPosition.set(getPosition().x, getPosition().y - speed * deltaTime);
+        	if (isBelowCollidable(new Vector2(getPosition().x, getPosition().y - speed * deltaTime))) {
+        		newPosition.set(getPosition().x, getLowestOnLevel(getPosition().y));
+        	}else {
+        		newPosition.set(getPosition().x, getPosition().y - speed * deltaTime);
+        	}
         }
         
-        if ((isUncollidableTile(newPosition.x,newPosition.y)
-        		&& isUncollidableTile(newPosition.x + getWidth(),newPosition.y + getHeight())
-        		&& isUncollidableTile(newPosition.x, newPosition.y + getHeight())
-        		&& isUncollidableTile(newPosition.x + getWidth(),newPosition.y))) {
+        if ((isUncollidableTile(newPosition.x,newPosition.y)									// Check bottom left
+        		&& isUncollidableTile(newPosition.x + getWidth(),newPosition.y + getHeight())	// Check top left
+        		&& isUncollidableTile(newPosition.x, newPosition.y + getHeight())				// Check bottom right
+        		&& isUncollidableTile(newPosition.x + getWidth(),newPosition.y))) {				// Check top right
         	setPosition(newPosition.x,newPosition.y);
         }
+
         
     }
 		
@@ -63,6 +69,10 @@ public abstract class MiniGameUnit extends Unit {
 	 */
 	public boolean isUncollidableTile(float posX, float posY) {
 		return !(MiniGameUnitManager.getGameMap().getMiniGameTileTypeByScreenCoordinate(posX,posY).getCollidable());
+	}
+	
+	public boolean isBelowCollidable(Vector2 newPos) {
+		return !(isUncollidableTile(newPos.x,newPos.y)||isUncollidableTile(newPos.x+getWidth(),newPos.y));
 	}
 	
 	/**
@@ -79,6 +89,19 @@ public abstract class MiniGameUnit extends Unit {
 	@Override
 	public boolean isFacingRight() {
 		return facingRight;
+	}
+	
+	/**
+	 * Method used to round down to the nearest layers when entities are landing. Called when entity cannot complete a full downwards movement 
+	 * @param gameY float any valid coordinate on the game screen
+	 * @return the lowest value of that tile layer
+	 */
+	public static float getLowestOnLevel(float gameY) {
+		int x = (int) (gameY-212)/64;
+		x = x*64;
+		x += 212;
+		return x;
+		
 	}
 	
 }

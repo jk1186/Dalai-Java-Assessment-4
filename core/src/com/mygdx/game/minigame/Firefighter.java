@@ -3,6 +3,7 @@ package com.mygdx.game.minigame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.map.MiniGameTileType;
 import com.mygdx.game.map.TiledGameMap;
 
 /**
@@ -207,6 +208,7 @@ public class Firefighter extends MiniGameUnit {
 	@Override
 	public void move(int direction) {
 		super.move(direction);
+       
         if (!isUncollidableTile(getPosition().x,getPosition().y-10)) {
         	onFloor = true;
         }

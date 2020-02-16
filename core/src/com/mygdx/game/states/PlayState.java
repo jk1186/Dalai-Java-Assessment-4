@@ -256,6 +256,11 @@ public class PlayState extends State {
     @Override
     public void update(float deltaTime) {
 
+    	if (Gdx.input.isKeyPressed(Keys.M)) {
+    		gameStateManager.set(new MiniGameState(gameStateManager));
+    	}
+    	
+    	
         // Calls input handler and updates timer each tick of the game.
         handleInput();
         timer.update();
