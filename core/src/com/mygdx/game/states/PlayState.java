@@ -620,9 +620,7 @@ public class PlayState extends State {
         if (fortress.getAlienPositions().size() > 0) {
             Vector2 coordinate = fortress.getAlienPositions().get(rand.nextInt(fortress.getAlienPositions().size()));
             Alien alien = new Alien(coordinate, 32, 32, new Texture("alien.gif"), 30 + rand.nextInt(60),
-                    250, null, 1, 5 + rand.nextInt(15),
-                    randomPatrolRoute(coordinate),
-                    3 + rand.nextInt(3));
+                    250, null, 1, 5 + rand.nextInt(15), randomPatrolRoute(coordinate), 3 + rand.nextInt(3));
             aliens.add(alien);
             fortress.getAlienPositions().remove(coordinate);
         }
@@ -635,12 +633,12 @@ public class PlayState extends State {
      */
     public Vector2[] randomPatrolRoute(Vector2 spawnPos) {
     	Random rand = new Random();
-    	Vector2[][] patrolSpace = {		//Area to patrol | Top Left, Bottom Right
+    	Vector2[][] patrolSpace = {		//Area to patrol | Bottom Left, Top Right
     			{new Vector2(33 + 15 * 32, 212 + 15 * 32), new Vector2(33 + 35 * 32, 212 + 25 * 32)},	//Level 1
     			{new Vector2(33 + 20 * 32, 212 + 5 * 32), new Vector2(33 + 45 * 32, 212 + 19 * 32)},	//Level 2
     			{new Vector2(33 + 15 * 32, 212 + 15 * 32), new Vector2(33 + 40 * 32, 212 + 19 * 32)},	//Level 3
-    			{new Vector2(33 + 15 * 32, 212 + 18 * 32), new Vector2(33 + 16 * 32, 212 + 19 * 32)},	//Level 4	TODO
-    			{new Vector2(33 + 15 * 32, 212 + 18 * 32), new Vector2(33 + 16 * 32, 212 + 19 * 32)},	//Level 5	TODO
+    			{new Vector2(33 + 15 * 32, 212 + 10 * 32), new Vector2(33 + 35 * 32, 212 + 25 * 32)},	//Level 4
+    			{new Vector2(33 + 2 * 32, 212 + 8 * 32), new Vector2(33 + 10 * 32, 212 + 19 * 32)},	//Level 5	TODO
     			{new Vector2(33 + 15 * 32, 212 + 18 * 32), new Vector2(33 + 16 * 32, 212 + 19 * 32)},	//Level 6	TODO
     	};
     	System.out.println(levelNumber);

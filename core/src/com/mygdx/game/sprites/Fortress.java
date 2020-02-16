@@ -47,6 +47,39 @@ public class Fortress extends Unit {
             alienPositions.add(new Vector2(33 + 20 * 32, 212 + 24 * 32));
             alienPositions.add(new Vector2(33 + 34 * 32, 212 + 24 * 32));
         }
+
+        else if (level == 4) { //TODO
+            alienPositions.add(new Vector2(33 + 25 * 32, 212 + 17 * 32));
+            alienPositions.add(new Vector2(33 + 29 * 32, 212 + 17 * 32));
+            alienPositions.add(new Vector2(33 + 32 * 32, 212 + 19 * 32));
+            alienPositions.add(new Vector2(33 + 22 * 32, 212 + 19 * 32));
+            alienPositions.add(new Vector2(33 + 20 * 32, 212 + 21 * 32));
+            alienPositions.add(new Vector2(33 + 34 * 32, 212 + 21 * 32));
+            alienPositions.add(new Vector2(33 + 20 * 32, 212 + 24 * 32));
+            alienPositions.add(new Vector2(33 + 34 * 32, 212 + 24 * 32));
+        }
+
+        else if (level == 5) {  //TODO
+            alienPositions.add(new Vector2(33 + 25 * 32, 212 + 17 * 32));
+            alienPositions.add(new Vector2(33 + 29 * 32, 212 + 17 * 32));
+            alienPositions.add(new Vector2(33 + 32 * 32, 212 + 19 * 32));
+            alienPositions.add(new Vector2(33 + 22 * 32, 212 + 19 * 32));
+            alienPositions.add(new Vector2(33 + 20 * 32, 212 + 21 * 32));
+            alienPositions.add(new Vector2(33 + 34 * 32, 212 + 21 * 32));
+            alienPositions.add(new Vector2(33 + 20 * 32, 212 + 24 * 32));
+            alienPositions.add(new Vector2(33 + 34 * 32, 212 + 24 * 32));
+        }
+
+        else if (level == 6) {  //TODO
+            alienPositions.add(new Vector2(33 + 25 * 32, 212 + 17 * 32));
+            alienPositions.add(new Vector2(33 + 29 * 32, 212 + 17 * 32));
+            alienPositions.add(new Vector2(33 + 32 * 32, 212 + 19 * 32));
+            alienPositions.add(new Vector2(33 + 22 * 32, 212 + 19 * 32));
+            alienPositions.add(new Vector2(33 + 20 * 32, 212 + 21 * 32));
+            alienPositions.add(new Vector2(33 + 34 * 32, 212 + 21 * 32));
+            alienPositions.add(new Vector2(33 + 20 * 32, 212 + 24 * 32));
+            alienPositions.add(new Vector2(33 + 34 * 32, 212 + 24 * 32));
+        }
     }
 
     public float getSpawnRate() {
