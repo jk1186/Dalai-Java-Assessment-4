@@ -69,11 +69,7 @@ public class Firefighter extends MiniGameUnit {
 	 *
 	 */
 	public void updatePos(float deltaTime) {
-		
-		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
-			System.out.println(getPosition());
-		}
-		
+	
 		boolean moving = false;
 		
 		boolean[] keys = checkInputKeys(); // Stores boolean values for each key is needs the state of. Formatted like {UP (W), LEFT (A), RIGHT (D)}

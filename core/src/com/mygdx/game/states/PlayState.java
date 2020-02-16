@@ -645,7 +645,6 @@ public class PlayState extends State {
     			{new Vector2(33 + 15 * 32, 212 + 18 * 32), new Vector2(33 + 16 * 32, 212 + 19 * 32)},	//Level 5	TODO
     			{new Vector2(33 + 15 * 32, 212 + 18 * 32), new Vector2(33 + 16 * 32, 212 + 19 * 32)},	//Level 6	TODO
     	};
-    	System.out.println(levelNumber);
     	Vector2[] patrolRoute = new Vector2[(2 + rand.nextInt(4))];	//Create patrol of random length
     	patrolRoute[0] = spawnPos; //Set first patrol point as spawn position
     	for (int i = 1; i < patrolRoute.length; i++) {

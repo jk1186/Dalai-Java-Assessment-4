@@ -21,14 +21,14 @@ import com.mygdx.game.sprites.Entity;
 public class MiniGameUnitManager implements Iterable<Entity>{
 
 	
-	private final Vector2[] FIREFIGHTER_SPAWN_POSITIONS = {new Vector2(1600,276),new Vector2(1600,276), new Vector2(1600,276)};
 	private final Vector2[][] ENEMY_SPAWN_POSITIONS = {
 			{new Vector2(800,276)},
 			{new Vector2(920, 404)},
-			{new Vector2(800, 300), new Vector2(200, 700)},
-			{new Vector2(940, 404), new Vector2(200, 700)}
+			{new Vector2(800, 276), new Vector2(200, 532)},
+			{new Vector2(940, 404), new Vector2(1340, 853)},
+			{new Vector2(800, 276), new Vector2(200, 532)},
+			{new Vector2(940, 404), new Vector2(1340, 853)}
 			};
-	private final Vector2[] BOSS_SPAWN_POSITIONS = {new Vector2(400,276),new Vector2(400,276), new Vector2(400,276)};
 	
 	
 	private Firefighter fireman;
@@ -39,14 +39,12 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	private Bomb bomb;
 	private boolean levelWon = false, levelLost = false;
 	private HealthBar healthBar;
-	private Vector2 spawnPoint, bossSpawn;
+	private Vector2 spawnPoint = new Vector2(1600,276), bossSpawn = new Vector2(400,276);
 	private Vector2[] enemySpawns;
 	private TextureManager tm;
 	
 	public MiniGameUnitManager(TiledGameMap map, int level) {
 		
-		spawnPoint = FIREFIGHTER_SPAWN_POSITIONS[level];
-		bossSpawn = BOSS_SPAWN_POSITIONS[level];
 		enemySpawns = ENEMY_SPAWN_POSITIONS[level];
 		tm = new TextureManager();
 		
@@ -203,7 +201,7 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	 * @param pos of place to spawn bomb
 	 */
 	public void spawnBomb(Vector2 pos) {
-		bomb = new Bomb(pos, TextureManager.getFirstRedBomb());
+		bomb = new Bomb(pos, TextureManager.getFirstBlueBomb());
 	}
 	
 	/**

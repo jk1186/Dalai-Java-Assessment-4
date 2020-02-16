@@ -99,11 +99,11 @@ public class Bomb extends Entity{
 	public void updateGraphics() {
 		switch(bombTexture) {
 		case FIRST:
-			setTexture(TextureManager.getFirstRedBomb());
+			setTexture(TextureManager.getFirstBlueBomb());
 			bombTexture = BombTexture.SECOND;
 			break;
 		case SECOND:
-			setTexture(TextureManager.getSecondRedBomb());
+			setTexture(TextureManager.getSecondBlueBomb());
 			bombTexture = BombTexture.FIRST;
 			break;
 		}
