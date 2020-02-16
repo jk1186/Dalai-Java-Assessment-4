@@ -156,7 +156,7 @@ public class PlayState extends State {
             timeLimit = 60;
 
             // Level 3 Fire Station
-            fireStation = new Entity(new Vector2(33 + 27*32, 212), 96, 128, new Texture("teal.jpg"));
+            fireStation = new Entity(new Vector2(33 + 27*32, 212), 6 * 32, 4 * 32, new Texture("teal.jpg"));
 
             // Level 3 Fortress
             fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
