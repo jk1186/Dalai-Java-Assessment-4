@@ -96,11 +96,7 @@ public class Alien extends Character {
     }
 
     public boolean hasTarget() {
-        if (getTarget() == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return (getTarget() != null);
     }
 
     public float getTimeSinceAttack() {
