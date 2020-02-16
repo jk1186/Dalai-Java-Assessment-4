@@ -27,7 +27,7 @@ public class TiledGameMap {
 	}
 
 	public void render (){ //Uses projection matrices to get the map to render in the right place
-		tiledMapRenderer.setView(PROJECTIONMATRIX, 0, 0, 1856, 832);
+		tiledMapRenderer.setView(PROJECTMATRIX, 0, 0, 1856, 832);
 		tiledMapRenderer.render();
 
 	}
