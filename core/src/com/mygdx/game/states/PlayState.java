@@ -28,8 +28,6 @@ import java.util.Random;
 
 public class PlayState extends State {
 
-    private final float GAME_WIDTH = 1856;
-    private final float GAME_HEIGHT = 832;
 
     private Texture background;
 
@@ -158,7 +156,7 @@ public class PlayState extends State {
             timeLimit = 60;
 
             // Level 3 Fire Station
-            fireStation = new Entity(new Vector2(33 + 27*32, 212), 96, 128, new Texture("teal.jpg"));
+            fireStation = new Entity(new Vector2(33 + 27*32, 212), 6 * 32, 4 * 32, new Texture("teal.jpg"));
 
             // Level 3 Fortress
             fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
@@ -175,10 +173,10 @@ public class PlayState extends State {
             firetruck3pos = new Vector2(33 + 7 * 32, 212 + 6 * 32);
             firetruck4pos = new Vector2(33 + 8 * 32, 212 + 5 * 32);
 
-            timeLimit = 60;
+            timeLimit = 90;
 
             // Level 4 Fire Station
-            fireStation = new Entity(new Vector2(33 + 27*32, 212), 96, 128, new Texture("teal.jpg"));
+            fireStation = new Entity(new Vector2(33 + 5 * 32, 212 + 4 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
 
             // Level 4 Fortress
             fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
@@ -195,13 +193,13 @@ public class PlayState extends State {
             firetruck3pos = new Vector2(33 + 27 * 32, 212 + 13 * 32);
             firetruck4pos = new Vector2(33 + 26 * 32, 212 + 13 * 32);
 
-            timeLimit = 60;
+            timeLimit = 90;
 
             // Level 5 Fire Station
-            fireStation = new Entity(new Vector2(33 + 27*32, 212), 96, 128, new Texture("teal.jpg"));
+            fireStation = new Entity(new Vector2(33 + 24 * 32, 212 + 12 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
 
             // Level 5 Fortress
-            fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
+            fortress = new Fortress(new Vector2(33 + 4 * 32, 212 + 14 * 32), 4*32, 3*32, new Texture("grey.png"),
                     15000, 2, 3);
         }
 
@@ -218,10 +216,10 @@ public class PlayState extends State {
             timeLimit = 60;
 
             // Level 6 Fire Station
-            fireStation = new Entity(new Vector2(33 + 27*32, 212), 96, 128, new Texture("teal.jpg"));
+            fireStation = new Entity(new Vector2(33 + 6 * 32, 212 + 3 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
 
             // Level 3 Fortress
-            fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
+            fortress = new Fortress(new Vector2(33 + 24 * 32, 212 + 32 * 21), 224, 96, new Texture("grey.png"),
                     15000, 2, 3);
         }
 
@@ -322,12 +320,6 @@ public class PlayState extends State {
      */
     @Override
     public void update(float deltaTime) {
-
-    	if (Gdx.input.isKeyPressed(Keys.M)) {
-    		gameStateManager.set(new MiniGameState(gameStateManager, levelNum));
-    	}
-
-
         // Calls input handler and updates timer each tick of the game.
         handleInput();
         timer.update();
@@ -462,7 +454,7 @@ public class PlayState extends State {
     @Override
     public void render(SpriteBatch spriteBatch) {
 
-    	//Creates seperate spriteBatch as to load background behind the map which needs to be loaded outside a spritebatch
+    	//Creates separate spriteBatch as to load background behind the map which needs to be loaded outside a spritebatch
     	spriteBatch.begin();
     	spriteBatch.draw(background, 0, 0, Kroy.WIDTH, Kroy.HEIGHT);
     	spriteBatch.end();

@@ -41,12 +41,11 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	private HealthBar healthBar;
 	private Vector2 spawnPoint = new Vector2(1600,276), bossSpawn = new Vector2(400,276);
 	private Vector2[] enemySpawns;
-	private TextureManager tm;
 	
 	public MiniGameUnitManager(TiledGameMap map, int level) {
 		
 		enemySpawns = ENEMY_SPAWN_POSITIONS[level];
-		tm = new TextureManager();
+		textureManager = new TextureManager();
 		
 		gameMap = map;
 		fireman = new Firefighter(spawnPoint);
@@ -128,28 +127,6 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 		if (enemies.isEmpty() && boss == null) { // Boss spawning once all enemies dead
 			spawnBoss();
 		}
-	}
-	
-	/**
-	 * Method removes Fireman object from manager
-	 */
-	public void removeFireman() {
-		fireman = null;
-	}
-	
-	/**
-	 * Method removes Boss object from manager
-	 */
-	public void removeBoss() {
-		boss = null;
-	}
-	
-	/**
-	 * Method removes enemy object at index specified from manager
-	 * @param index index of enemy to remove
-	 */
-	public void removeEnemy(int index) {
-		enemies.remove(index);
 	}
 	
 	/**
