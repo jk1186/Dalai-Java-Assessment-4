@@ -87,7 +87,6 @@ public abstract class MiniGameUnit extends Unit {
 	 * Getter facingRight
 	 * @return boolean returns true if entity should be facing right
 	 */
-	@Override
 	public boolean isFacingRight() {
 		return facingRight;
 	}

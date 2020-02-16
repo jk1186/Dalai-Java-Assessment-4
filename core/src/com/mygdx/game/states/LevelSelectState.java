@@ -225,8 +225,8 @@ public class LevelSelectState extends State{
         }
 
         if(saveData.getBoolean("6") == true) {
-            level6.setOnTexture(new Texture("PressedGreen5.png"));
-            level6.setOffTexture(new Texture("NotPressedGreen5.png"));
+            level6.setOnTexture(new Texture("PressedGreen6.png"));
+            level6.setOffTexture(new Texture("NotPressedGreen6.png"));
         }
 
 

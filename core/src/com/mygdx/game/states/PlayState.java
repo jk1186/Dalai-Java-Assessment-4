@@ -176,7 +176,7 @@ public class PlayState extends State {
             timeLimit = 90;
 
             // Level 4 Fire Station
-            fireStation = new Entity(new Vector2(33 + 10 * 32, 212 + 7 * 32), 6 * 32, 4 * 32, new Texture("teal.jpg"));
+            fireStation = new Entity(new Vector2(33 + 5 * 32, 212 + 4 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
 
             // Level 4 Fortress
             fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
@@ -196,10 +196,10 @@ public class PlayState extends State {
             timeLimit = 90;
 
             // Level 5 Fire Station
-            fireStation = new Entity(new Vector2(33 + 29 * 32, 212 + 15 * 32), 6 * 32, 4 * 32, new Texture("teal.jpg"));
+            fireStation = new Entity(new Vector2(33 + 24 * 32, 212 + 12 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
 
             // Level 5 Fortress
-            fortress = new Fortress(new Vector2(33 + 24 * 32, 212 + 32 * 21), 224, 96, new Texture("grey.png"),
+            fortress = new Fortress(new Vector2(33 + 4 * 32, 212 + 14 * 32), 4*32, 3*32, new Texture("grey.png"),
                     15000, 2, 3);
         }
 
@@ -216,7 +216,7 @@ public class PlayState extends State {
             timeLimit = 60;
 
             // Level 6 Fire Station
-            fireStation = new Entity(new Vector2(33 + 13 * 32, 212 + 7 * 32), 6 * 32, 4 * 32, new Texture("teal.jpg"));
+            fireStation = new Entity(new Vector2(33 + 6 * 32, 212 + 3 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
 
             // Level 3 Fortress
             fortress = new Fortress(new Vector2(33 + 24 * 32, 212 + 32 * 21), 224, 96, new Texture("grey.png"),
