@@ -163,30 +163,15 @@ public class PlayState extends State {
                     15000, 2, 3);
         }
 
-        else if (levelNumber == 3) {
-
-        	gameMap = new TiledGameMap("level3map.tmx");
-
-            firetruck1pos = new Vector2(33 + 27 * 32, 212 + 3 * 32);
-            firetruck2pos = new Vector2(33 + 28 * 32, 212 + 3 * 32);
-
-            timeLimit = 60;
-
-            // Level 3 Fire Station
-            fireStation = new Entity(new Vector2(33 + 27*32, 212), 96, 128, new Texture("teal.jpg"));
-
-            // Level 3 Fortress
-            fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
-                    15000, 2, 3);
-        }
-
 
         else if (levelNumber == 4) {
 
         	gameMap = new TiledGameMap("level4map.tmx");
 
-            firetruck1pos = new Vector2(33 + 27 * 32, 212 + 3 * 32);
-            firetruck2pos = new Vector2(33 + 28 * 32, 212 + 3 * 32);
+            firetruck1pos = new Vector2(33 + 7 * 32, 212 + 4 * 32);
+            firetruck2pos = new Vector2(33 + 7 * 32, 212 + 5 * 32);
+            firetruck3pos = new Vector2(33 + 7 * 32, 212 + 6 * 32);
+            firetruck4pos = new Vector2(33 + 8 * 32, 212 + 5 * 32);
 
             timeLimit = 60;
 
@@ -203,8 +188,10 @@ public class PlayState extends State {
 
         	gameMap = new TiledGameMap("level5map.tmx");
 
-            firetruck1pos = new Vector2(33 + 27 * 32, 212 + 3 * 32);
-            firetruck2pos = new Vector2(33 + 28 * 32, 212 + 3 * 32);
+            firetruck1pos = new Vector2(33 + 27 * 32, 212 + 14 * 32);
+            firetruck2pos = new Vector2(33 + 26 * 32, 212 + 14 * 32);
+            firetruck3pos = new Vector2(33 + 27 * 32, 212 + 13 * 32);
+            firetruck4pos = new Vector2(33 + 26 * 32, 212 + 13 * 32);
 
             timeLimit = 60;
 
@@ -221,8 +208,10 @@ public class PlayState extends State {
 
         	gameMap = new TiledGameMap("level6map.tmx");
 
-            firetruck1pos = new Vector2(33 + 27 * 32, 212 + 3 * 32);
-            firetruck2pos = new Vector2(33 + 28 * 32, 212 + 3 * 32);
+            firetruck1pos = new Vector2(33 + 10 * 32, 212 + 6 * 32);
+            firetruck2pos = new Vector2(33 + 11 * 32, 212 + 6 * 32);
+            firetruck3pos = new Vector2(33 + 10 * 32, 212 + 5 * 32);
+            firetruck4pos = new Vector2(33 + 11 * 32, 212 + 5 * 32);
 
             timeLimit = 60;
 
