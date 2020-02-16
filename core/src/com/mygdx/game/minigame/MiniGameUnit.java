@@ -45,7 +45,7 @@ public abstract class MiniGameUnit extends Unit {
         } else if (direction == 3) {
             newPosition.set(getPosition().x, getPosition().y + speed * deltaTime);
         } else if (direction == 4) {
-        	if (isBelowCollidable(new Vector2(getPosition().x, getPosition().y - speed * deltaTime))) {
+        	if (getPosition().y - speed * deltaTime < 212 || isBelowCollidable(new Vector2(getPosition().x, getPosition().y - speed * deltaTime))  ) {
         		newPosition.set(getPosition().x, getLowestOnLevel(getPosition().y));
         	}else {
         		newPosition.set(getPosition().x, getPosition().y - speed * deltaTime);
