@@ -4,12 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Kroy;
+import com.mygdx.game.map.TiledGameMap;
 import com.mygdx.game.misc.Button;
 import com.mygdx.game.misc.Timer;
 import com.mygdx.game.sprites.*;
@@ -38,7 +40,7 @@ public class PlayState extends State {
 
     private Button quitLevel;
     private Button quitGame;
-    
+
     private int levelNumber;
 
     private Timer timer;
@@ -64,12 +66,14 @@ public class PlayState extends State {
     private BitmapFont ui;
     private BitmapFont healthBars;
     private String level;
+    public static TiledGameMap gameMap;
 
     private Sound waterShoot = Gdx.audio.newSound(Gdx.files.internal("honk.wav"));
 
     public PlayState(GameStateManager gsm, int levelNumber) {
         super(gsm);
         this.levelNumber = levelNumber;
+
 
         background = new Texture("LevelProportions.png");
 
@@ -98,70 +102,20 @@ public class PlayState extends State {
         timeSinceAlienKilled = -1;
 
 
-        Vector2 firetruck1pos = null;
+        Vector2 firetruck1pos = new Vector2(0,0);
         Vector2 firetruck2pos = null;
         Vector2 firetruck3pos = null;
         Vector2 firetruck4pos = null;
 
         if (levelNumber == 1) { // Bottom left coordinate of map --> (33, 212) Each grid square = 32px
 
+        	gameMap = new TiledGameMap("level1map.tmx");
+
             firetruck1pos = new Vector2(33 + 10 * 32, 212 + 6 * 32);
             firetruck2pos = new Vector2(33 + 11 * 32, 212 + 6 * 32);
             firetruck3pos = new Vector2(33 + 10 * 32, 212 + 5 * 32);
             firetruck4pos = new Vector2(33 + 11 * 32, 212 + 5 * 32);
-
             timeLimit = 90;
-            map = new Texture("level1background.png");
-
-            // Level 1 Obstacles - These are used to create the hit boxes for the buildings so that the player
-            // can't drive through them. You can create any rectangular hit box as one singular entity. To calculate
-            // the coords do:
-
-            // X_COORD = 33 + (GRID_X * 32)    and    Y_COORD = 212 + (GRID_Y * 32)
-            // Where (33, 212) is the bottom left corner of the game screen and GRID_X, and GRID_Y is the grid position
-            // of the bottom left corner of the hit box you want to create. These are multiplied by 32 as each grid
-            // square is 32 pixels in both height and width.
-
-            { obstacles.add(new Entity(new Vector2(257, 628), 64, 64, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(257, 724), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(289, 756), 32, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(257, 820), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(257, 564), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(289, 532), 32, 32, new Texture("teal.jpg")));
-
-            obstacles.add(new Entity(new Vector2(513, 532), 32, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(513, 564), 64, 32, new Texture("teal.jpg")));
-
-            obstacles.add(new Entity(new Vector2(577, 692), 32, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(577, 724), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(577, 436), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(609, 468), 32, 32, new Texture("teal.jpg")));
-
-            obstacles.add(new Entity(new Vector2(737, 404), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(737, 692), 64, 64, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(833, 404), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(929, 404), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1025, 404), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1057, 436), 32, 32, new Texture("teal.jpg")));
-
-            obstacles.add(new Entity(new Vector2(1121, 404), 64, 64, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1121, 500), 32, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1121, 532), 64, 32, new Texture("teal.jpg")));
-
-            obstacles.add(new Entity(new Vector2(1217, 404), 64, 64, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1217, 532), 64, 32, new Texture("teal.jpg")));
-
-            obstacles.add(new Entity(new Vector2(1345, 436), 32, 96, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1377, 468), 32, 96, new Texture("teal.jpg")));
-
-            obstacles.add(new Entity(new Vector2(961, 692), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1249, 692), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1249, 628), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1345, 692), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1345, 628), 64, 32, new Texture("teal.jpg")));
-
-            obstacles.add(new Entity(new Vector2(33 + 24 * 32, 212 + 22 * 32), 6 * 32, 4 * 32,
-                    new Texture("teal.jpg"))); }
 
             // Level 1 Firestation
             fireStation = new Entity(new Vector2(33 + 8 * 32, 212 + 4 * 32), 128, 128,
@@ -174,73 +128,15 @@ public class PlayState extends State {
 
         else if (levelNumber == 2) {
 
+        	gameMap = new TiledGameMap("level2map.tmx");
+
             firetruck1pos = new Vector2(33 + 2 * 32, 212 + 4 * 32);
             firetruck2pos = new Vector2(33 + 2 * 32, 212 + 5 * 32);
             firetruck3pos = new Vector2(33 + 2 * 32, 212 + 6 * 32);
             firetruck4pos = new Vector2(33 + 2 * 32, 212 + 7 * 32);
 
             timeLimit = 120;
-            map = new Texture("level2background.png");
 
-            // Level 2 Obstacles - These are used to create the hit boxes for the buildings so that the player
-            // can't drive through them. You can create any rectangular hit box as one singular entity. To calculate
-            // the coords do:
-
-            // X_COORD = 33 + (GRID_X * 32)    and    Y_COORD = 212 + (GRID_Y * 32)
-            // Where (33, 212) is the bottom left corner of the game screen and GRID_X, and GRID_Y is the grid position
-            // of the bottom left corner of the hit box you want to create. These are multiplied by 32 as each grid
-            // square is 32 pixels in both height and width.
-
-            {obstacles.add(new Entity(new Vector2(225, 212), 192, 64, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(225, 308), 224, 128, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(257, 436), 192, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(321, 468), 96, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(449, 340), 352, 128, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(641, 308), 128, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(545, 468), 320, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(801, 436), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(801, 404), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(577, 500), 288, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(609, 532), 224, 160, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(609, 692), 192, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(641, 724), 128, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(705, 756), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(801, 756), 416, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(801, 788), 384, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(769, 820), 384, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(865, 852), 224, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(961, 884), 96, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(833, 724), 448, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(865, 692), 32, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(993, 660), 288, 64, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1057, 596), 224, 64, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1025, 468), 256, 128, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1057, 436), 96, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1313, 468), 32, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1313, 500), 320, 256, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1473, 468), 288, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1505, 436), 256, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1569, 404), 160, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1633, 500), 64, 128, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1697, 500), 64, 96, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1377, 756), 224, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1409, 788), 160, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1409, 820), 128, 32, new Texture("teal.jpg")));
-
-            obstacles.add(new Entity(new Vector2(97, 692), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(321, 916), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(353, 948), 32, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(449, 756), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(481, 724), 32, 32, new Texture("teal.jpg")));
-
-            obstacles.add(new Entity(new Vector2(1121, 244), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1153, 276), 32, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1665, 820), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1665, 788), 32, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(897, 372), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(897, 340), 32, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(33 + 36 * 32, 212 + 19 * 32), 4 * 32, 4 * 32,
-                    new Texture("teal.jpg")));}
 
             // Level 2 Fire Station
             fireStation = new Entity(new Vector2(33 + 1 * 32, 212 + 4 * 32), 64, 128,
@@ -253,62 +149,14 @@ public class PlayState extends State {
 
         else if (levelNumber == 3) {
 
+        	gameMap = new TiledGameMap("level3map.tmx");
+
             firetruck1pos = new Vector2(33 + 27 * 32, 212 + 3 * 32);
             firetruck2pos = new Vector2(33 + 28 * 32, 212 + 3 * 32);
             firetruck3pos = new Vector2(33 + 29 * 32, 212 + 3 * 32);
             firetruck4pos = new Vector2(33 + 27 * 32, 212 + 2 * 32);
 
             timeLimit = 60;
-
-            map = new Texture("level3background.png");
-
-            // Level 3 Obstacles - These are used to create the hit boxes for the buildings so that the player
-            // can't drive through them. You can create any rectangular hit box as one singular entity. To calculate
-            // the coords do:
-
-            // X_COORD = 33 + (GRID_X * 32)    and    Y_COORD = 212 + (GRID_Y * 32)
-            // Where (33, 212) is the bottom left corner of the game screen and GRID_X, and GRID_Y is the grid position
-            // of the bottom left corner of the hit box you want to create. These are multiplied by 32 as each grid
-            // square is 32 pixels in both height and width.
-
-            {obstacles.add(new Entity(new Vector2(737, 244), 32, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(705, 276), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(609, 500), 32, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(577, 532), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(961, 532), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1281, 308), 32, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1281, 340), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1697, 340), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1729, 372), 32, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1665, 500), 32, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(1665, 532), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(673, 724), 64, 32, new Texture("teal.jpg")));
-            obstacles.add(new Entity(new Vector2(705, 756), 32, 32, new Texture("teal.jpg")));
-
-            // For loops to create diagonal wall obstacle
-            for (int i = 0; i<= 192; i += 32){
-                obstacles.add(new Entity(new Vector2(257 + i, 1012 - i), 64, 32, new Texture("teal.jpg")));
-            }
-
-            obstacles.add(new Entity(new Vector2(33 + 14 * 32, 212 + 18 * 32), 32, 32, new Texture("teal.jpg")));
-
-            for (int i = 0; i<= 192; i += 32){
-                obstacles.add(new Entity(new Vector2(1601 - i, 1012 - i), 64, 32, new Texture("teal.jpg")));
-            }
-
-            obstacles.add(new Entity(new Vector2(33 + 43 * 32, 212 + 18 * 32), 32, 32, new Texture("teal.jpg")));
-
-            for (int i = 0; i<= 352; i += 32){
-                obstacles.add(new Entity(new Vector2(577 + i, 692 - i), 64, 32, new Texture("teal.jpg")));
-            }
-
-            obstacles.add(new Entity(new Vector2(33 + 17 * 32, 212 + 16 * 32), 32, 32, new Texture("teal.jpg")));
-
-            for (int i = 0; i<= 320; i += 32){
-                obstacles.add(new Entity(new Vector2(1281 - i, 692 - i), 64, 32, new Texture("teal.jpg")));
-            }
-
-            obstacles.add(new Entity(new Vector2(33 + 40 * 32, 212 + 16 * 32), 32, 32, new Texture("teal.jpg"))); }
 
             // Level 3 Fire Station
             fireStation = new Entity(new Vector2(33 + 27*32, 212), 96, 128, new Texture("teal.jpg"));
@@ -317,6 +165,68 @@ public class PlayState extends State {
             fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
                     15000, 2, 3);
         }
+
+
+        else if (levelNumber == 4) {
+
+        	gameMap = new TiledGameMap("level4map.tmx");
+
+            firetruck1pos = new Vector2(33 + 7 * 32, 212 + 4 * 32);
+            firetruck2pos = new Vector2(33 + 7 * 32, 212 + 5 * 32);
+            firetruck3pos = new Vector2(33 + 7 * 32, 212 + 6 * 32);
+            firetruck4pos = new Vector2(33 + 8 * 32, 212 + 5 * 32);
+
+            timeLimit = 60;
+
+            // Level 4 Fire Station
+            fireStation = new Entity(new Vector2(33 + 27*32, 212), 96, 128, new Texture("teal.jpg"));
+
+            // Level 4 Fortress
+            fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
+                    15000, 2, 3);
+        }
+
+
+        else if (levelNumber == 5) {
+
+        	gameMap = new TiledGameMap("level5map.tmx");
+
+            firetruck1pos = new Vector2(33 + 27 * 32, 212 + 14 * 32);
+            firetruck2pos = new Vector2(33 + 26 * 32, 212 + 14 * 32);
+            firetruck3pos = new Vector2(33 + 27 * 32, 212 + 13 * 32);
+            firetruck4pos = new Vector2(33 + 26 * 32, 212 + 13 * 32);
+
+            timeLimit = 60;
+
+            // Level 5 Fire Station
+            fireStation = new Entity(new Vector2(33 + 27*32, 212), 96, 128, new Texture("teal.jpg"));
+
+            // Level 5 Fortress
+            fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
+                    15000, 2, 3);
+        }
+
+
+        else if (levelNumber == 6) {
+
+        	gameMap = new TiledGameMap("level6map.tmx");
+
+            firetruck1pos = new Vector2(33 + 10 * 32, 212 + 6 * 32);
+            firetruck2pos = new Vector2(33 + 11 * 32, 212 + 6 * 32);
+            firetruck3pos = new Vector2(33 + 10 * 32, 212 + 5 * 32);
+            firetruck4pos = new Vector2(33 + 11 * 32, 212 + 5 * 32);
+
+            timeLimit = 60;
+
+            // Level 6 Fire Station
+            fireStation = new Entity(new Vector2(33 + 27*32, 212), 96, 128, new Texture("teal.jpg"));
+
+            // Level 3 Fortress
+            fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
+                    15000, 2, 3);
+        }
+
+
 
         //Firetrucks created here | Health, range, speed, dps, capacity
         firetruck1 = new Firetruck(firetruck1pos, 100, 200, 100, 2,  175, true);
@@ -329,14 +239,12 @@ public class PlayState extends State {
         firetrucks.add(firetruck3);
         firetrucks.add(firetruck4);
         timer = new Timer(timeLimit);
-
     }
 
     /**
      * The game logic which is executed due to specific user inputs. Is called in the update method.
      */
     public void handleInput() {
-
         // Checks for hover and clicks on the 2 buttons located on the play screen.
         if (quitGame.mouseInRegion()){
             quitGame.setActive(true);
@@ -550,12 +458,19 @@ public class PlayState extends State {
      */
     @Override
     public void render(SpriteBatch spriteBatch) {
+
+    	//Creates seperate spriteBatch as to load background behind the map which needs to be loaded outside a spritebatch
+    	spriteBatch.begin();
+    	spriteBatch.draw(background, 0, 0, Kroy.WIDTH, Kroy.HEIGHT);
+    	spriteBatch.end();
+
+
+    	// Renders the tiled map
+    	gameMap.render();
+
+
+    	// Rest of the game objects are loaded and rendered above the tilemap
         spriteBatch.begin();
-
-        // Draws background and map onto play screen
-        spriteBatch.draw(background, 0, 0, Kroy.WIDTH, Kroy.HEIGHT);
-        spriteBatch.draw(map, 33, 212, 1856, 832);
-
         // Draws buttons onto play screen
         spriteBatch.draw(quitLevel.getTexture(), quitLevel.getPosition().x, quitLevel.getPosition().y,
                 quitLevel.getWidth(), quitLevel.getHeight());
@@ -606,13 +521,13 @@ public class PlayState extends State {
 
         // Draws UI Text onto the screen
         ui.setColor(Color.DARK_GRAY);
-        ui.draw(spriteBatch, "Truck 1 Health: " + Integer.toString(firetruck1.getCurrentHealth()), 
+        ui.draw(spriteBatch, "Truck 1 Health: " + Integer.toString(firetruck1.getCurrentHealth()),
         		70, Kroy.HEIGHT - 920);
-        ui.draw(spriteBatch, "Truck 2 Health: " + Integer.toString(firetruck2.getCurrentHealth()), 
+        ui.draw(spriteBatch, "Truck 2 Health: " + Integer.toString(firetruck2.getCurrentHealth()),
         		546, Kroy.HEIGHT - 920);
-        ui.draw(spriteBatch, "Truck 3 Health: " + Integer.toString(firetruck3.getCurrentHealth()), 
+        ui.draw(spriteBatch, "Truck 3 Health: " + Integer.toString(firetruck3.getCurrentHealth()),
         		1023, Kroy.HEIGHT - 920);
-        ui.draw(spriteBatch, "Truck 4 Health: " + Integer.toString(firetruck4.getCurrentHealth()), 
+        ui.draw(spriteBatch, "Truck 4 Health: " + Integer.toString(firetruck4.getCurrentHealth()),
         		1499, Kroy.HEIGHT - 920);
 
         // If end game reached, draws level fail or level won images to the screen
@@ -634,10 +549,11 @@ public class PlayState extends State {
     @Override
     public void dispose() {
         background.dispose();
-        map.dispose();
+        //map.dispose();
         quitLevel.dispose();
         quitGame.dispose();
         waterShoot.dispose();
+        gameMap.dispose();
 
         for (Firetruck firetruck : firetrucks) {
             firetruck.dispose();
@@ -675,65 +591,23 @@ public class PlayState extends State {
     public void truckMovement(Firetruck truck) {
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             truck.setTexture(new Texture("truck.png"));
-            boolean obstacleCollision = false;
-            if (truck.getPosition().y >= 1043 - truck.getHeight()) {
-                obstacleCollision = true;
-            }
-            for (Entity obstacle : obstacles) {
-                if (truck.willCollide(obstacle, 3)) {
-                    obstacleCollision = true;
-                }
-            }
-            if (!obstacleCollision) {
-                truck.move(3);
-            }
+            truck.move(3);
         }
+
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             truck.setTexture(new Texture("truckdown.png"));
-            boolean obstacleCollision = false;
-            if (truck.getPosition().y <= 212) {
-                obstacleCollision = true;
-            }
-            for (Entity obstacle : obstacles) {
-                if (truck.willCollide(obstacle, 4)) {
-                    obstacleCollision = true;
-                }
-            }
-            if (!obstacleCollision) {
-                truck.move(4);
-            }
+            truck.move(4);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             truck.setTexture(new Texture("truckleft.png"));
-            boolean obstacleCollision = false;
-            if (truck.getPosition().x <= 33) {
-                obstacleCollision = true;
-            }
-            for (Entity obstacle : obstacles) {
-                if (truck.willCollide(obstacle, 1)) {
-                    obstacleCollision = true;
-                }
-            }
-            if (!obstacleCollision) {
-                truck.move(1);
-            }
+            truck.move(1);
+
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             truck.setTexture(new Texture("truckright.png"));
-            boolean obstacleCollision = false;
-            if (truck.getPosition().x >= 1888 - truck.getWidth()) {
-                obstacleCollision = true;
-            }
-            for (Entity obstacle : obstacles) {
-                if (truck.willCollide(obstacle, 2)) {
-                    obstacleCollision = true;
-                }
-            }
-            if (!obstacleCollision) {
-                truck.move(2);
-            }
+            truck.move(2);
         }
     }
 
@@ -746,14 +620,14 @@ public class PlayState extends State {
         if (fortress.getAlienPositions().size() > 0) {
             Vector2 coordinate = fortress.getAlienPositions().get(rand.nextInt(fortress.getAlienPositions().size()));
             Alien alien = new Alien(coordinate, 32, 32, new Texture("alien.gif"), 30 + rand.nextInt(60),
-                    250, null, 1, 5 + rand.nextInt(15), 
-                    randomPatrolRoute(coordinate), 
+                    250, null, 1, 5 + rand.nextInt(15),
+                    randomPatrolRoute(coordinate),
                     3 + rand.nextInt(3));
             aliens.add(alien);
             fortress.getAlienPositions().remove(coordinate);
         }
     }
-    
+
     /**
      * Generates a random patrol route within a fixed bound.
      * @param spawnPos Initial position of the alien
@@ -774,9 +648,9 @@ public class PlayState extends State {
     	patrolRoute[0] = spawnPos; //Set first patrol point as spawn position
     	for (int i = 1; i < patrolRoute.length; i++) {
 			patrolRoute[i] = new Vector2(1 + rand.nextInt((int)(patrolSpace[levelNumber-1][1].x - patrolSpace[levelNumber-1][0].x)) + patrolSpace[levelNumber-1][0].x,
-					1 + rand.nextInt((int)(patrolSpace[levelNumber-1][1].y - patrolSpace[levelNumber-1][0].y)) + patrolSpace[levelNumber-1][0].y); 
+					1 + rand.nextInt((int)(patrolSpace[levelNumber-1][1].y - patrolSpace[levelNumber-1][0].y)) + patrolSpace[levelNumber-1][0].y);
 		}
-    	
+
     	return patrolRoute;
     }
     // X_COORD = 33 + (GRID_X * 32)    and    Y_COORD = 212 + (GRID_Y * 32)
