@@ -120,7 +120,7 @@ public class PlayState extends State {
 
             // Level 1 Fortress
             fortress = new Fortress(new Vector2(33 + 24 * 32, 212 + 22 * 32), 6 * 32, 4 * 32,
-                    new Texture("grey.png"), 10000, 1.5f, 1);
+                    new Texture("grey.png"), 10000, 1.5f, levelNumber);
         }
 
         else if (levelNumber == 2) {
@@ -141,7 +141,7 @@ public class PlayState extends State {
 
             // Level 2 Fortress
             fortress = new Fortress(new Vector2(33 + 36 * 32, 212 + 19 * 32), 4 * 32, 4 * 32, new Texture("grey.png"),
-                    12500, 4, 2);
+                    12500, 4, levelNumber);
         }
 
         else if (levelNumber == 3) {
@@ -160,7 +160,7 @@ public class PlayState extends State {
 
             // Level 3 Fortress
             fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
-                    15000, 2, 3);
+                    15000, 2, levelNumber);
         }
 
 
@@ -180,7 +180,7 @@ public class PlayState extends State {
 
             // Level 4 Fortress
             fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
-                    15000, 2, 3);
+                    15000, 2, levelNumber);
         }
 
 
@@ -200,7 +200,7 @@ public class PlayState extends State {
 
             // Level 5 Fortress
             fortress = new Fortress(new Vector2(33 + 4 * 32, 212 + 14 * 32), 4*32, 3*32, new Texture("grey.png"),
-                    15000, 2, 3);
+                    15000, 2, levelNumber);
         }
 
 
@@ -208,10 +208,10 @@ public class PlayState extends State {
 
         	gameMap = new TiledGameMap("level6map.tmx");
 
-            firetruck1pos = new Vector2(33 + 10 * 32, 212 + 6 * 32);
-            firetruck2pos = new Vector2(33 + 11 * 32, 212 + 6 * 32);
-            firetruck3pos = new Vector2(33 + 10 * 32, 212 + 5 * 32);
-            firetruck4pos = new Vector2(33 + 11 * 32, 212 + 5 * 32);
+            firetruck1pos = new Vector2(33 + 9 * 32, 212 + 4 * 32);
+            firetruck2pos = new Vector2(33 + 8 * 32, 212 + 4 * 32);
+            firetruck3pos = new Vector2(33 + 9 * 32, 212 + 5 * 32);
+            firetruck4pos = new Vector2(33 + 8 * 32, 212 + 5 * 32);
 
             timeLimit = 60;
 
@@ -220,7 +220,7 @@ public class PlayState extends State {
 
             // Level 3 Fortress
             fortress = new Fortress(new Vector2(33 + 24 * 32, 212 + 32 * 21), 224, 96, new Texture("grey.png"),
-                    15000, 2, 3);
+                    15000, 2, levelNumber);
         }
 
 
@@ -632,8 +632,8 @@ public class PlayState extends State {
     			{new Vector2(33 + 20 * 32, 212 + 5 * 32), new Vector2(33 + 45 * 32, 212 + 19 * 32)},	//Level 2
     			{new Vector2(33 + 15 * 32, 212 + 15 * 32), new Vector2(33 + 40 * 32, 212 + 19 * 32)},	//Level 3
     			{new Vector2(33 + 15 * 32, 212 + 10 * 32), new Vector2(33 + 35 * 32, 212 + 25 * 32)},	//Level 4
-    			{new Vector2(33 + 2 * 32, 212 + 8 * 32), new Vector2(33 + 10 * 32, 212 + 19 * 32)},	//Level 5	TODO
-    			{new Vector2(33 + 15 * 32, 212 + 18 * 32), new Vector2(33 + 16 * 32, 212 + 19 * 32)},	//Level 6	TODO
+    			{new Vector2(33 + 2 * 32, 212 + 5 * 32), new Vector2(33 + 15 * 32, 212 + 25 * 32)},	//Level 5	TODO
+    			{new Vector2(33 + 15 * 32, 212 + 10 * 32), new Vector2(33 + 40 * 32, 212 + 25 * 32)},	//Level 6
     	};
     	Vector2[] patrolRoute = new Vector2[(2 + rand.nextInt(4))];	//Create patrol of random length
     	patrolRoute[0] = spawnPos; //Set first patrol point as spawn position

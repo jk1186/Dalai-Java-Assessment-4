@@ -19,6 +19,8 @@ public class Fortress extends Unit {
         super(position, width, height, texture, maxHealth);
         this.spawnRate = spawnRate;
 
+        System.out.println(level);
+
         if (level == 1) {
             alienPositions.add(new Vector2(22 * 32, 1044 - 3 * 32));
             alienPositions.add(new Vector2(33 * 32, 1044 - 3 * 32));
@@ -48,7 +50,7 @@ public class Fortress extends Unit {
             alienPositions.add(new Vector2(33 + 34 * 32, 212 + 24 * 32));
         }
 
-        else if (level == 4) { //TODO
+        else if (level == 4) {
             alienPositions.add(new Vector2(33 + 25 * 32, 212 + 17 * 32));
             alienPositions.add(new Vector2(33 + 29 * 32, 212 + 17 * 32));
             alienPositions.add(new Vector2(33 + 32 * 32, 212 + 19 * 32));
@@ -59,18 +61,18 @@ public class Fortress extends Unit {
             alienPositions.add(new Vector2(33 + 34 * 32, 212 + 24 * 32));
         }
 
-        else if (level == 5) {  //TODO
-            alienPositions.add(new Vector2(33 + 25 * 32, 212 + 17 * 32));
-            alienPositions.add(new Vector2(33 + 29 * 32, 212 + 17 * 32));
-            alienPositions.add(new Vector2(33 + 32 * 32, 212 + 19 * 32));
-            alienPositions.add(new Vector2(33 + 22 * 32, 212 + 19 * 32));
-            alienPositions.add(new Vector2(33 + 20 * 32, 212 + 21 * 32));
-            alienPositions.add(new Vector2(33 + 34 * 32, 212 + 21 * 32));
-            alienPositions.add(new Vector2(33 + 20 * 32, 212 + 24 * 32));
-            alienPositions.add(new Vector2(33 + 34 * 32, 212 + 24 * 32));
+        else if (level == 5) {
+            alienPositions.add(new Vector2(33 + 5 * 32, 212 + 17 * 32));
+            alienPositions.add(new Vector2(33 + 9 * 32, 212 + 17 * 32));
+            alienPositions.add(new Vector2(33 + 12 * 32, 212 + 19 * 32));
+            alienPositions.add(new Vector2(33 + 2 * 32, 212 + 19 * 32));
+            alienPositions.add(new Vector2(33 + 10 * 32, 212 + 11 * 32));
+            alienPositions.add(new Vector2(33 + 4 * 32, 212 + 11 * 32));
+            alienPositions.add(new Vector2(33 + 10 * 32, 212 + 14 * 32));
+            alienPositions.add(new Vector2(33 + 4 * 32, 212 + 14 * 32));
         }
 
-        else if (level == 6) {  //TODO
+        else if (level == 6) {
             alienPositions.add(new Vector2(33 + 25 * 32, 212 + 17 * 32));
             alienPositions.add(new Vector2(33 + 29 * 32, 212 + 17 * 32));
             alienPositions.add(new Vector2(33 + 32 * 32, 212 + 19 * 32));
