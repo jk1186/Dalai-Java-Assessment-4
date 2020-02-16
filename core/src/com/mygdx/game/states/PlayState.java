@@ -40,6 +40,8 @@ public class PlayState extends State {
     private Button quitLevel;
     private Button quitGame;
 
+    private int levelNumber;
+
     private Timer timer;
     private float alienSpawnCountdown;
     private float timeSinceAlienKilled;
@@ -70,6 +72,7 @@ public class PlayState extends State {
 
     public PlayState(GameStateManager gsm, int levelNumber) {
         super(gsm);
+        this.levelNumber = levelNumber;
         background = new Texture("LevelProportions.png");
 
         quitLevel = new Button(new Texture("PressedQuitLevel.png"),
@@ -82,7 +85,7 @@ public class PlayState extends State {
 
         levelNum = levelNumber-1;
         level = Integer.toString(levelNumber); // Used as a key when saving level progress
-        
+
         levelLost = false;
         levelWon = false;
 
@@ -161,6 +164,68 @@ public class PlayState extends State {
             fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
                     15000, 2, 3);
         }
+
+
+        else if (levelNumber == 4) {
+
+        	gameMap = new TiledGameMap("level4map.tmx");
+
+            firetruck1pos = new Vector2(33 + 7 * 32, 212 + 4 * 32);
+            firetruck2pos = new Vector2(33 + 7 * 32, 212 + 5 * 32);
+            firetruck3pos = new Vector2(33 + 7 * 32, 212 + 6 * 32);
+            firetruck4pos = new Vector2(33 + 8 * 32, 212 + 5 * 32);
+
+            timeLimit = 60;
+
+            // Level 4 Fire Station
+            fireStation = new Entity(new Vector2(33 + 27*32, 212), 96, 128, new Texture("teal.jpg"));
+
+            // Level 4 Fortress
+            fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
+                    15000, 2, 3);
+        }
+
+
+        else if (levelNumber == 5) {
+
+        	gameMap = new TiledGameMap("level5map.tmx");
+
+            firetruck1pos = new Vector2(33 + 27 * 32, 212 + 14 * 32);
+            firetruck2pos = new Vector2(33 + 26 * 32, 212 + 14 * 32);
+            firetruck3pos = new Vector2(33 + 27 * 32, 212 + 13 * 32);
+            firetruck4pos = new Vector2(33 + 26 * 32, 212 + 13 * 32);
+
+            timeLimit = 60;
+
+            // Level 5 Fire Station
+            fireStation = new Entity(new Vector2(33 + 27*32, 212), 96, 128, new Texture("teal.jpg"));
+
+            // Level 5 Fortress
+            fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
+                    15000, 2, 3);
+        }
+
+
+        else if (levelNumber == 6) {
+
+        	gameMap = new TiledGameMap("level6map.tmx");
+
+            firetruck1pos = new Vector2(33 + 10 * 32, 212 + 6 * 32);
+            firetruck2pos = new Vector2(33 + 11 * 32, 212 + 6 * 32);
+            firetruck3pos = new Vector2(33 + 10 * 32, 212 + 5 * 32);
+            firetruck4pos = new Vector2(33 + 11 * 32, 212 + 5 * 32);
+
+            timeLimit = 60;
+
+            // Level 6 Fire Station
+            fireStation = new Entity(new Vector2(33 + 27*32, 212), 96, 128, new Texture("teal.jpg"));
+
+            // Level 3 Fortress
+            fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
+                    15000, 2, 3);
+        }
+
+
 
         //Firetrucks created here | Health, range, speed, dps, capacity
         firetruck1 = new Firetruck(firetruck1pos, 100, 200, 100, 2,  175, true);
@@ -261,8 +326,8 @@ public class PlayState extends State {
     	if (Gdx.input.isKeyPressed(Keys.M)) {
     		gameStateManager.set(new MiniGameState(gameStateManager, levelNum));
     	}
-    	
-    	
+
+
         // Calls input handler and updates timer each tick of the game.
         handleInput();
         timer.update();
@@ -558,11 +623,40 @@ public class PlayState extends State {
             Vector2 coordinate = fortress.getAlienPositions().get(rand.nextInt(fortress.getAlienPositions().size()));
             Alien alien = new Alien(coordinate, 32, 32, new Texture("alien.gif"), 30 + rand.nextInt(60),
                     250, null, 1, 5 + rand.nextInt(15),
-                    new Vector2[]{new Vector2(coordinate.x, coordinate.y), new Vector2(coordinate.x + 200, coordinate.y - 200),
-                    		new Vector2(coordinate.x, coordinate.y - 400), new Vector2(coordinate.x - 200, coordinate.y - 200)},
-                    5);
+                    randomPatrolRoute(coordinate),
+                    3 + rand.nextInt(3));
             aliens.add(alien);
             fortress.getAlienPositions().remove(coordinate);
         }
     }
+
+    /**
+     * Generates a random patrol route within a fixed bound.
+     * @param spawnPos Initial position of the alien
+     * @return An array of Vector2 waypoints that form a route
+     */
+    public Vector2[] randomPatrolRoute(Vector2 spawnPos) {
+    	Random rand = new Random();
+    	Vector2[][] patrolSpace = {		//Area to patrol | Top Left, Bottom Right
+    			{new Vector2(33 + 15 * 32, 212 + 15 * 32), new Vector2(33 + 35 * 32, 212 + 25 * 32)},	//Level 1
+    			{new Vector2(33 + 20 * 32, 212 + 5 * 32), new Vector2(33 + 45 * 32, 212 + 19 * 32)},	//Level 2
+    			{new Vector2(33 + 15 * 32, 212 + 15 * 32), new Vector2(33 + 40 * 32, 212 + 19 * 32)},	//Level 3
+    			{new Vector2(33 + 15 * 32, 212 + 18 * 32), new Vector2(33 + 16 * 32, 212 + 19 * 32)},	//Level 4	TODO
+    			{new Vector2(33 + 15 * 32, 212 + 18 * 32), new Vector2(33 + 16 * 32, 212 + 19 * 32)},	//Level 5	TODO
+    			{new Vector2(33 + 15 * 32, 212 + 18 * 32), new Vector2(33 + 16 * 32, 212 + 19 * 32)},	//Level 6	TODO
+    	};
+    	System.out.println(levelNumber);
+    	Vector2[] patrolRoute = new Vector2[(2 + rand.nextInt(4))];	//Create patrol of random length
+    	patrolRoute[0] = spawnPos; //Set first patrol point as spawn position
+    	for (int i = 1; i < patrolRoute.length; i++) {
+			patrolRoute[i] = new Vector2(1 + rand.nextInt((int)(patrolSpace[levelNumber-1][1].x - patrolSpace[levelNumber-1][0].x)) + patrolSpace[levelNumber-1][0].x,
+					1 + rand.nextInt((int)(patrolSpace[levelNumber-1][1].y - patrolSpace[levelNumber-1][0].y)) + patrolSpace[levelNumber-1][0].y);
+		}
+
+    	return patrolRoute;
+    }
+    // X_COORD = 33 + (GRID_X * 32)    and    Y_COORD = 212 + (GRID_Y * 32)
+    // Where (33, 212) is the bottom left corner of the game screen and GRID_X, and GRID_Y is the grid position
+    // of the bottom left corner of the hit box you want to create. These are multiplied by 32 as each grid
+    // square is 32 pixels in both height and width.
 }
