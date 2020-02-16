@@ -16,12 +16,13 @@ import com.mygdx.game.sprites.Unit;
  */
 public abstract class MiniGameUnit extends Unit {
 
-	protected float speed;
+	protected float speed, gravitySpeed;
 	protected boolean facingRight = false;
 	
 	public MiniGameUnit(Vector2 position, int width, int height, Texture texture, int maxHealth, float speed) {
 		super(position, width, height, texture, maxHealth);
 		this.speed = speed;
+		gravitySpeed = speed;
 	}
 	
 	/**
@@ -43,12 +44,12 @@ public abstract class MiniGameUnit extends Unit {
         } else if (direction == 1) {
             newPosition.set(getPosition().x - speed * deltaTime, getPosition().y);
         } else if (direction == 3) {
-            newPosition.set(getPosition().x, getPosition().y + speed * deltaTime);
+            newPosition.set(getPosition().x, getPosition().y + gravitySpeed * deltaTime);
         } else if (direction == 4) {
-        	if (getPosition().y - speed * deltaTime < 212 || isBelowCollidable(new Vector2(getPosition().x, getPosition().y - speed * deltaTime))  ) {
+        	if (getPosition().y - gravitySpeed * deltaTime < 212 || isBelowCollidable(new Vector2(getPosition().x, getPosition().y - gravitySpeed * deltaTime))  ) {
         		newPosition.set(getPosition().x, getLowestOnLevel(getPosition().y));
         	}else {
-        		newPosition.set(getPosition().x, getPosition().y - speed * deltaTime);
+        		newPosition.set(getPosition().x, getPosition().y - gravitySpeed * deltaTime);
         	}
         }
         

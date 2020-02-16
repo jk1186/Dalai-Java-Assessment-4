@@ -54,13 +54,14 @@ public class Firefighter extends MiniGameUnit {
 	
 	private Jumping jumpState;
 	private FirefighterTexture firemanTexture = FirefighterTexture.TEXTURE1;;
-	private final static float JUMP_TIME = 0.3f; // Amount of time the entity moves upwards in a jump
+	private final static float JUMP_TIME = 0.15f; // Amount of time the entity moves upwards in a jump
 	private float nextGraphicUpdate = 0f, currentTime = 0f;
 	private boolean onFloor = true;
 	
 	public Firefighter(Vector2 pos) {
 		super(pos, 50, 50, TextureManager.getFirstFireman(), 4, 500f);
 		jumpState = Jumping.NOT_JUMPING;
+		gravitySpeed = gravitySpeed * 2;
 	}	
 	
 	/**
@@ -69,6 +70,10 @@ public class Firefighter extends MiniGameUnit {
 	 *
 	 */
 	public void updatePos(float deltaTime) {
+		
+		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
+			System.out.println(getPosition());
+		}
 		
 		boolean moving = false;
 		

@@ -21,9 +21,14 @@ import com.mygdx.game.sprites.Entity;
 public class MiniGameUnitManager implements Iterable<Entity>{
 
 	
-	private final Vector2[] FIREFIGHTER_SPAWN_POSITIONS = {new Vector2(1600,400)};
-	private final Vector2[][] ENEMY_SPAWN_POSITIONS = {{new Vector2(800, 300), new Vector2(200, 600)}};
-	private final Vector2[] BOSS_SPAWN_POSITIONS = {new Vector2(400,300)};
+	private final Vector2[] FIREFIGHTER_SPAWN_POSITIONS = {new Vector2(1600,400),new Vector2(1600,400)};
+	private final Vector2[][] ENEMY_SPAWN_POSITIONS = {
+			{new Vector2(800,300)},
+			{new Vector2(940, 404)},
+			{new Vector2(800, 300), new Vector2(200, 700)},
+			{new Vector2(940, 404), new Vector2(200, 700)}
+			};
+	private final Vector2[] BOSS_SPAWN_POSITIONS = {new Vector2(400,300),new Vector2(400,300)};
 	
 	
 	private Firefighter fireman;

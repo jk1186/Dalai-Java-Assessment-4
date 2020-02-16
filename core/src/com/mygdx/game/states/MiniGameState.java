@@ -29,7 +29,7 @@ public class MiniGameState extends State {
 	private Button quitGame;
 	private MiniGameUnitManager unitManager;
 	private TiledGameMap gameMap;
-	private String[] mapFiles = {"MiniGameLevel1.tmx","MiniGameLevel2.tmx"};
+	private String[] mapFiles = {"MiniGameLevel1.tmx","MiniGameLevel2.tmx","MiniGameLevel1.tmx","MiniGameLevel2.tmx","MiniGameLevel1.tmx","MiniGameLevel2.tmx"};
 	
 	public MiniGameState(GameStateManager gameStateManager, int level) {
 		super(gameStateManager);
