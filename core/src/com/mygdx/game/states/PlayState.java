@@ -153,6 +153,79 @@ public class PlayState extends State {
             fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
                     15000, 2, 3);
         }
+        
+        else if (levelNumber == 3) {
+        	
+        	gameMap = new TiledGameMap("level3map.tmx");
+
+            firetruck1pos = new Vector2(33 + 27 * 32, 212 + 3 * 32);
+            firetruck2pos = new Vector2(33 + 28 * 32, 212 + 3 * 32);
+
+            timeLimit = 60;            
+
+            // Level 3 Fire Station
+            fireStation = new Entity(new Vector2(33 + 27*32, 212), 96, 128, new Texture("teal.jpg"));
+
+            // Level 3 Fortress
+            fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
+                    15000, 2, 3);
+        }
+        
+        
+        else if (levelNumber == 4) {
+        	
+        	gameMap = new TiledGameMap("level4map.tmx");
+
+            firetruck1pos = new Vector2(33 + 27 * 32, 212 + 3 * 32);
+            firetruck2pos = new Vector2(33 + 28 * 32, 212 + 3 * 32);
+
+            timeLimit = 60;            
+
+            // Level 4 Fire Station
+            fireStation = new Entity(new Vector2(33 + 27*32, 212), 96, 128, new Texture("teal.jpg"));
+
+            // Level 4 Fortress
+            fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
+                    15000, 2, 3);
+        }
+        
+        
+        else if (levelNumber == 5) {
+        	
+        	gameMap = new TiledGameMap("level5map.tmx");
+
+            firetruck1pos = new Vector2(33 + 27 * 32, 212 + 3 * 32);
+            firetruck2pos = new Vector2(33 + 28 * 32, 212 + 3 * 32);
+
+            timeLimit = 60;            
+
+            // Level 5 Fire Station
+            fireStation = new Entity(new Vector2(33 + 27*32, 212), 96, 128, new Texture("teal.jpg"));
+
+            // Level 5 Fortress
+            fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
+                    15000, 2, 3);
+        }
+        
+        
+        else if (levelNumber == 6) {
+        	
+        	gameMap = new TiledGameMap("level6map.tmx");
+
+            firetruck1pos = new Vector2(33 + 27 * 32, 212 + 3 * 32);
+            firetruck2pos = new Vector2(33 + 28 * 32, 212 + 3 * 32);
+
+            timeLimit = 60;            
+
+            // Level 6 Fire Station
+            fireStation = new Entity(new Vector2(33 + 27*32, 212), 96, 128, new Texture("teal.jpg"));
+
+            // Level 3 Fortress
+            fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
+                    15000, 2, 3);
+        }
+        
+        
 
         firetruck1 = new Firetruck(firetruck1pos, 25, 25,
                 new Texture("truck.png"), 100, 200,
