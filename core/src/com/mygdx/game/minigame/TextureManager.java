@@ -1,5 +1,8 @@
 package com.mygdx.game.minigame;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import com.badlogic.gdx.graphics.Texture;
 
 /**
@@ -10,27 +13,43 @@ import com.badlogic.gdx.graphics.Texture;
 public class TextureManager {
 
 	private static Texture fireman1, fireman2, firemanJump;
-	private static Texture enemy, boss;
 	private static Texture bombRed1, bombRed2, bombBlue1, bombBlue2;
 	private static Texture fullHeart, heart;
+	private static ArrayList<Texture> aliens;
+	private static Random counter;
 	
 	public TextureManager() {
 		fireman1 = new Texture("firefighter1.png");
 		fireman2 = new Texture("firefighter2.png");
 		firemanJump = new Texture("firefighterJump.png");
-		enemy = new Texture("black.jpg");
-		boss = new Texture("green.jpg");
 		bombRed1 = new Texture("bombRed1.png");
 		bombRed2 = new Texture("bombRed2.png");
 		bombBlue1 = new Texture("bombBlue1.png");
 		bombBlue2 = new Texture("bombBlue2.png");
 		fullHeart = new Texture("fullHeart.png");
 		heart = new Texture("emptyHeart.png");
+		
+		aliens = new ArrayList<Texture>();
+		aliens.add(new Texture("alien dark blue.png"));
+		aliens.add(new Texture("alien dark yellow.png"));
+		aliens.add(new Texture("alien green.png"));
+		aliens.add(new Texture("alien grey.png"));
+		aliens.add(new Texture("alien idk.png"));
+		aliens.add(new Texture("alien light blue.png"));
+		aliens.add(new Texture("alien lime.png"));
+		aliens.add(new Texture("alien lol.png"));
+		aliens.add(new Texture("alien pink.png"));
+		aliens.add(new Texture("alien red.png"));
+		aliens.add(new Texture("alien salmon.png"));
+		aliens.add(new Texture("alien shade.png"));
+		aliens.add(new Texture("alien weird.png"));
+		aliens.add(new Texture("alien yellow.png"));
+		counter = new Random();
 	}	
 	
 	
 	/**
-	 * @return first blue bomb texture
+	 * @return Texture first blue bomb texture
 	 */
 	public static Texture getFirstBlueBomb() {
 		return bombBlue1;
@@ -38,7 +57,7 @@ public class TextureManager {
 	
 	
 	/**
-	 * @return second blue bomb texture
+	 * @return Texture second blue bomb texture
 	 */
 	public static Texture getSecondBlueBomb() {
 		return bombBlue2;
@@ -46,7 +65,7 @@ public class TextureManager {
 	
 	
 	/**
-	 * @return first red bomb texture
+	 * @return Texture first red bomb texture
 	 */
 	public static Texture getFirstRedBomb() {
 		return bombRed1;
@@ -54,30 +73,14 @@ public class TextureManager {
 	
 	
 	/**
-	 * @return second red bomb texture
+	 * @return Texture second red bomb texture
 	 */
 	public static Texture getSecondRedBomb() {
 		return bombRed2;
 	}
-	
-	
+		
 	/**
-	 * @return boss texture
-	 */
-	public static Texture getBoss() {
-		return boss;
-	}
-	
-	
-	/**
-	 * @return enemy texture 
-	 */
-	public static Texture getEnemy() {
-		return enemy;
-	}
-	
-	/**
-	 * @return first fireman texture
+	 * @return Texture first fireman texture
 	 */
 	public static Texture getFirstFireman() {
 		return fireman1;
@@ -85,7 +88,7 @@ public class TextureManager {
 	
 	
 	/**
-	 * @return second fireman texture
+	 * @return Texture second fireman texture
 	 */
 	public static Texture getSecondFireman() {
 		return fireman2;
@@ -93,7 +96,7 @@ public class TextureManager {
 	
 	
 	/**
-	 * @return fireman jumping texture
+	 * @return Texture fireman jumping texture
 	 */
 	public static Texture getFiremanJump() {
 		return firemanJump;
@@ -113,6 +116,17 @@ public class TextureManager {
 		return heart;
 	}
 	
+	private static int getCounterVal() {
+		return Math.abs(counter.nextInt()%aliens.size());
+	}
+	
+	/**
+	 * @return Texture random Alien texture
+	 */
+	public static Texture getNextAlien() {
+		return aliens.get(getCounterVal());
+	}
+	
 	
 	/**
 	 * Disposes all textures used for the minigame entities
@@ -125,8 +139,9 @@ public class TextureManager {
 		bombRed2.dispose();
 		bombBlue1.dispose();
 		bombBlue2.dispose();
-		enemy.dispose();
-		boss.dispose();
+		for (Texture t: aliens) {
+			t.dispose();
+		}
 	}
 	
 	

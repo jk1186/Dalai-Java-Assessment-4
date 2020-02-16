@@ -14,7 +14,7 @@ import com.mygdx.game.map.MiniGameTileType;
  */
 public class Enemy extends MiniGameUnit {
 		
-	private final static float MOVEMENT_TIME = 1f, WAIT_TIME = 1f;
+	private final static float MOVEMENT_TIME = 0.8f, WAIT_TIME = 1f;
 	
 	/**
 	 * Enum used to control the movement of the enemys
@@ -74,8 +74,8 @@ public class Enemy extends MiniGameUnit {
 	
 	private MoveDirection direction;
 	
-	public Enemy(Vector2 startPos,int height, int width, Texture texture, int maxHealthPoints, float speed) {
-		super(startPos, height, width, texture, maxHealthPoints, speed);
+	public Enemy(Vector2 startPos,int height, int width, int maxHealthPoints, float speed) {
+		super(startPos, height, width, TextureManager.getNextAlien(), maxHealthPoints, speed);
 		direction = MoveDirection.STAND;
 	}
 

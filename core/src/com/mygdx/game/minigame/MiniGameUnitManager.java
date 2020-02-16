@@ -21,14 +21,14 @@ import com.mygdx.game.sprites.Entity;
 public class MiniGameUnitManager implements Iterable<Entity>{
 
 	
-	private final Vector2[] FIREFIGHTER_SPAWN_POSITIONS = {new Vector2(1600,400),new Vector2(1600,400)};
+	private final Vector2[] FIREFIGHTER_SPAWN_POSITIONS = {new Vector2(1600,276),new Vector2(1600,276), new Vector2(1600,276)};
 	private final Vector2[][] ENEMY_SPAWN_POSITIONS = {
-			{new Vector2(800,300)},
-			{new Vector2(940, 404)},
+			{new Vector2(800,276)},
+			{new Vector2(920, 404)},
 			{new Vector2(800, 300), new Vector2(200, 700)},
 			{new Vector2(940, 404), new Vector2(200, 700)}
 			};
-	private final Vector2[] BOSS_SPAWN_POSITIONS = {new Vector2(400,300),new Vector2(400,300)};
+	private final Vector2[] BOSS_SPAWN_POSITIONS = {new Vector2(400,276),new Vector2(400,276), new Vector2(400,276)};
 	
 	
 	private Firefighter fireman;
@@ -41,13 +41,14 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	private HealthBar healthBar;
 	private Vector2 spawnPoint, bossSpawn;
 	private Vector2[] enemySpawns;
+	private TextureManager tm;
 	
 	public MiniGameUnitManager(TiledGameMap map, int level) {
 		
 		spawnPoint = FIREFIGHTER_SPAWN_POSITIONS[level];
 		bossSpawn = BOSS_SPAWN_POSITIONS[level];
 		enemySpawns = ENEMY_SPAWN_POSITIONS[level];
-		
+		tm = new TextureManager();
 		
 		gameMap = map;
 		fireman = new Firefighter(spawnPoint);
@@ -64,7 +65,7 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	 * @param spawnPos
 	 */
 	public void addEnemy(Vector2 spawnPos) {
-		enemies.add(new Enemy(spawnPos,20,20, TextureManager.getEnemy(),10,300f));
+		enemies.add(new Enemy(spawnPos,35,35,10,300f));
 	}
 
 	/**
@@ -194,7 +195,7 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	 * Summons and instantiates boss object
 	 */
 	public void spawnBoss() {
-        boss = new Boss(bossSpawn, TextureManager.getBoss(), 20, 450f);
+        boss = new Boss(bossSpawn,20, 450f);
 	}
 	
 	/**
