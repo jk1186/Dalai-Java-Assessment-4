@@ -10,7 +10,7 @@ public class TiledGameMap {
 	TiledMap tiledMap;
 	OrthogonalTiledMapRenderer tiledMapRenderer;
 	private final float L = -33, R = 1887, T = -212, B = 868; 
-	private final Matrix4 PROJECTMATRIX = new Matrix4(new float[]
+	private final Matrix4 PROJECTIONMATRIX = new Matrix4(new float[]
 			{2/(R-L),0,0,0,
 			0,-2/(T-B),0,0,
 			0,0,1,0,
@@ -22,7 +22,7 @@ public class TiledGameMap {
 	}
 	
 	public void render (){ //Uses projection matrices to get the map to render in the right place
-		tiledMapRenderer.setView(PROJECTMATRIX, 0, 0, 1856, 832);
+		tiledMapRenderer.setView(PROJECTIONMATRIX, 0, 0, 1856, 832);
 		tiledMapRenderer.render();
 		
 	}
@@ -37,7 +37,6 @@ public class TiledGameMap {
 	
 	public TileType getTileTypeByScreenCoordinate(float posX, float posY) {
 		return TileType.getTileTypeByID(((TiledMapTileLayer)tiledMap.getLayers().get(0)).getCell((int) (posX-33)/32,(int) (posY-212)/32).getTile().getId());
-		
 	}
 	
 }

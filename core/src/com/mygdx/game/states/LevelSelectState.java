@@ -48,18 +48,18 @@ public class LevelSelectState extends State{
                 false);
 
         level2 = new Button(new Texture("PressedGrey2.png"), new Texture("PressedGrey2.png"),
-                350, 100, new Vector2(Kroy.WIDTH / 2 - 350 / 2, 400), false, true);
+                350, 100, new Vector2(Kroy.WIDTH / 2 - 350 / 2, 400), false, false);
 
         level3 = new Button(new Texture("PressedGrey3.png"), new Texture("PressedGrey3.png"),
                 350, 100, new Vector2(Kroy.WIDTH / 2 + 350 / 2 + 100, 400), false,
-                true);
+                false);
 
         level4 = new Button(new Texture("PressedGrey4.png"), new Texture("PressedGrey4.png"),
                 350, 100, new Vector2(Kroy.WIDTH / 2 - 350 / 2 - 100 - 350, 200), false,
-                true);
+                false);
 
         level5 = new Button(new Texture("PressedGrey5.png"), new Texture("PressedGrey5.png"),
-                350, 100, new Vector2(Kroy.WIDTH / 2 - 350 / 2, 200), false, true);
+                350, 100, new Vector2(Kroy.WIDTH / 2 - 350 / 2, 200), false, false);
 
         level6 = new Button(new Texture("PressedGrey6.png"), new Texture("PressedGrey6.png"),
                 350, 100, new Vector2(Kroy.WIDTH / 2 + 350 / 2 + 100, 200), false,
