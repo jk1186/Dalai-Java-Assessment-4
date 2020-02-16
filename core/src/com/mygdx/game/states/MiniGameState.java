@@ -29,10 +29,11 @@ public class MiniGameState extends State {
 	private Button quitGame;
 	private MiniGameUnitManager unitManager;
 	private TiledGameMap gameMap;
+	private String[] mapFiles = {"MiniGameLevel1.tmx","MiniGameLevel2.tmx"};
 	
-	public MiniGameState(GameStateManager gameStateManager) {
+	public MiniGameState(GameStateManager gameStateManager, int level) {
 		super(gameStateManager);
-		gameMap = new TiledGameMap("MiniGameLevel1.tmx");
+		gameMap = new TiledGameMap(mapFiles[level]);
 		background = new Texture("miniGameLevelProportions.png");
 		
         quitLevel = new Button(new Texture("PressedQuitLevel.png"),
@@ -43,7 +44,7 @@ public class MiniGameState extends State {
                 new Texture("NotPressedQuitGame.png"), 350 / 2, 100 / 2,
                 new Vector2(1920 - 30 - 350 / 2, 30), false, false);
         
-        unitManager = new MiniGameUnitManager(gameMap);
+        unitManager = new MiniGameUnitManager(gameMap,level);
         
         
 	}	

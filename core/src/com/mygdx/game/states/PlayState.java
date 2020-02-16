@@ -63,6 +63,7 @@ public class PlayState extends State {
     private BitmapFont ui;
     private BitmapFont healthBars;
     private String level;
+    private int levelNum;
     public static TiledGameMap gameMap;
 
     private Sound waterShoot = Gdx.audio.newSound(Gdx.files.internal("honk.wav"));
@@ -79,8 +80,9 @@ public class PlayState extends State {
                 new Texture("NotPressedQuitGame.png"), 350 / 2, 100 / 2,
                 new Vector2(1920 - 30 - 350 / 2, 30), false, false);
 
+        levelNum = levelNumber-1;
         level = Integer.toString(levelNumber); // Used as a key when saving level progress
-
+        
         levelLost = false;
         levelWon = false;
 
@@ -257,7 +259,7 @@ public class PlayState extends State {
     public void update(float deltaTime) {
 
     	if (Gdx.input.isKeyPressed(Keys.M)) {
-    		gameStateManager.set(new MiniGameState(gameStateManager));
+    		gameStateManager.set(new MiniGameState(gameStateManager, levelNum));
     	}
     	
     	
@@ -375,7 +377,7 @@ public class PlayState extends State {
 
         // Forces user back to level select screen, even without needing to press ENTER after 4 seconds.
         if (levelWon) {
-            gameStateManager.set(new MiniGameState(gameStateManager));
+            gameStateManager.set(new MiniGameState(gameStateManager, levelNum));
         }
 
         if (levelLost && Gdx.input.isKeyPressed(Keys.ENTER)) {
