@@ -2,6 +2,7 @@ package com.mygdx.game.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
@@ -62,6 +63,7 @@ public class PlayState extends State {
     private BitmapFont ui;
     private BitmapFont healthBars;
     private String level;
+    private int levelNum;
     public static TiledGameMap gameMap;
 
     private Sound waterShoot = Gdx.audio.newSound(Gdx.files.internal("honk.wav"));
@@ -69,8 +71,6 @@ public class PlayState extends State {
     public PlayState(GameStateManager gsm, int levelNumber) {
         super(gsm);
         this.levelNumber = levelNumber;
-
-
         background = new Texture("LevelProportions.png");
 
         quitLevel = new Button(new Texture("PressedQuitLevel.png"),
@@ -81,6 +81,7 @@ public class PlayState extends State {
                 new Texture("NotPressedQuitGame.png"), 350 / 2, 100 / 2,
                 new Vector2(1920 - 30 - 350 / 2, 30), false, false);
 
+        levelNum = levelNumber-1;
         level = Integer.toString(levelNumber); // Used as a key when saving level progress
 
         levelLost = false;
@@ -296,7 +297,6 @@ public class PlayState extends State {
                         clearTruck.setSelected(false);
                     }
                     truck.setSelected(true);
-
                 }
             }
         }
@@ -312,10 +312,6 @@ public class PlayState extends State {
             truckMovement(firetruck4);
         }
 
-        // Checks if user presses ENTER when game is over and takes them back to level select.
-        if ((levelLost || levelWon) && Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            gameStateManager.set(new LevelSelectState(gameStateManager));
-        }
     }
 
     /**
@@ -324,6 +320,11 @@ public class PlayState extends State {
      */
     @Override
     public void update(float deltaTime) {
+
+    	if (Gdx.input.isKeyPressed(Keys.M)) {
+    		gameStateManager.set(new MiniGameState(gameStateManager, levelNum));
+    	}
+
 
         // Calls input handler and updates timer each tick of the game.
         handleInput();
@@ -438,8 +439,12 @@ public class PlayState extends State {
         }
 
         // Forces user back to level select screen, even without needing to press ENTER after 4 seconds.
-        if (levelWon && timer.getTime() > timeTaken + 4) {
-            gameStateManager.set(new LevelSelectState(gameStateManager));
+        if (levelWon) {
+            gameStateManager.set(new MiniGameState(gameStateManager, levelNum));
+        }
+
+        if (levelLost && Gdx.input.isKeyPressed(Keys.ENTER)) {
+        	gameStateManager.set(new LevelSelectState(gameStateManager));
         }
 
         // Speeds up the background music when the player begins to run out of time.
@@ -531,11 +536,11 @@ public class PlayState extends State {
             spriteBatch.draw(new Texture("levelFail.png"), 0, 0);
             Kroy.INTRO.setPitch(Kroy.ID, 1f);
         }
-
-        if (levelWon & !levelLost) {
-            spriteBatch.draw(new Texture("LevelWon.png"), 0, 0);
-            Kroy.INTRO.setPitch(Kroy.ID, 1f);
-        }
+//
+//        if (levelWon & !levelLost) {
+//            spriteBatch.draw(new Texture("LevelWon.png"), 0, 0);
+//            Kroy.INTRO.setPitch(Kroy.ID, 1f);
+//        }
         spriteBatch.end();
     }
 
