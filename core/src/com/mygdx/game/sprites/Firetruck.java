@@ -32,7 +32,6 @@ public class Firetruck extends Character {
      * @param direction 1 = Left, 2 = Right, 3 = Up, 4 = Down
      */
     public void move(int direction) { // 1, 2, 3, 4 --> Left, Right, Up, Down
-    	System.out.println((getPosition().x-33)/32 + "," + (getPosition().y-212)/32);
         float deltaTime = Gdx.graphics.getDeltaTime();
         Vector2 newPosition = new Vector2(getPosition());
         if (direction == 2) {
