@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 /**
  * Class used to only have to instantiate textures once to minimise memory usage
  * @author Luke Taylor
+ * @author Dicycat
  *
  */
 public class TextureManager {

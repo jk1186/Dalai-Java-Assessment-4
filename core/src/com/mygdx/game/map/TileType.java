@@ -2,6 +2,11 @@ package com.mygdx.game.map;
 
 import java.util.HashMap;
 
+/**
+ * @author Martha Cartwright
+ * @author Dicycat
+ *
+ */
 public enum TileType {
 	COLLIDABLE("collidable", true, 219),
 	NONCOLLIDABLE("non collidable", false, 249);

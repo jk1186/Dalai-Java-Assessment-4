@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 
 /**
  * @author Martha Cartwright
+ * @author Dicycat
  *
  */
 public class TiledGameMap {

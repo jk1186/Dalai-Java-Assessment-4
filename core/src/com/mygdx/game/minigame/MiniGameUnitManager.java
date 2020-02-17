@@ -16,6 +16,7 @@ import com.mygdx.game.sprites.Entity;
 /**
  * Class used to store all MiniGameUnits in a more convenient way. Iterable as to allow it to loop through all MiniGameUnits
  * @author Luke Taylor
+ * @author Dicycat
  *
  */
 public class MiniGameUnitManager implements Iterable<Entity>{

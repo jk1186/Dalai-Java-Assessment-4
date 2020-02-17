@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Class to control the "boss" on each level of minigame
  * @author Luke Taylor
+ * @author Dicycat
  *
  */
 public class Boss extends Enemy {

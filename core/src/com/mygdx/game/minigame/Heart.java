@@ -10,6 +10,7 @@ import com.mygdx.game.sprites.Entity;
 /**
  * Used to display the health of the user
  * @author Luke Taylor
+ * @author Dicycat
  */
 public class Heart extends Entity {
 

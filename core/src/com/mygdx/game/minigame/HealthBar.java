@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Used to control the different Health Entities of the
  * @author Luke Taylor
+ * @author Dicycat
  *
  */
 public class HealthBar {
