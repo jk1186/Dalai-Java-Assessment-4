@@ -1,3 +1,4 @@
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.sprites.Alien;
 import com.mygdx.game.sprites.Firetruck;
@@ -11,14 +12,15 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class AlienTest {
+    Texture textureMock = mock(Texture.class);
 
     //Default constructor to ensure it works as intended
-    Alien testAlien = new Alien(new Vector2(100, 100), 100, 100, null, 100,
+    Alien testAlien = new Alien(new Vector2(100, 100), 100, 100, textureMock, 100,
             10, null, 0, 5, null, 10.0f);
 
     //Test Alien with wayPoints
-    Alien wayPointAlien = new Alien(new Vector2(100, 100), 100, 100, null, 100,
-            10, null, 0, 5, new Vector2[]{new Vector2(200, 200), new Vector2(200, 200)}, 10.0f);
+    Alien wayPointAlien = new Alien(new Vector2(200, 200), 100, 100, textureMock, 100,
+            10, null, 1, 5, new Vector2[]{new Vector2(200, 200), new Vector2(201, 200)}, 10.0f);
 
     //Test basic constructor functionality
 
@@ -67,5 +69,12 @@ public class AlienTest {
     }
 
 
+    //Test to see if waypoints loop once the end of the route is reached
+    @Test
+    public void loopPatrolWhenEndIsReached() {
+        wayPointAlien.update();
+        wayPointAlien.update();
+        assertEquals(new Vector2(200, 200), wayPointAlien.getNextWaypoint());
+    }
 
 }

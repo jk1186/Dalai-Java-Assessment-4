@@ -1,16 +1,19 @@
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.sprites.Entity;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
 //70% line coverage (not testing getter and setters)
 
 //Class to test methods in the Entity Class.
 public class entityTest {
+    Texture textureMock = mock(Texture.class);
 
     //Instance of entity class to test methods on
-    Entity testEntity = new Entity(new Vector2(100, 100), 100, 100, null);
+    Entity testEntity = new Entity(new Vector2(100, 100), 100, 100, textureMock);
 
     //Testing a standard move and checking corners
     @Test

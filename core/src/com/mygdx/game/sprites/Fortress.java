@@ -19,8 +19,6 @@ public class Fortress extends Unit {
         super(position, width, height, texture, maxHealth);
         this.spawnRate = spawnRate;
 
-        System.out.println(level);
-
         if (level == 1) {
             alienPositions.add(new Vector2(22 * 32, 1044 - 3 * 32));
             alienPositions.add(new Vector2(33 * 32, 1044 - 3 * 32));

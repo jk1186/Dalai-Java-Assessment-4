@@ -1,17 +1,14 @@
 package com.mygdx.game.minigame;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.map.MiniGameTileType;
 import com.mygdx.game.map.TiledGameMap;
 import com.mygdx.game.sprites.Entity;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Class used to store all MiniGameUnits in a more convenient way. Iterable as to allow it to loop through all MiniGameUnits
@@ -62,7 +59,7 @@ public class MiniGameUnitManager implements Iterable<Entity>{
 	 * @param spawnPos
 	 */
 	public void addEnemy(Vector2 spawnPos) {
-		enemies.add(new Enemy(spawnPos,35,35,10,300f));
+		enemies.add(new Enemy(spawnPos,35,35,10,300f, TextureManager.getNextAlien()));
 	}
 
 	/**

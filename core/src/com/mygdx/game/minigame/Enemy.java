@@ -1,10 +1,7 @@
 package com.mygdx.game.minigame;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.map.MiniGameTileType;
 
 /**
  * 
@@ -74,8 +71,8 @@ public class Enemy extends MiniGameUnit {
 	
 	private MoveDirection direction;
 	
-	public Enemy(Vector2 startPos,int height, int width, int maxHealthPoints, float speed) {
-		super(startPos, height, width, TextureManager.getNextAlien(), maxHealthPoints, speed);
+	public Enemy(Vector2 startPos, int height, int width, int maxHealthPoints, float speed, Texture texture) {
+		super(startPos, height, width, texture, maxHealthPoints, speed);
 		direction = MoveDirection.STAND;
 	}
 

@@ -226,10 +226,18 @@ public class PlayState extends State {
 
 
         //Firetrucks created here | Health, range, speed, dps, capacity
-        firetruck1 = new Firetruck(firetruck1pos, 100, 200, 100, 2,  175, true);
-        firetruck2 = new Firetruck(firetruck2pos, 50, 200, 200, 2,  200, false);
-        firetruck3 = new Firetruck(firetruck3pos, 50, 300, 100, 2,  150, false);
-        firetruck4 = new Firetruck(firetruck4pos, 100, 150, 80, 4,  200, false);
+        firetruck1 = new Firetruck(firetruck1pos, 25,25,
+                new Texture("truck.png"), 200, 100,
+                null, 100, 2,  175, true);
+        firetruck2 = new Firetruck(firetruck2pos, 25,25,
+                new Texture("truck.png"), 100, 200,
+                null, 100, 2,  175, false);
+        firetruck3 = new Firetruck(firetruck3pos, 25,25,
+                new Texture("truck.png"), 100, 100,
+                null, 200, 2,  175, false);
+        firetruck4 = new Firetruck(firetruck4pos, 25,25,
+                new Texture("truck.png"), 100, 100,
+                null, 100, 4,  175, false);
 
         firetrucks.add(firetruck1);
         firetrucks.add(firetruck2);
@@ -621,6 +629,7 @@ public class PlayState extends State {
     }
 
     /**
+     * Added by DicyCat
      * Generates a random patrol route within a fixed bound.
      * @param spawnPos Initial position of the alien
      * @return An array of Vector2 waypoints that form a route
@@ -644,8 +653,4 @@ public class PlayState extends State {
 
     	return patrolRoute;
     }
-    // X_COORD = 33 + (GRID_X * 32)    and    Y_COORD = 212 + (GRID_Y * 32)
-    // Where (33, 212) is the bottom left corner of the game screen and GRID_X, and GRID_Y is the grid position
-    // of the bottom left corner of the hit box you want to create. These are multiplied by 32 as each grid
-    // square is 32 pixels in both height and width.
 }

@@ -1,6 +1,5 @@
 package com.mygdx.game.minigame;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -11,7 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Boss extends Enemy {
 
 	public Boss(Vector2 position, int maxHealth, float speed) {
-		super(position, 50, 50, maxHealth, speed);	
+		super(position, 50, 50, maxHealth, speed, TextureManager.getNextAlien());
 	}
 
 }

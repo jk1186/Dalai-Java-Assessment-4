@@ -1,11 +1,8 @@
 package com.mygdx.game.sprites;
 
-import javax.swing.text.Position;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.map.TiledGameMap;
 import com.mygdx.game.states.PlayState;
 
 /**
@@ -20,8 +17,9 @@ public class Firetruck extends Character {
     private int currentWater;
     private boolean selected;
 
-    public Firetruck(Vector2 position, int maxHealth, int range, int speed, int dps, int maxWater, boolean selected) {
-        super(position, 25, 25, new Texture("truck.png"), maxHealth, range, null, speed, dps);
+    public Firetruck(Vector2 position, int width, int height, Texture texture, int maxHealth, int range, Unit target,
+                     int speed, int dps, int maxWater, boolean selected) {
+        super(position, width, height, texture, maxHealth, range, target, speed, dps);
         this.maxWater = maxWater;
         this.currentWater = maxWater;
         this.selected = selected;

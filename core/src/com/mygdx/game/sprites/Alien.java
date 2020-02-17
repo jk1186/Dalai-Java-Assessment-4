@@ -42,6 +42,7 @@ public class Alien extends Character {
      * in the array. If the alien is at the end of the array, it will return to the starting waypoint.
      */
     private void nextWayPoint() {
+        System.out.println(waypoints[currentIndex]);
         if (getPosition().y == waypoints[currentIndex].y && getPosition().x == waypoints[currentIndex].x) {
             currentIndex++;
             if (currentIndex >= (waypoints.length)) {
@@ -114,6 +115,8 @@ public class Alien extends Character {
     public float getAttackCooldown() {
         return attackCooldown;
     }
+
+    public Vector2 getNextWaypoint() { return waypoints[currentIndex]; }
 }
 
 

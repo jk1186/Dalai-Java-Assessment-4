@@ -4,6 +4,7 @@ import com.mygdx.game.sprites.Unit;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 //
 //NEED TO CHECK IF CREATING AN INSTANCE IS GOOD OR I SHOULD MOCK INSTEAD (no dependencies)
@@ -20,8 +21,10 @@ class unitTestClass extends Unit {
 //Class to test the methods in the Unit Class
 public class unitTest {
 
+    Texture textureMock = mock(Texture.class);
+
     //Instance of the Unit class to test on
-    Unit testUnit = new unitTestClass(new Vector2(0, 0),100, 100, null, 100);
+    Unit testUnit = new unitTestClass(new Vector2(0, 0),100, 100, textureMock, 100);
 
     //Test for constructor that takes maxHealth
     @Test
