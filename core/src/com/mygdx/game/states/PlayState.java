@@ -376,7 +376,7 @@ public class PlayState extends State {
         for (Firetruck truck : firetrucks) {
             if (!(truck.getTopRight().y < fireStation.getPosition().y || truck.getPosition().y > fireStation.getTopRight().y ||
                     truck.getTopRight().x < fireStation.getPosition().x || truck.getPosition().x > fireStation.getTopRight().x)) {
-                // Would call our mini-game here -- potentially on a random chance or every X amount of visits etc.
+            	truck.addHealth(1);
                 truck.setCurrentWater(truck.getMaxWater());
             }
         }
