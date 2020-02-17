@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 
 /**
+ * Used to store and calculate all collisions for the main map
  * @author Martha Cartwright
  * @author Dicycat
  *
