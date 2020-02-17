@@ -7,7 +7,9 @@ import com.mygdx.game.map.MiniGameTileType;
 import com.mygdx.game.map.TiledGameMap;
 
 /**
+ * Firefighter class controls and stores information about the firefighter
  * @author Luke Taylor
+ * @author Dicycat
  *
  */
 public class Firefighter extends MiniGameUnit {

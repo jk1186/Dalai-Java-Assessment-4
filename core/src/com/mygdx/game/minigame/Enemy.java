@@ -6,7 +6,8 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * 
  * Class used as framework for Fireman class as well as for the objects needed for MiniGameState
- * @author lnt20
+ * @author Luke Taylor
+ * @author Dicycat
  *
  */
 public class Enemy extends MiniGameUnit {

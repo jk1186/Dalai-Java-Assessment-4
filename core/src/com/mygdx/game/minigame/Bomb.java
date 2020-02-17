@@ -12,6 +12,7 @@ import com.mygdx.game.sprites.Entity;
 /**
  * Bomb class to represent the bomb dropped by fireman in the MiniGame
  * @author Luke Taylor
+ * @author Dicycat
  *
  */
 public class Bomb extends Entity{

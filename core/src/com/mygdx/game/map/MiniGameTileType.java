@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Used to control minigame tile types
  * @author Luke Taylor
+ * @author Dicycat
  */
 public enum MiniGameTileType {
 	PLATFORM(1, true, false), SPIKE(2, false, true), OTHER(11, false, false);

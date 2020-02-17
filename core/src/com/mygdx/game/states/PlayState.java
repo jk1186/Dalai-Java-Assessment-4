@@ -24,6 +24,8 @@ import java.util.Random;
  * gameplay logic for each level as well as rendering to the screen.
  *
  * @author Lucy Ivatt and Bethany Gilmore
+ * @author Luke Taylor, Martha Cartwright and Riju De
+ * @author Dicycat
  */
 
 public class PlayState extends State {
