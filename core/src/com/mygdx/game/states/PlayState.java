@@ -70,6 +70,9 @@ public class PlayState extends State {
 
     private Sound waterShoot = Gdx.audio.newSound(Gdx.files.internal("honk.wav"));
 
+
+    //TODO: Add way to save level state to continue later
+    //TODO: Add PowerUp effects to map
     public PlayState(GameStateManager gsm, int levelNumber) {
         super(gsm);
         this.levelNumber = levelNumber;
@@ -294,6 +297,7 @@ public class PlayState extends State {
         // Opens pause menu if user hits escape
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             gameStateManager.push(new OptionState(gameStateManager));
+
         }
 
         // Switches active firetruck if the mouse clicks within another selectable firetruck.
