@@ -1,13 +1,13 @@
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.sprites.Entity;
 import com.mygdx.game.sprites.Firetruck;
 import com.mygdx.game.sprites.Unit;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 //Instance of the Unit class to test on (is abstract)
 class unitForFireTruck extends Unit {
@@ -29,11 +29,13 @@ class unitForFireTruck extends Unit {
 
 public class testFireTruck {
 
+    Texture textureMock = mock(Texture.class);
+
     //Instance of entity class to test methods on
-    Entity testEntity = new Entity(new Vector2(200, 200), 100, 100, null);
+    Entity testEntity = new Entity(new Vector2(200, 200), 100, 100, textureMock);
 
     //Instance of the FireTruck class to test on
-    Firetruck testFireTruck = new Firetruck(new Vector2(100, 100 ), 101, 102, null,
+    Firetruck testFireTruck = new Firetruck(new Vector2(100, 100 ), 101, 102, textureMock,
             103, 10, null, 10, 12, 13, true);
 
 

@@ -5,6 +5,7 @@ import com.mygdx.game.sprites.Unit;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
 //Instance of the Unit class to test on (is abstract)
 class characterTestClass extends Character {
@@ -31,8 +32,10 @@ class characterTestClass extends Character {
 
 //No functions to test - will just test the constructor
 public class testCharacter {
+    Texture textureMock = mock(Texture.class);
+
     //Constructor used to ensure it works as intended
-    Character testCharacter = new characterTestClass(new Vector2(100, 100 ), 100, 100, null,
+    Character testCharacter = new characterTestClass(new Vector2(100, 100 ), 100, 100, textureMock,
             100, 11, null, 10, 12);
 
     //Testing to ensure constructor works as intended through basic getter functions
@@ -45,7 +48,7 @@ public class testCharacter {
     }
 
     //Instance of the Unit class to test on
-    Unit testUnit = new unitTestClass(new Vector2(0, 0),50, 50, null, 100);
+    Unit testUnit = new unitTestClass(new Vector2(0, 0),50, 50, textureMock, 100);
 
     //Testing to make sure setTarget sets the target to the given unit
     @Test
