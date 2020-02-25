@@ -4,7 +4,7 @@ Our assessment 4 repository is a direct fork of [DicyCats assesment 3 respositor
 
 Assessment | GitHub Repository | Team Website
 --- | --- | ---
-1 | *None* | [Website](https://sites.google.com/york.ac.uk/dicycat/)
-2 | [View on GitHub](https://github.com/BaffledWhiskey/Dalai_Java-SEPR.git) | [Website](baffledwhiskey.github.io/)
+1 | *None* | [Website](https://baffledwhiskey.github.io/index.html)
+2 | [View on GitHub](https://github.com/BaffledWhiskey/Dalai_Java-SEPR.git) | [Website](https://baffledwhiskey.github.io/index.html)
 3 | [View on GitHub](https://github.com/jk1186/SEPR-Assesment-3.git) | [Website](dalaijava.github.io)
 4 | [View on GitHub](https://github.com/jk1186/Dalai-Java-Assessment-4.git)| [Website](dalaijava.github.io)
