@@ -6,5 +6,5 @@ Assessment | GitHub Repository | Team Website
 --- | --- | ---
 1 | *None* | [Website](https://baffledwhiskey.github.io/index.html)
 2 | [View on GitHub](https://github.com/BaffledWhiskey/Dalai_Java-SEPR.git) | [Website](https://baffledwhiskey.github.io/index.html)
-3 | [View on GitHub](https://github.com/jk1186/SEPR-Assesment-3.git) | [Website](dalaijava.github.io)
-4 | [View on GitHub](https://github.com/jk1186/Dalai-Java-Assessment-4.git)| [Website](dalaijava.github.io)
+3 | [View on GitHub](https://github.com/jk1186/SEPR-Assesment-3.git) | [Website](https://dalaijava.github.io)
+4 | [View on GitHub](https://github.com/jk1186/Dalai-Java-Assessment-4.git)| [Website](https://dalaijava.github.io)
