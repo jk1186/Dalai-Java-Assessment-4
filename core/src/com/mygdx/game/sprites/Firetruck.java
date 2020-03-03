@@ -3,6 +3,7 @@ package com.mygdx.game.sprites;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Timer;
 import com.mygdx.game.states.PlayState;
 
 /**
@@ -16,6 +17,7 @@ public class Firetruck extends Character {
     private int maxWater;
     private int currentWater;
     private boolean selected;
+    private boolean infiniteHealth;
 
     public Firetruck(Vector2 position, int width, int height, Texture texture, int maxHealth, int range, Unit target,
                      int speed, int dps, int maxWater, boolean selected) {
@@ -23,6 +25,7 @@ public class Firetruck extends Character {
         this.maxWater = maxWater;
         this.currentWater = maxWater;
         this.selected = selected;
+        this.infiniteHealth = false;
     }
 
     /**
@@ -47,6 +50,65 @@ public class Firetruck extends Character {
         		|| isOnCollidableTile(newPosition.x, newPosition.y + getHeight())
         		|| isOnCollidableTile(newPosition.x + getWidth(),newPosition.y))) {
         	setPosition(newPosition.x,newPosition.y);
+        }
+    }
+
+    //ASSESSMENT 4
+    /**
+     * Activates a given power up
+     * @param type the power-up to be activated
+     */
+    public void powerUp(String type) {
+        if (type == "Max Health") {
+            maxHealth = maxHealth + 10;
+            currentHealth = currentHealth + 10;
+        }
+
+        else if (type == "Damage") {
+            this.setDamage(this.getDamage() * 2);
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    setDamage(getDamage() / 2);
+                }
+            }, 10);
+        }
+
+        else if (type == "Infinite Health") {
+            this.infiniteHealth = true;
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    infiniteHealth = false;
+                }
+            }, 10);
+        }
+
+        else if (type == "Range") {
+            this.setRange(this.getRange() * 2);
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    setRange(getRange() / 2);
+                }
+            }, 10);
+        }
+
+        else if (type == "Speed") {
+            this.setSpeed(this.getSpeed() * 2);
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    setSpeed(getSpeed() / 2);
+                }
+            }, 10);
+        }
+    }
+
+    @Override
+    public void takeDamage(int damage) {
+        if (!infiniteHealth) {
+            super.takeDamage(damage);
         }
     }
     

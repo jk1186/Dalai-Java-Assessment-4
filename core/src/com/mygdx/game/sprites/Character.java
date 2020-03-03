@@ -45,4 +45,12 @@ public abstract class Character extends Unit {
     public int getRange() {
         return range;
     }
+
+    //ASSESSMENT 4
+
+    public void setSpeed(int speed) {this.speed = speed;}
+
+    public void setDamage(int damage) {this.damage = damage;}
+
+    public void setRange(int range) {this.range = range;}
 }
