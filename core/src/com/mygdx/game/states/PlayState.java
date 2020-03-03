@@ -70,6 +70,18 @@ public class PlayState extends State {
 
     private Sound waterShoot = Gdx.audio.newSound(Gdx.files.internal("honk.wav"));
 
+    //Assesment 4
+    private boolean spawn;
+    private   ArrayList<Texture> powerTexture = new ArrayList<Texture>();
+    Texture maxHealthIncrease = new Texture("powerMaxHealth.png");
+    Texture damageIncrease = new Texture("powerDamage.png");
+    Texture infiniteHealth = new Texture("powerInfiniteHealth.png");
+    Texture rangeIncrease = new Texture("powerRange.png");
+    Texture speedIncrease = new Texture("powerSpeed.png");
+
+    private ArrayList<String> powerUpTypes = new ArrayList<String>();
+
+    private ArrayList<PowerUps> powerList = new ArrayList<PowerUps>();
 
     //TODO: Add way to save level state to continue later
     //TODO: Add PowerUp effects to map
@@ -102,6 +114,21 @@ public class PlayState extends State {
         alienSpawnCountdown = 0;
         timeSinceLastFortressRegen = 0;
         timeSinceAlienKilled = -1;
+
+        // Assesment 4
+        spawn = false;
+        powerTexture.add(maxHealthIncrease);
+        powerTexture.add(damageIncrease);
+        powerTexture.add(infiniteHealth);
+        powerTexture.add(rangeIncrease);
+        powerTexture.add(speedIncrease);
+
+        powerUpTypes.add("Max Health");
+        powerUpTypes.add("Damage");
+        powerUpTypes.add("Infinite Health");
+        powerUpTypes.add("Range");
+        powerUpTypes.add("Speed");
+
 
 
         Vector2 firetruck1pos = new Vector2(0,0);
@@ -249,6 +276,8 @@ public class PlayState extends State {
         firetrucks.add(firetruck3);
         firetrucks.add(firetruck4);
         timer = new Timer(timeLimit);
+
+
     }
 
     /**
@@ -459,6 +488,22 @@ public class PlayState extends State {
         if ((14 < timeLimit - timer.getTime()) && (timeLimit - timer.getTime() < 16)){
             Kroy.INTRO.setPitch(Kroy.ID, 2f);
         }
+        // Assesment 4 - Power Ups
+        if ((int)timer.getTime() % 10 == 0 && this.spawn == false && timer.getTime() > 1){
+            Random rand = new Random() ;
+            int r = rand.nextInt(5);
+            int x = rand.nextInt(56);
+            int y = rand.nextInt(26);
+            Vector2 position = new Vector2(33 + x * 32, 212 + y * 32);
+            PowerUps powerUp = new PowerUps(position, 32, 32, powerTexture.get(r), powerUpTypes.get(r));
+            powerList.add(powerUp);
+            this.spawn = true;
+        }
+
+        if((int)timer.getTime() % 11 == 0 && this.spawn == true && timer.getTime() > 1){
+            System.out.println("Reset: " +  timer.getTime());
+            this.spawn = false;
+        }
     }
 
     /**
@@ -517,6 +562,11 @@ public class PlayState extends State {
         for (Projectile drop : water) {
             spriteBatch.draw(drop.getTexture(), drop.getPosition().x, drop.getPosition().y, drop.getWidth(),
                     drop.getHeight());
+        }
+
+        for(PowerUps power: powerList){
+            spriteBatch.draw(power.getTexture(), power.getPosition().x, power.getPosition().y, power.getWidth(),
+                    power.getHeight());
         }
 
         timer.drawTime(spriteBatch, ui);
