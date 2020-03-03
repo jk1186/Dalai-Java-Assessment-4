@@ -22,5 +22,6 @@ public class PowerUps extends Entity{
         this.duration = 10;
     }
 
+    public String getType(){return this.type;}
 
 }

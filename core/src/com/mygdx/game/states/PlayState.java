@@ -422,6 +422,13 @@ public class PlayState extends State {
             	truck.addHealth(1);
                 truck.setCurrentWater(truck.getMaxWater());
             }
+            for(PowerUps pow : powerList){
+                if(truck.getTopRight().y < pow.getPosition().y || truck.getPosition().y > pow.getTopRight().y ||
+                        truck.getTopRight().x < pow.getPosition().x || truck.getPosition().x > pow.getTopRight().x){
+                    truck.powerUp(pow.getType());
+                    powerList.remove(pow);
+                }
+            }
         }
 
         // Updates all water drops each tick, if the drop reaches a certain distance then it is deleted. Otherwise,
@@ -635,6 +642,9 @@ public class PlayState extends State {
 
         for (Entity obstacles: obstacles) {
             obstacles.dispose();
+        }
+        for(Entity pow : powerList){
+            pow.dispose();
         }
 
         fireStation.dispose();
