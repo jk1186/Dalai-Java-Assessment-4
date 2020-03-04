@@ -138,6 +138,8 @@ public class PlayState extends State {
         Vector2 firetruck3pos = null;
         Vector2 firetruck4pos = null;
 
+        // Assessment 4 - Added Kroy.difficultyMultiplier to fortresses.
+
         if (levelNumber == 1) { // Bottom left coordinate of map --> (33, 212) Each grid square = 32px
 
         	gameMap = new TiledGameMap("level1map.tmx");
@@ -154,7 +156,7 @@ public class PlayState extends State {
 
             // Level 1 Fortress
             fortress = new Fortress(new Vector2(33 + 24 * 32, 212 + 22 * 32), 6 * 32, 4 * 32,
-                    new Texture("grey.png"), 10000, 1.5f, levelNumber);
+                    new Texture("grey.png"), (int)(Kroy.difficultyMultiplier * 10000), 1.5f, levelNumber);
         }
 
         else if (levelNumber == 2) {
@@ -175,7 +177,7 @@ public class PlayState extends State {
 
             // Level 2 Fortress
             fortress = new Fortress(new Vector2(33 + 36 * 32, 212 + 19 * 32), 4 * 32, 4 * 32, new Texture("grey.png"),
-                    12500, 4, levelNumber);
+                    (int)(Kroy.difficultyMultiplier * 12500), 4, levelNumber);
         }
 
         else if (levelNumber == 3) {
@@ -194,7 +196,7 @@ public class PlayState extends State {
 
             // Level 3 Fortress
             fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
-                    15000, 2, levelNumber);
+                    (int)(Kroy.difficultyMultiplier * 15000), 2, levelNumber);
         }
 
 
@@ -214,7 +216,7 @@ public class PlayState extends State {
 
             // Level 4 Fortress
             fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
-                    15000, 2, levelNumber);
+                    (int)(Kroy.difficultyMultiplier * 15000), 2, levelNumber);
         }
 
 
@@ -234,7 +236,7 @@ public class PlayState extends State {
 
             // Level 5 Fortress
             fortress = new Fortress(new Vector2(33 + 4 * 32, 212 + 14 * 32), 4*32, 3*32, new Texture("grey.png"),
-                    15000, 2, levelNumber);
+                    (int)(Kroy.difficultyMultiplier * 15000), 2, levelNumber);
         }
 
 
@@ -254,7 +256,7 @@ public class PlayState extends State {
 
             // Level 3 Fortress
             fortress = new Fortress(new Vector2(33 + 24 * 32, 212 + 32 * 21), 224, 96, new Texture("grey.png"),
-                    15000, 2, levelNumber);
+                    (int)(Kroy.difficultyMultiplier * 15000), 2, levelNumber);
         }
 
 
@@ -265,13 +267,13 @@ public class PlayState extends State {
                 null, 100, 2,  175, true);
         firetruck2 = new Firetruck(firetruck2pos, 25,25,
                 new Texture("truck.png"), 100, 200,
-                null, 100, 2,  175, false);
+                null, 100,  2,  175, false);
         firetruck3 = new Firetruck(firetruck3pos, 25,25,
                 new Texture("truck.png"), 100, 100,
                 null, 200, 2,  175, false);
         firetruck4 = new Firetruck(firetruck4pos, 25,25,
                 new Texture("truck.png"), 100, 100,
-                null, 100, 4,  175, false);
+                null, 100,  4,  175, false);
 
         firetrucks.add(firetruck1);
         firetrucks.add(firetruck2);

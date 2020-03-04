@@ -65,6 +65,17 @@ public class LevelSelectState extends State{
     private Texture NotPressedBlueTexture5 = new Texture("NotPressedBlue5.png");
     private Texture NotPressedBlueTexture6 = new Texture("NotPressedBlue6.png");
 
+    // Assesment 4
+    private Texture tick;
+    private Texture cross;
+    private Button easy;
+    private Button normal;
+    private Button hard;
+    final double EASY = 0.5;
+    final double NORMAL = 1;
+    final double HARD = 2;
+
+
 
     //TODO: Difficulty Select, Tick Boxes at bottom of screen, Some sort of global multiplier for health, damage etc.
     protected LevelSelectState(GameStateManager gameStateManager) {
@@ -104,6 +115,18 @@ public class LevelSelectState extends State{
                 true);
 
         buttons = new ArrayList<>(Arrays.asList(level1, level2, level3, level4, level5, level6, back));
+
+        // Assessment 4
+        tick = new Texture("tick.png");
+        cross = new Texture("cross.png");
+
+        easy = new Button(tick, cross, 100, 100, new Vector2(Kroy.WIDTH / 2  - 500, 50), true, false);
+        normal = new Button(tick, cross, 100, 100, new Vector2(Kroy.WIDTH / 2 - 350 / 2 + 125, 50), false, true);
+        hard = new Button(tick, cross, 100, 100, new Vector2(Kroy.WIDTH / 2 + 350 / 2 + 225  , 50), false, true);
+
+        buttons.add(easy);
+        buttons.add(normal);
+        buttons.add(hard);
     }
 
     /**
@@ -203,6 +226,34 @@ public class LevelSelectState extends State{
         else {
             level6.setActive(false);
         }
+
+        // Assessment 4
+        if(easy.mouseInRegion()){
+            if(Gdx.input.isTouched()) {
+                easy.setActive(true);
+                normal.setActive(false);
+                hard.setActive(false);
+
+                Kroy.setDifficultyMultiplier(EASY);
+            }
+        }
+        else if(normal.mouseInRegion()){
+            if(Gdx.input.isTouched()) {
+                normal.setActive(true);
+                easy.setActive(false);
+                hard.setActive(false);
+
+                Kroy.setDifficultyMultiplier(NORMAL);
+            }
+        }
+        else if(hard.mouseInRegion()){
+            if(Gdx.input.isTouched()) {
+                hard.setActive(true);
+                normal.setActive(false);
+                easy.setActive(false);
+                Kroy.setDifficultyMultiplier(HARD);
+            }
+        }
     }
 
     /**
@@ -263,6 +314,7 @@ public class LevelSelectState extends State{
             level6.setOnTexture(PressedGreenTexture5);
             level6.setOffTexture(NotPressedGreenTexture5);
         }
+
     }
 
 
@@ -320,5 +372,9 @@ public class LevelSelectState extends State{
         NotPressedBlueTexture4.dispose();
         NotPressedBlueTexture5.dispose();
         NotPressedBlueTexture6.dispose();
+
+        // Assessment 4
+        tick.dispose();
+        cross.dispose();
     }
 }

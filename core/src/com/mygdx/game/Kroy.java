@@ -28,6 +28,10 @@ public class Kroy extends ApplicationAdapter {
 	private SpriteBatch batch;
 	private Preferences saveData;
 
+	// Assesment 4
+	public static double difficultyMultiplier;
+	public static void setDifficultyMultiplier(double diff) {difficultyMultiplier = diff;}
+
 	/**
 	 * Initializes the game. During the start of the game loop thread, create() will be called only once.
 	 */
@@ -41,6 +45,7 @@ public class Kroy extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 1, 1);
 		gameStateManager.push(new MenuState(gameStateManager)); // Initializes game with menu state
 		saveData = Gdx.app.getPreferences("Kroy");
+		difficultyMultiplier = 0.5;
 
 		if (saveData.getBoolean("music", true)) { // If no value for "music" exists in save data, set to true
 			saveData.putBoolean("music", true);
@@ -68,4 +73,6 @@ public class Kroy extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 	}
+
+	public double getDifficultyMultiplier(){return this.difficultyMultiplier;}
 }
