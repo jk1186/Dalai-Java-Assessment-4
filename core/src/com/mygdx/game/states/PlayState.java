@@ -82,6 +82,8 @@ public class PlayState extends State {
     private ArrayList<String> powerUpTypes = new ArrayList<String>();
 
     private ArrayList<PowerUps> powerList = new ArrayList<PowerUps>();
+    private ArrayList<PowerUps> clearList = new ArrayList<PowerUps>();
+
 
     //TODO: Add way to save level state to continue later
     //TODO: Add PowerUp effects to map
@@ -422,12 +424,15 @@ public class PlayState extends State {
             	truck.addHealth(1);
                 truck.setCurrentWater(truck.getMaxWater());
             }
-            for(PowerUps pow : powerList){
-                if(truck.getTopRight().y < pow.getPosition().y || truck.getPosition().y > pow.getTopRight().y ||
-                        truck.getTopRight().x < pow.getPosition().x || truck.getPosition().x > pow.getTopRight().x){
+            for (PowerUps pow : powerList){
+                if(!(truck.getTopRight().y < pow.getPosition().y || truck.getPosition().y > pow.getTopRight().y ||
+                        truck.getTopRight().x < pow.getPosition().x || truck.getPosition().x > pow.getTopRight().x)){
                     truck.powerUp(pow.getType());
-                    powerList.remove(pow);
+                    clearList.add(pow);
                 }
+            }
+            for (PowerUps pow : clearList) {
+                powerList.remove(pow);
             }
         }
 
