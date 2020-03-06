@@ -1,32 +1,33 @@
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Timer;
 import com.mygdx.game.sprites.Entity;
 import com.mygdx.game.sprites.Firetruck;
 import com.mygdx.game.sprites.Unit;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.runner.RunWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 
-//Instance of the Unit class to test on (is abstract)
-class unitForFireTruck extends Unit {
-
-    private int maxWater;
-    private int currentWater;
-    private boolean selected;
-
-    public unitForFireTruck(Vector2 position, int width, int height, Texture texture, int maxHealth, int range, Unit target,
-                            int speed, int dps, int bearing, int maxWater, boolean selected, float attackCooldown) {
-        super(position, width, height, texture, maxHealth);
-        this.maxWater = maxWater;
-        this.currentWater = maxWater;
-        this.selected = selected;
-    }
-
-}
-
-
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({Graphics.class, Input.class, Timer.class})
 public class testFireTruck {
 
     Texture textureMock = mock(Texture.class);
@@ -38,6 +39,25 @@ public class testFireTruck {
     Firetruck testFireTruck = new Firetruck(new Vector2(100, 100 ), 101, 102, textureMock,
             103, 10, null, 10, 12, 13, true);
 
+    //ASSESSMENT 4
+    @Before
+    public void setup() {
+        Gdx.graphics = PowerMockito.mock(Graphics.class);
+        Gdx.input = PowerMockito.mock(Input.class);
+        PowerMockito.mockStatic(Timer.class);
+        lenient().when(Gdx.graphics.getDeltaTime()).thenReturn(1f);
+        //Need to work out why on earth this works, I just copied + pasted
+        Application application = PowerMockito.mock(Application.class);
+        Mockito.when(application.getType()).thenReturn(Application.ApplicationType.Desktop);
+        Gdx.app = application;
+        PowerMockito.when(Timer.post(any(Timer.Task.class))).then(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) {
+                ((Timer.Task) invocation.getArgument(0)).run();
+                return null;
+            }
+        });
+    }
 
     //Testing basic constructor functionality with getters
     @Test
@@ -68,6 +88,58 @@ public class testFireTruck {
         assertEquals(0, testFireTruck.getCurrentWater());
     }
 
+    //ASSESSMENT 4 - Dalai Java
+    /*@Test
+    public void truckShouldMoveWhenCommandedTest() {
+        testFireTruck.move(2);
+        assertEquals(testFireTruck.getPosition().x, 110);
+    }
 
+    //ASSESSMENT 4 - Dalai Java
+    @Test
+    public void movingEquallyInAllDirectionsShouldResultInOriginalPositionTest() {
+        testFireTruck.move(1);
+        testFireTruck.move(2);
+        testFireTruck.move(3);
+        testFireTruck.move(4);
+        assertEquals(testFireTruck.getPosition(), new Vector2(100,100));
+    }*/
+
+    //ASSESSMENT 4 - Dalai Java
+    @Test
+    public void speedPowerUpShouldDoubleSpeed() {
+        testFireTruck.powerUp("Speed");
+        assertEquals(testFireTruck.getSpeed(),20);
+    }
+
+    //ASSESSMENT 4 - Dalai Java
+    @Test
+    public void damagePowerUpShouldDoubleDamage() {
+        testFireTruck.powerUp("Damage");
+        assertEquals(testFireTruck.getDamage(),24);
+    }
+
+    //ASSESSMENT 4 - Dalai Java
+    @Test
+    public void rangePowerUpShouldDoubleRange() {
+        testFireTruck.powerUp("Range");
+        assertEquals(testFireTruck.getRange(),20);
+    }
+
+    //ASSESSMENT 4 - Dalai Java
+    @Test
+    public void maxHealthPowerUpShouldIncreaseMaxHealth() {
+        testFireTruck.powerUp("Max Health");
+        assertEquals(testFireTruck.getCurrentHealth(),113);
+        assertEquals(testFireTruck.getMaxHealth(),113);
+    }
+
+    //ASSESSMENT 4 - Dalai Java
+    @Test
+    public void infiniteHealthShouldMakeTruckInvincible() {
+        testFireTruck.powerUp("Infinite Health");
+        testFireTruck.takeDamage(50);
+        assertEquals(testFireTruck.getCurrentHealth(),103);
+    }
 
 }

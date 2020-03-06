@@ -77,4 +77,19 @@ public class AlienTest {
         assertEquals(new Vector2(200, 200), wayPointAlien.getNextWaypoint());
     }
 
+    //ASSESSMENT 4 - Dalai Java
+    @Test
+    public void updateTimeSinceAttackShouldIncreaseTimeTest() {
+        testAlien.updateTimeSinceAttack(5);
+        assertEquals(testAlien.getTimeSinceAttack(),5,0);
+    }
+
+    //ASSESSMENT 4 - Dalai Java
+    @Test
+    public void resetTimeSinceAttackShouldResetTimeToZeroTest() {
+        testAlien.updateTimeSinceAttack(5);
+        testAlien.resetTimeSinceAttack();
+        assertEquals(testAlien.getTimeSinceAttack(),0,0);
+    }
+
 }

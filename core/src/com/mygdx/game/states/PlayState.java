@@ -506,9 +506,15 @@ public class PlayState extends State {
         if ((int)timer.getTime() % 10 == 0 && this.spawn == false && timer.getTime() > 1){
             Random rand = new Random() ;
             int r = rand.nextInt(5);
-            int x = rand.nextInt(56);
-            int y = rand.nextInt(26);
-            Vector2 position = new Vector2(33 + x * 32, 212 + y * 32);
+            Vector2 position = null;
+            Boolean blocked = true;
+            //Checks whether the power up is created on a reachable square and generates a new position if not.
+            while (blocked) {
+                int x = rand.nextInt(56);
+                int y = rand.nextInt(26);
+                position = new Vector2(33 + x * 32, 212 + y * 32);
+                blocked = (PlayState.gameMap.getTileTypeByScreenCoordinate(position.x,position.y).getCollidable());
+            }
             PowerUps powerUp = new PowerUps(position, 32, 32, powerTexture.get(r), powerUpTypes.get(r));
             powerList.add(powerUp);
             this.spawn = true;

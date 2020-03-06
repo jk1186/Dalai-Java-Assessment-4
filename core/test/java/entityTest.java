@@ -21,6 +21,7 @@ public class entityTest {
         testEntity.setPosition(100, 100);
         assertEquals(new Vector2(100, 100), testEntity.getPosition());
         assertEquals(new Vector2(200, 200), testEntity.getTopRight());
+
     }
 
     //Testing that setPosition() will allow for the boundary input of 0
@@ -29,6 +30,14 @@ public class entityTest {
         testEntity.setPosition(0, 0);
         assertEquals(new Vector2(0, 0), testEntity.getPosition());
         assertEquals(new Vector2(100, 100), testEntity.getTopRight());
+    }
+
+    //ASSESSMENT 4 - Dalai Java
+    @Test
+    public void testTextureGetterAndSetter() {
+        Texture textureMock2 = mock(Texture.class);
+        testEntity.setTexture(textureMock2);
+        assertEquals(testEntity.getTexture(),textureMock2);
     }
 
     //Testing that negative numbers throw an IllegalArgumentException

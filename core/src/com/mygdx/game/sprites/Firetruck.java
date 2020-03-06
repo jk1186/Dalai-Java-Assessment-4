@@ -29,7 +29,7 @@ public class Firetruck extends Character {
     }
 
     /**
-     * A method which controllers Firetruck movement depending on the direction input
+     * A method which controls Firetruck movement depending on the direction input
      * @param direction 1 = Left, 2 = Right, 3 = Up, 4 = Down
      */
     public void move(int direction) { // 1, 2, 3, 4 --> Left, Right, Up, Down
