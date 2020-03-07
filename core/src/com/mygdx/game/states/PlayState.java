@@ -20,8 +20,11 @@ import com.mygdx.game.sprites.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Random;
 
@@ -94,7 +97,7 @@ public class PlayState extends State {
 
     //TODO: Add way to save level state to continue later
     //TODO: Add PowerUp effects to map
-    public PlayState(GameStateManager gsm, int levelNumber) {
+    public PlayState(GameStateManager gsm,  int levelNumber) {
         super(gsm);
         this.levelNumber = levelNumber;
         background = new Texture("LevelProportions.png");
@@ -291,6 +294,80 @@ public class PlayState extends State {
 
     }
 
+    public PlayState(GameStateManager gsm, Gson config){
+        super(gsm);
+
+        background = new Texture("LevelProportions.png");
+
+        quitLevel = new Button(new Texture("PressedQuitLevel.png"),
+                new Texture("NotPressedQuitLevel.png"),350 / 2, 100 / 2,
+                new Vector2(30, 30), false, false);
+
+        quitGame = new Button(new Texture("PressedQuitGame.png"),
+                new Texture("NotPressedQuitGame.png"), 350 / 2, 100 / 2,
+                new Vector2(1920 - 30 - 350 / 2, 30), false, false);
+
+        // levelNum = levelNumber-1; // Need to get value from json file
+        level = Integer.toString(levelNumber); // Used as a key when saving level progress
+
+        levelLost = false;
+        levelWon = false;
+
+        saveData = Gdx.app.getPreferences("Kroy");
+
+        ui = new BitmapFont(Gdx.files.internal("font.fnt"));
+        ui.setColor(Color.DARK_GRAY);
+
+        healthBars = new BitmapFont();
+
+        alienSpawnCountdown = 0;
+        timeSinceLastFortressRegen = 0;
+        timeSinceAlienKilled = -1;
+
+        // Assesment 4
+        spawn = false;
+        powerTexture.add(maxHealthIncrease);
+        powerTexture.add(damageIncrease);
+        powerTexture.add(infiniteHealth);
+        powerTexture.add(rangeIncrease);
+        powerTexture.add(speedIncrease);
+
+        powerUpTypes.add("Max Health");
+        powerUpTypes.add("Damage");
+        powerUpTypes.add("Infinite Health");
+        powerUpTypes.add("Range");
+        powerUpTypes.add("Speed");
+
+
+
+        // Assessment 4 - Added Kroy.difficultyMultiplier to fortresses.
+        Kroy.setDifficultyMultiplier(saveData.getFloat("diff"));
+        ArrayList<Firetruck> fl= new ArrayList<Firetruck>(Arrays.asList(config.fromJson("Firetrucks",Firetruck.class)));
+        firetruck1 = fl.get(0);
+        firetruck2 = fl.get(1);
+        firetruck3 = fl.get(2);
+        firetruck4 = fl.get(3);
+
+
+        if(levelNumber == 1){
+            gameMap = new TiledGameMap("level1map.tmx");
+        }
+        if(levelNumber == 2){
+            gameMap = new TiledGameMap("level2map.tmx");
+        }
+        if(levelNumber == 3){
+            gameMap = new TiledGameMap("level3map.tmx");
+        }
+        if(levelNumber == 4){
+            gameMap = new TiledGameMap("level4map.tmx");
+        }
+        if(levelNumber == 5){
+            gameMap = new TiledGameMap("level5map.tmx");
+        }
+        if(levelNumber == 6){
+            gameMap = new TiledGameMap("level6map.tmx");
+        }
+    }
 
 
     /**
@@ -312,6 +389,7 @@ public class PlayState extends State {
         if (quitLevel.mouseInRegion()){
             quitLevel.setActive(true);
             if (Gdx.input.isTouched()) {
+                // Assessment 4
                 serializeState();
                 gameStateManager.pop();
             }
@@ -369,36 +447,51 @@ public class PlayState extends State {
         }
 
     }
-
+    // Assessment 4
     private void serializeState() throws IOException {
         String d = new SimpleDateFormat("'..\\saves\\'yyyyMMddHHmmss'.json'").format(new Date());
-
-        FileWriter writer = new FileWriter(d);
+        int i = 0;
+        //FileWriter writer = new FileWriter(d);
+        FileWriter writer = new FileWriter("..\\saves\\test.json");
         writer.write("{\n\t\"Firetrucks\" : [\n");
         for (Firetruck f: firetrucks) {
+            if (!(i ==0)){
+                writer.write(", ");
+            }
+            i++;
             writer.write("\t\t");
             gson.toJson(f, writer);
             writer.write("\n");
-            //writer.flush();
         }
-        writer.write("\t]\n\t\"Aliens\" : [\n");
+        i = 0;
+        writer.write("\t],\n\t\"Aliens\" : [\n");
         for(Alien a: aliens){
+            if (!(i ==0)){
+                writer.write(", ");
+            }
+            i++;
             writer.write("\t\t");
             gson.toJson(a, writer);
             writer.write("\n");
-            //writer.flush();
         }
-        writer.write("\t]\n\t\"PowerUps\" : [\n");
+        writer.write("\t],\n\t\"PowerUps\" : [\n");
+        i = 0;
         for (PowerUps p :powerList){
+            if (!(i == 0)){
+                writer.write(", ");
+            }
+            i++;
             writer.write("\t\t");
             gson.toJson(p, writer);
             writer.write("\n");
-            //writer.flush();
+
         }
-        writer.write("\t]\n\t\"fortress\" : ");
+        writer.write("\t],\n\t\"fortress\" : ");
         gson.toJson(fortress, writer);
-        writer.write("\n\t\"level\": ");
+        writer.write(",\n\t\"level\" : ");
         gson.toJson(level, writer);
+        writer.write(",\n\t\"time-left\" : ");
+        gson.toJson((int)(timeLimit- timer.getTime()), writer);
         writer.write("\n}");
         writer.flush();
         writer.close();
