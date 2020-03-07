@@ -11,20 +11,18 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.mygdx.game.Kroy;
 import com.mygdx.game.map.TiledGameMap;
 import com.mygdx.game.misc.Button;
 import com.mygdx.game.misc.Timer;
 import com.mygdx.game.sprites.*;
+import jdk.nashorn.internal.parser.JSONParser;
+import org.json.simple.JSONObject;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Random;
 
@@ -294,7 +292,7 @@ public class PlayState extends State {
 
     }
 
-    public PlayState(GameStateManager gsm, Gson config){
+    public PlayState(GameStateManager gsm, String filePath) throws FileNotFoundException {
         super(gsm);
 
         background = new Texture("LevelProportions.png");
@@ -307,8 +305,7 @@ public class PlayState extends State {
                 new Texture("NotPressedQuitGame.png"), 350 / 2, 100 / 2,
                 new Vector2(1920 - 30 - 350 / 2, 30), false, false);
 
-        // levelNum = levelNumber-1; // Need to get value from json file
-        level = Integer.toString(levelNumber); // Used as a key when saving level progress
+
 
         levelLost = false;
         levelWon = false;
@@ -338,35 +335,45 @@ public class PlayState extends State {
         powerUpTypes.add("Range");
         powerUpTypes.add("Speed");
 
+        // Get Data From json and convert to the required objects and attributes
+        Gson gson = new Gson();
 
+        Object obj = JSONParser.parse(new FileReader(filePath));
+        JSONObject data = (JSONObject)obj;
 
-        // Assessment 4 - Added Kroy.difficultyMultiplier to fortresses.
-        Kroy.setDifficultyMultiplier(saveData.getFloat("diff"));
-        ArrayList<Firetruck> fl= new ArrayList<Firetruck>(Arrays.asList(config.fromJson("Firetrucks",Firetruck.class)));
-        firetruck1 = fl.get(0);
-        firetruck2 = fl.get(1);
-        firetruck3 = fl.get(2);
-        firetruck4 = fl.get(3);
+        timeLimit = (float)data.get("time-left");
+        levelNumber = (int)data.get("level");
+        levelNum = levelNumber-1; // Need to get value from json file
+        level = Integer.toString(levelNumber); // Used as a key when saving level progress
+        fortress = gson.fromJson((JsonElement) data.get("fortress"), Fortress.class);
 
-
-        if(levelNumber == 1){
+        if (levelNumber == 1) { // Bottom left coordinate of map --> (33, 212) Each grid square = 32px
             gameMap = new TiledGameMap("level1map.tmx");
-        }
-        if(levelNumber == 2){
+            fireStation = new Entity(new Vector2(33 + 8 * 32, 212 + 4 * 32), 128, 128,
+                    new Texture("teal.jpg"));
+         }
+        else if (levelNumber == 2) {
             gameMap = new TiledGameMap("level2map.tmx");
+            fireStation = new Entity(new Vector2(33 + 1 * 32, 212 + 4 * 32), 64, 128,
+                    new Texture("teal.jpg"));
         }
-        if(levelNumber == 3){
+        else if (levelNumber == 3) {
             gameMap = new TiledGameMap("level3map.tmx");
+            fireStation = new Entity(new Vector2(33 + 27*32, 212), 6 * 32, 4 * 32, new Texture("teal.jpg"));
         }
-        if(levelNumber == 4){
+        else if (levelNumber == 4) {
             gameMap = new TiledGameMap("level4map.tmx");
+            fireStation = new Entity(new Vector2(33 + 5 * 32, 212 + 4 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
         }
-        if(levelNumber == 5){
+        else if (levelNumber == 5) {
             gameMap = new TiledGameMap("level5map.tmx");
+            fireStation = new Entity(new Vector2(33 + 24 * 32, 212 + 12 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
         }
-        if(levelNumber == 6){
+        else if (levelNumber == 6) {
             gameMap = new TiledGameMap("level6map.tmx");
+            fireStation = new Entity(new Vector2(33 + 6 * 32, 212 + 3 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
         }
+
     }
 
 
