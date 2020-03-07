@@ -230,6 +230,7 @@ public class LevelSelectState extends State{
         // Assessment 4
         if(easy.mouseInRegion()){
             if(Gdx.input.isTouched()) {
+                saveData.putFloat("Diff", (float)EASY);
                 easy.setActive(true);
                 normal.setActive(false);
                 hard.setActive(false);
@@ -239,6 +240,7 @@ public class LevelSelectState extends State{
         }
         else if(normal.mouseInRegion()){
             if(Gdx.input.isTouched()) {
+                saveData.putFloat("Diff", (float)NORMAL);
                 normal.setActive(true);
                 easy.setActive(false);
                 hard.setActive(false);
@@ -248,12 +250,14 @@ public class LevelSelectState extends State{
         }
         else if(hard.mouseInRegion()){
             if(Gdx.input.isTouched()) {
+                saveData.putFloat("Diff", (float)HARD);
                 hard.setActive(true);
                 normal.setActive(false);
                 easy.setActive(false);
                 Kroy.setDifficultyMultiplier(HARD);
             }
         }
+        saveData.flush();
     }
 
     /**

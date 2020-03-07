@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.states.GameStateManager;
 import com.mygdx.game.states.MenuState;
 
+import java.io.IOException;
+
 /**
  * Class which initialises the SpriteBatch, GameStateManager and loads sounds settings before
  * pushing the beginning MenuState instance.
@@ -62,7 +64,11 @@ public class Kroy extends ApplicationAdapter {
 	@Override
 	public void render () {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		gameStateManager.update(Gdx.graphics.getDeltaTime());
+		try {
+			gameStateManager.update(Gdx.graphics.getDeltaTime());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		gameStateManager.render(batch);
 	}
 

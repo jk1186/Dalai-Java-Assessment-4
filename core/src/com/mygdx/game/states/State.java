@@ -1,6 +1,9 @@
 package com.mygdx.game.states;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import java.io.IOException;
+
 /**
  * An abstract class which contains the methods and fields required for
  * each game state of the game.
@@ -24,7 +27,7 @@ public abstract class State {
      * Updates the game logic before the next render() is called
      * @param deltaTime the amount of time which has passed since the last render() call
      */
-    public abstract void update(float deltaTime);
+    public abstract void update(float deltaTime) throws IOException;
 
     /**
      * Used to draw elements onto the screen.

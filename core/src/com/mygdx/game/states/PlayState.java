@@ -10,13 +10,19 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.google.gson.Gson;
 import com.mygdx.game.Kroy;
 import com.mygdx.game.map.TiledGameMap;
 import com.mygdx.game.misc.Button;
 import com.mygdx.game.misc.Timer;
 import com.mygdx.game.sprites.*;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -84,6 +90,7 @@ public class PlayState extends State {
     private ArrayList<PowerUps> powerList = new ArrayList<PowerUps>();
     private ArrayList<PowerUps> clearList = new ArrayList<PowerUps>();
 
+    Gson gson = new Gson();
 
     //TODO: Add way to save level state to continue later
     //TODO: Add PowerUp effects to map
@@ -139,7 +146,7 @@ public class PlayState extends State {
         Vector2 firetruck4pos = null;
 
         // Assessment 4 - Added Kroy.difficultyMultiplier to fortresses.
-
+        Kroy.setDifficultyMultiplier(saveData.getFloat("diff"));
         if (levelNumber == 1) { // Bottom left coordinate of map --> (33, 212) Each grid square = 32px
 
         	gameMap = new TiledGameMap("level1map.tmx");
@@ -284,10 +291,12 @@ public class PlayState extends State {
 
     }
 
+
+
     /**
      * The game logic which is executed due to specific user inputs. Is called in the update method.
      */
-    public void handleInput() {
+    public void handleInput() throws IOException {
         // Checks for hover and clicks on the 2 buttons located on the play screen.
         if (quitGame.mouseInRegion()){
             quitGame.setActive(true);
@@ -300,10 +309,10 @@ public class PlayState extends State {
         else {
             quitGame.setActive(false);
         }
-
         if (quitLevel.mouseInRegion()){
             quitLevel.setActive(true);
             if (Gdx.input.isTouched()) {
+                serializeState();
                 gameStateManager.pop();
             }
         }
@@ -361,12 +370,46 @@ public class PlayState extends State {
 
     }
 
+    private void serializeState() throws IOException {
+        String d = new SimpleDateFormat("'..\\saves\\'yyyyMMddHHmmss'.json'").format(new Date());
+
+        FileWriter writer = new FileWriter(d);
+        writer.write("{\n\t\"Firetrucks\" : [\n");
+        for (Firetruck f: firetrucks) {
+            writer.write("\t\t");
+            gson.toJson(f, writer);
+            writer.write("\n");
+            //writer.flush();
+        }
+        writer.write("\t]\n\t\"Aliens\" : [\n");
+        for(Alien a: aliens){
+            writer.write("\t\t");
+            gson.toJson(a, writer);
+            writer.write("\n");
+            //writer.flush();
+        }
+        writer.write("\t]\n\t\"PowerUps\" : [\n");
+        for (PowerUps p :powerList){
+            writer.write("\t\t");
+            gson.toJson(p, writer);
+            writer.write("\n");
+            //writer.flush();
+        }
+        writer.write("\t]\n\t\"fortress\" : ");
+        gson.toJson(fortress, writer);
+        writer.write("\n\t\"level\": ");
+        gson.toJson(level, writer);
+        writer.write("\n}");
+        writer.flush();
+        writer.close();
+    }
+
     /**
      * Updates the game logic before the next render() is called
      * @param deltaTime the amount of time which has passed since the last render() call
      */
     @Override
-    public void update(float deltaTime) {
+    public void update(float deltaTime) throws IOException {
         // Calls input handler and updates timer each tick of the game.
         handleInput();
         timer.update();

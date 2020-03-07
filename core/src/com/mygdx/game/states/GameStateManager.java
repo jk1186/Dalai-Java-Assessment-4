@@ -2,6 +2,7 @@ package com.mygdx.game.states;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.io.IOException;
 import java.util.Stack;
 
 /**
@@ -55,7 +56,7 @@ public class GameStateManager {
      *
      * @param deltaTime the amount of time which has passed since the last render() call.
      */
-    public void update(float deltaTime) {
+    public void update(float deltaTime) throws IOException {
         states.peek().update(deltaTime);
     }
 
