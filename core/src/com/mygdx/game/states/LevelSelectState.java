@@ -120,9 +120,10 @@ public class LevelSelectState extends State{
         tick = new Texture("tick.png");
         cross = new Texture("cross.png");
 
-        easy = new Button(tick, cross, 100, 100, new Vector2(Kroy.WIDTH / 2  - 500, 50), true, false);
-        normal = new Button(tick, cross, 100, 100, new Vector2(Kroy.WIDTH / 2 - 350 / 2 + 125, 50), false, true);
-        hard = new Button(tick, cross, 100, 100, new Vector2(Kroy.WIDTH / 2 + 350 / 2 + 225  , 50), false, true);
+        easy = new Button(tick, cross, 100, 100, new Vector2(Kroy.WIDTH / 2  - 500, 50), saveData.getBoolean("easy"),(!(saveData.getBoolean("easy"))));
+        normal = new Button(tick, cross, 100, 100, new Vector2(Kroy.WIDTH / 2 - 350 / 2 + 125, 50), saveData.getBoolean("normal"), (!(saveData.getBoolean("normal"))));
+        hard = new Button(tick, cross, 100, 100, new Vector2(Kroy.WIDTH / 2 + 350 / 2 + 225  , 50), saveData.getBoolean("hard"), (!(saveData.getBoolean("hard"))));
+
 
         buttons.add(easy);
         buttons.add(normal);
