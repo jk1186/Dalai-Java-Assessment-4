@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Json;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.mygdx.game.Kroy;
@@ -25,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  * Implementation of the abstract class State which contains the methods and attributes required to control the
@@ -95,7 +97,7 @@ public class PlayState extends State {
 
     //TODO: Add way to save level state to continue later
     //TODO: Add PowerUp effects to map
-    public PlayState(GameStateManager gsm,  int levelNumber) {
+    public PlayState(GameStateManager gsm,  int levelNumber){
         super(gsm);
         this.levelNumber = levelNumber;
         background = new Texture("LevelProportions.png");
@@ -164,7 +166,8 @@ public class PlayState extends State {
 
             // Level 1 Fortress
             fortress = new Fortress(new Vector2(33 + 24 * 32, 212 + 22 * 32), 6 * 32, 4 * 32,
-                    new Texture("grey.png"), (int)(Kroy.difficultyMultiplier * 10000), 1.5f, levelNumber);
+                   new Texture("grey.png"), (int)(Kroy.difficultyMultiplier * 10000), 1.5f, levelNumber);
+
         }
 
         else if (levelNumber == 2) {
@@ -292,7 +295,7 @@ public class PlayState extends State {
 
     }
 
-    public PlayState(GameStateManager gsm, String filePath) throws FileNotFoundException {
+   /* public PlayState(GameStateManager gsm, String filePath) throws FileNotFoundException {
         super(gsm);
 
         background = new Texture("LevelProportions.png");
@@ -336,10 +339,10 @@ public class PlayState extends State {
         powerUpTypes.add("Speed");
 
         // Get Data From json and convert to the required objects and attributes
-        Gson gson = new Gson();
 
-        Object obj = JSONParser.parse(new FileReader(filePath));
-        JSONObject data = (JSONObject)obj;
+       Json json = new Json();
+
+
 
         timeLimit = (float)data.get("time-left");
         levelNumber = (int)data.get("level");
@@ -374,13 +377,13 @@ public class PlayState extends State {
             fireStation = new Entity(new Vector2(33 + 6 * 32, 212 + 3 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
         }
 
-    }
+    }*/
 
 
     /**
      * The game logic which is executed due to specific user inputs. Is called in the update method.
      */
-    public void handleInput() throws IOException {
+    public void handleInput() {
         // Checks for hover and clicks on the 2 buttons located on the play screen.
         if (quitGame.mouseInRegion()){
             quitGame.setActive(true);
@@ -397,7 +400,7 @@ public class PlayState extends State {
             quitLevel.setActive(true);
             if (Gdx.input.isTouched()) {
                 // Assessment 4
-                serializeState();
+                //serializeState();
                 gameStateManager.pop();
             }
         }
@@ -455,12 +458,13 @@ public class PlayState extends State {
 
     }
     // Assessment 4
-    private void serializeState() throws IOException {
+    /*private void serializeState() throws IOException {
         String d = new SimpleDateFormat("'..\\saves\\'yyyyMMddHHmmss'.json'").format(new Date());
         int i = 0;
         //FileWriter writer = new FileWriter(d);
         FileWriter writer = new FileWriter("..\\saves\\test.json");
         writer.write("{\n\t\"Firetrucks\" : [\n");
+
         for (Firetruck f: firetrucks) {
             if (!(i ==0)){
                 writer.write(", ");
@@ -503,13 +507,14 @@ public class PlayState extends State {
         writer.flush();
         writer.close();
     }
+    */
 
     /**
      * Updates the game logic before the next render() is called
      * @param deltaTime the amount of time which has passed since the last render() call
      */
     @Override
-    public void update(float deltaTime) throws IOException {
+    public void update(float deltaTime)  {
         // Calls input handler and updates timer each tick of the game.
         handleInput();
         timer.update();
@@ -737,13 +742,13 @@ public class PlayState extends State {
 
         // Draws UI Text onto the screen
         ui.setColor(Color.DARK_GRAY);
-        ui.draw(spriteBatch, "Truck 1 Health: " + Integer.toString(firetruck1.getCurrentHealth()),
+        ui.draw(spriteBatch, "Truck 1 Health: " + (firetruck1.getCurrentHealth()),
         		70, Kroy.HEIGHT - 920);
-        ui.draw(spriteBatch, "Truck 2 Health: " + Integer.toString(firetruck2.getCurrentHealth()),
+        ui.draw(spriteBatch, "Truck 2 Health: " + (firetruck2.getCurrentHealth()),
         		546, Kroy.HEIGHT - 920);
-        ui.draw(spriteBatch, "Truck 3 Health: " + Integer.toString(firetruck3.getCurrentHealth()),
+        ui.draw(spriteBatch, "Truck 3 Health: " + (firetruck3.getCurrentHealth()),
         		1023, Kroy.HEIGHT - 920);
-        ui.draw(spriteBatch, "Truck 4 Health: " + Integer.toString(firetruck4.getCurrentHealth()),
+        ui.draw(spriteBatch, "Truck 4 Health: " + (firetruck4.getCurrentHealth()),
         		1499, Kroy.HEIGHT - 920);
 
         // If end game reached, draws level fail or level won images to the screen

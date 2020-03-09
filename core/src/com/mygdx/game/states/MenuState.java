@@ -31,6 +31,8 @@ public class MenuState extends State {
     private Preferences saveData ;
     private Sound click = Gdx.audio.newSound(Gdx.files.internal("click.wav"));
 
+    private Button load;
+
     public MenuState(GameStateManager gameStateManager) {
         super(gameStateManager);
         saveData = Gdx.app.getPreferences("Kroy");
@@ -54,8 +56,13 @@ public class MenuState extends State {
                 false);
 
         quit = new Button(new Texture("quitpressed.png"), new Texture("quit.png"),
-                350, 100, new Vector2(Kroy.WIDTH / 2 - (350 / 2), 100),
+                350, 100, new Vector2(Kroy.WIDTH / 2 - (350 / 2) + 400, 100),
                 false, false);
+
+        load = new Button(new Texture("loadPressed.png"), new Texture("loadNotPressed.png"),
+                350,100, new Vector2(Kroy.WIDTH /2 - (350/2) - 400, 100),
+                false, false);
+
         if (saveData.getBoolean("music", true) == true){
             Kroy.INTRO.resume(Kroy.ID);
         }
@@ -135,6 +142,18 @@ public class MenuState extends State {
         else {
             quit.setActive(false);
         }
+        if (load.mouseInRegion()){
+            load.setActive(true);
+            if(Gdx.input.isTouched()){
+                if(saveData.getBoolean("effects")){
+                    click.play();
+                }
+                gameStateManager.push(new LoadState(gameStateManager));
+            }
+        }
+        else{
+            load.setActive(false);
+        }
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
             Gdx.app.exit();
             System.exit(0);
@@ -175,6 +194,9 @@ public class MenuState extends State {
 
         spriteBatch.draw(quit.getTexture(), quit.getPosition().x, quit.getPosition().y, quit.getWidth(),
                 quit.getHeight());
+
+        spriteBatch.draw(load.getTexture(), load.getPosition().x, load.getPosition().y, load. getWidth(),
+                load.getHeight());
 
         spriteBatch.end();
     }

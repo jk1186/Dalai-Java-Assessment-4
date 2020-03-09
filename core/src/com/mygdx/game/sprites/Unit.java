@@ -64,6 +64,8 @@ public abstract class Unit extends Entity {
         return currentHealth;
     }
 
+    public int getMaxHealth(){return maxHealth;}
+
     /**
      * Adds subtracts the value from currentHealth while preventing currentHealth from being less than 0
      * @param damage integer value to remove from currentHealth

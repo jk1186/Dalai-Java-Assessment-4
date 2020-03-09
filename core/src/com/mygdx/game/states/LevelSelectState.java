@@ -30,10 +30,10 @@ public class LevelSelectState extends State{
     private Button level6;
     private Button back;
     private ArrayList<Button> buttons;
+
     private Preferences saveData;
     private Sound click = Gdx.audio.newSound(Gdx.files.internal("click.wav"));
     private Sound honk = Gdx.audio.newSound(Gdx.files.internal("honk.wav"));
-
 
     //DJ - Added all textures here to fix the memory leak that NPStudios had (new textures were being created each
     // update() call
