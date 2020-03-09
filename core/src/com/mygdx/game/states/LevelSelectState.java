@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Kroy;
 import com.mygdx.game.misc.Button;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -135,7 +136,7 @@ public class LevelSelectState extends State{
      * Checks if mouse is hovering over a button and plays the animation accordingly as well as checking for
      * mouse clicks which will activate the function of the button.
      */
-    public void handleInput() {
+    public void handleInput() throws FileNotFoundException {
         if (back.mouseInRegion()) {
             back.setActive(true);
             if (Gdx.input.isTouched()) {
