@@ -135,9 +135,10 @@ public class LevelSelectState extends State{
         else if(saveData.getBoolean("normal")){
             Kroy.setDifficultyMultiplier(NORMAL);
         }
-        else{
+        else if (saveData.getBoolean("hard")){
             Kroy.setDifficultyMultiplier(HARD);
         }
+        System.out.println(Kroy.difficultyMultiplier);
     }
 
     /**
