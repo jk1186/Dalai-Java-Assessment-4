@@ -31,7 +31,7 @@ class characterTestClass extends Character {
 //100% line coverage - only getters and setters
 
 //No functions to test - will just test the constructor
-public class testCharacter {
+public class CharacterTest {
     Texture textureMock = mock(Texture.class);
 
     //Constructor used to ensure it works as intended

@@ -1,6 +1,7 @@
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.sprites.Unit;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,7 +20,7 @@ class unitTestClass extends Unit {
 
 
 //Class to test the methods in the Unit Class
-public class unitTest {
+public class UnitTest {
 
     Texture textureMock = mock(Texture.class);
 
@@ -29,6 +30,12 @@ public class unitTest {
     //Test for constructor that takes maxHealth
     @Test
     public void testShouldChangeMaxHealthToGivenParameter(){
+    }
+
+    //ASSESSMENT 4 - Test for constructor that takes maxHealth
+    @Test
+    public void constructorsShouldSetCorrectParametersToValues(){
+        assertEquals(testUnit.getCurrentHealth(), 100);
     }
 
 

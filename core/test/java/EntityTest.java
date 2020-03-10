@@ -1,6 +1,7 @@
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.sprites.Entity;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -9,7 +10,7 @@ import static org.mockito.Mockito.mock;
 //70% line coverage (not testing getter and setters)
 
 //Class to test methods in the Entity Class.
-public class entityTest {
+public class EntityTest {
     Texture textureMock = mock(Texture.class);
 
     //Instance of entity class to test methods on
@@ -41,16 +42,16 @@ public class entityTest {
     }
 
     //Testing that negative numbers throw an IllegalArgumentException
-//    @Test
-//    public void testSetPositionShouldThrowExceptionForOutOfBoundaryNegative() {
-//        try{
-//            testEntity.setPosition(-100, -100);
-//        } catch (IllegalArgumentException e){
-//            assertEquals(new Vector2(100, 100), testEntity.getPosition());
-//        } catch (Exception e){
-//            Assert.fail();
-//        }
-//    }
+    @Test
+    public void testSetPositionShouldThrowExceptionForOutOfBoundaryNegative() {
+        try{
+            testEntity.setPosition(-100, -100);
+        } catch (IllegalArgumentException e){
+            assertEquals(new Vector2(100, 100), testEntity.getPosition());
+        } catch (Exception e){
+            Assert.fail();
+        }
+    }
 
 }
 

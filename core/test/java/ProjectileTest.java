@@ -9,7 +9,7 @@ import static org.mockito.Mockito.mock;
 //62% line coverage
 
 //Class to test the Projectiles Class
-public class testProjectile {
+public class ProjectileTest {
 
     Texture textureMock = mock(Texture.class);
 

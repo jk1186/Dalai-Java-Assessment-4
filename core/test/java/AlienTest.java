@@ -3,6 +3,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.sprites.Alien;
 import com.mygdx.game.sprites.Firetruck;
 import com.mygdx.game.sprites.Unit;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -22,7 +23,11 @@ public class AlienTest {
     Alien wayPointAlien = new Alien(new Vector2(200, 200), 100, 100, textureMock, 100,
             10, null, 1, 5, new Vector2[]{new Vector2(200, 200), new Vector2(201, 200)}, 10.0f);
 
-    //Test basic constructor functionality
+    //ASSESSMENT 4 - Test basic constructor functionality
+    @Test
+    public void constructorsShouldSetCorrectParametersToValues() {
+        Assertions.assertEquals(testAlien.getAttackCooldown(),10.0f);
+    }
 
 
     //Test if truckInRange will set a new target with an in range mocked truck
@@ -91,5 +96,13 @@ public class AlienTest {
         testAlien.resetTimeSinceAttack();
         assertEquals(testAlien.getTimeSinceAttack(),0,0);
     }
+
+    @Test
+    public void alienMovesTowardsWaypointTest() {
+        wayPointAlien.setPosition(0,100);
+        wayPointAlien.update();
+        assertEquals(wayPointAlien.getPosition(), new Vector2(1,100));
+    }
+
 
 }
