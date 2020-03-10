@@ -128,6 +128,17 @@ public class LevelSelectState extends State{
         buttons.add(easy);
         buttons.add(normal);
         buttons.add(hard);
+
+        if(saveData.getBoolean("easy")){
+            Kroy.setDifficultyMultiplier(EASY);
+        }
+        else if(saveData.getBoolean("normal")){
+            Kroy.setDifficultyMultiplier(NORMAL);
+        }
+        else if (saveData.getBoolean("hard")){
+            Kroy.setDifficultyMultiplier(HARD);
+        }
+        System.out.println(Kroy.difficultyMultiplier);
     }
 
     /**
@@ -235,6 +246,10 @@ public class LevelSelectState extends State{
                 normal.setActive(false);
                 hard.setActive(false);
 
+                saveData.putBoolean("easy", true);
+                saveData.putBoolean("normal", false);
+                saveData.putBoolean("hard", false);
+
                 Kroy.setDifficultyMultiplier(EASY);
             }
         }
@@ -243,7 +258,9 @@ public class LevelSelectState extends State{
                 normal.setActive(true);
                 easy.setActive(false);
                 hard.setActive(false);
-
+                saveData.putBoolean("easy", false);
+                saveData.putBoolean("normal", true);
+                saveData.putBoolean("hard", false);
                 Kroy.setDifficultyMultiplier(NORMAL);
             }
         }
@@ -252,9 +269,13 @@ public class LevelSelectState extends State{
                 hard.setActive(true);
                 normal.setActive(false);
                 easy.setActive(false);
+                saveData.putBoolean("easy", false);
+                saveData.putBoolean("normal", false);
+                saveData.putBoolean("hard", true);
                 Kroy.setDifficultyMultiplier(HARD);
             }
         }
+        saveData.flush();
     }
 
     /**

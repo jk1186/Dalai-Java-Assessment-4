@@ -377,7 +377,7 @@ public class PlayState extends State {
             if (alien.getTimeSinceAttack() >= alien.getAttackCooldown()) {
                 if (alien.hasTarget()) {
                     Projectile bullet = new Projectile(new Vector2(alien.getPosition().x + alien.getWidth() / 2, alien.getPosition().y + alien.getHeight() / 2), 5, 5,
-                            new Texture("red.png"), (new Vector2(alien.getTarget().getPosition().x, alien.getTarget().getPosition().y)), 5, alien.getDamage());
+                            new Texture("red.png"), (new Vector2(alien.getTarget().getPosition().x, alien.getTarget().getPosition().y)), 5, alien.getDamage(), (alien.getRange()+50));
                     bullets.add(bullet);
                     alien.resetTimeSinceAttack();
                 }
@@ -400,6 +400,10 @@ public class PlayState extends State {
        // firetruck. If a firetruck is destroyed, checks if all have been destroyed and then activates game over screen.
         for (Projectile bullet : new ArrayList<Projectile>(bullets)) {
             bullet.update();
+            if (bullet.getLength() > bullet.getMaxLength()) {
+                bullet.dispose();
+                bullets.remove(bullet);
+            }
             for (Firetruck truck : new ArrayList<Firetruck>(firetrucks)) {
                 if (bullet.hitUnit(truck)) {
                     truck.takeDamage(bullet.getDamage());
@@ -517,7 +521,7 @@ public class PlayState extends State {
             powerList.add(powerUp);
             this.spawn = true;
         }
-
+        // Stops from spawning on every frame in the 10th second
         if((int)timer.getTime() % 11 == 0 && this.spawn == true && timer.getTime() > 1){
             System.out.println("Reset: " +  timer.getTime());
             this.spawn = false;
@@ -680,7 +684,7 @@ public class PlayState extends State {
         if (fortress.getAlienPositions().size() > 0) {
             Vector2 coordinate = fortress.getAlienPositions().get(rand.nextInt(fortress.getAlienPositions().size()));
             Alien alien = new Alien(coordinate, 32, 32, new Texture("alien.gif"), 30 + rand.nextInt(60),
-                    250, null, 1, 5 + rand.nextInt(15), randomPatrolRoute(coordinate), 3 + rand.nextInt(3));
+                    300, null, 1, 5 + rand.nextInt(15), randomPatrolRoute(coordinate), 3 + rand.nextInt(3));
             aliens.add(alien);
             fortress.getAlienPositions().remove(coordinate);
         }
