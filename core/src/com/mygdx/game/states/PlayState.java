@@ -730,8 +730,11 @@ public class PlayState extends State {
             spriteBatch.draw(power.getTexture(), power.getPosition().x, power.getPosition().y, power.getWidth(),
                     power.getHeight());
         }
-
-        timer.drawTime(spriteBatch, ui);
+        if (timeLimit > timer.getTime()) {
+            timer.drawTime(spriteBatch, ui);
+        }else{
+            timer.expiredTime(spriteBatch, ui);
+        }
         ui.setColor(Color.WHITE);
 
         // Gives user 15 second warning as time limit approaches.

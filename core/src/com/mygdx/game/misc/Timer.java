@@ -41,7 +41,9 @@ public class Timer {
     public void drawTime(SpriteBatch spriteBatch, BitmapFont font) {
         font.draw(spriteBatch, "Time Remaining: " + timeString, 780, Kroy.HEIGHT - 1005);
     }
-
+    public void expiredTime(SpriteBatch spriteBatch, BitmapFont font){
+        font.draw(spriteBatch, "Time Remaining: " + 0 , 780, Kroy.HEIGHT - 1005);
+    }
     public float getTime() {
         return time;
     }
