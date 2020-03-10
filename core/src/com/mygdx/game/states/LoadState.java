@@ -34,11 +34,11 @@ public class LoadState  extends State {
         font = new BitmapFont();
         back = new Button(new Texture("backbutton2.png"), new Texture("backbutton1.png"),
                 100, 100, new Vector2(30, 960), false, false);
-        save1 = new Button(buttonNotPressed, buttonPressed, 350, 100,
+        save1 = new Button(buttonPressed, buttonNotPressed, 350, 100,
                 new Vector2((Kroy.WIDTH/2) - 175, Kroy.HEIGHT - (Kroy.HEIGHT/3) -50 - 250),false, false);
-        save2 = new Button(buttonNotPressed, buttonPressed, 350, 100,
+        save2 = new Button(buttonPressed, buttonNotPressed, 350, 100,
                 new Vector2((Kroy.WIDTH/2) - 175, Kroy.HEIGHT - 2* (Kroy.HEIGHT/3) -100),false, false);
-        save3 = new Button(buttonNotPressed, buttonPressed, 350, 100,
+        save3 = new Button(buttonPressed, buttonNotPressed, 350, 100,
                 new Vector2((Kroy.WIDTH/2) - 175, Kroy.HEIGHT - 3*(Kroy.HEIGHT/3) -50 + 150),false, false);
         saveFile1 = "..\\saves\\save1.json";
         saveFile2 = "..\\saves\\save2.json";
