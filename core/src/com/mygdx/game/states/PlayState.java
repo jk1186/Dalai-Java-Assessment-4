@@ -519,7 +519,7 @@ public class PlayState extends State {
             powerList.add(powerUp);
             this.spawn = true;
         }
-
+        // Stops from spawning on every frame in the 10th second
         if((int)timer.getTime() % 11 == 0 && this.spawn == true && timer.getTime() > 1){
             System.out.println("Reset: " +  timer.getTime());
             this.spawn = false;

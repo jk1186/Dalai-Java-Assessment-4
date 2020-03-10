@@ -45,7 +45,13 @@ public class Kroy extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 1, 1);
 		gameStateManager.push(new MenuState(gameStateManager)); // Initializes game with menu state
 		saveData = Gdx.app.getPreferences("Kroy");
-		difficultyMultiplier = 0.5;
+
+		if(saveData.getBoolean("easy", false) && saveData.getBoolean("normal", false) &&
+			saveData.getBoolean("hard", false)){
+			saveData.putBoolean("easy", false);
+			saveData.putBoolean("normal", true);
+			saveData.putBoolean("hard",false);
+		}
 
 		if (saveData.getBoolean("music", true)) { // If no value for "music" exists in save data, set to true
 			saveData.putBoolean("music", true);
@@ -54,6 +60,7 @@ public class Kroy extends ApplicationAdapter {
 		if (saveData.getBoolean("effects", true)) { // If no value for "effects" exists in save data, set to true
 			saveData.putBoolean("effects", true);
 		}
+		saveData.flush();
 	}
 
 	/**
