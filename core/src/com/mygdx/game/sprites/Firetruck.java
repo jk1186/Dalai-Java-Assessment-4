@@ -1,6 +1,7 @@
 package com.mygdx.game.sprites;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
@@ -18,6 +19,7 @@ public class Firetruck extends Character {
     private int currentWater;
     private boolean selected;
     private boolean infiniteHealth;
+    private float prevDir = 0;
 
     public Firetruck(Vector2 position, int width, int height, Texture texture, int maxHealth, int range, Unit target,
                      int speed, int dps, int maxWater, boolean selected) {
@@ -27,6 +29,60 @@ public class Firetruck extends Character {
         this.selected = selected;
         this.infiniteHealth = false;
     }
+
+
+
+    /**
+     * Used to call the correct method to move the trucks position depending on potential obstacle overlap and which
+     * truck is currently selected.
+     *
+     */
+    public void truckMovement() {
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            this.move(3);
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            this.move(4);
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            this.move(1);
+
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            this.move(2);
+        }
+    }
+
+    public float getTruckRotation() {
+        if(this.isSelected()){
+
+                if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)) {
+                    prevDir =  315f;
+                } else if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)) {
+                    prevDir =  45f;
+                } else if (Gdx.input.isKeyPressed(Input.Keys.A) && Gdx.input.isKeyPressed(Input.Keys.S)) {
+                    prevDir =  90f + 45f;
+                } else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D)) {
+                    return  180f + 45f;
+                 }
+                else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+                    prevDir =  0f;
+                } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+                    prevDir =  90f;
+                } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+                    prevDir = 180f;
+                } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+                    prevDir = 270f;
+                }
+            }
+        return prevDir;
+        }
+
+
+
 
     /**
      * A method which controls Firetruck movement depending on the direction input

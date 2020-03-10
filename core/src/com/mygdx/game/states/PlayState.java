@@ -8,6 +8,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Kroy;
@@ -349,16 +350,13 @@ public class PlayState extends State {
         }
 
         // Changes which truck is moving and calls the truckMovement() method with the selected truck as input.
-        if (firetruck1.isSelected()) {
-            truckMovement(firetruck1);
-        } else if (firetruck2.isSelected()) {
-            truckMovement(firetruck2);
-        } else if (firetruck3.isSelected()) {
-            truckMovement(firetruck3);
-        } else if (firetruck4.isSelected()) {
-            truckMovement(firetruck4);
-        }
 
+
+        for(Firetruck firetruck: firetrucks){
+            if(firetruck.isSelected()) {
+                firetruck.truckMovement();
+            }
+        }
     }
 
     /**
@@ -554,8 +552,16 @@ public class PlayState extends State {
 
         // Draws updated firetrucks and overhead water tank statistics.
         for (Firetruck truck : firetrucks) {
-            spriteBatch.draw(truck.getTexture(), truck.getPosition().x, truck.getPosition().y, truck.getWidth(),
+            Sprite truckSprite = new Sprite(truck.getTexture());
+            truckSprite.setPosition(truck.getPosition().x,truck.getPosition().y);
+            truckSprite.setRegionHeight((int)truck.getHeight());
+            truckSprite.setRegionWidth((int)truck.getWidth());
+            truckSprite.setRotation(truck.getTruckRotation());
+            truckSprite.draw(spriteBatch);
+            /**
+            spriteBatch.draw(truckSprite.setRotation(truck.getRotation()), truck.getPosition().x, truck.getPosition().y, truck.getWidth(),
                     truck.getHeight());
+             **/
             healthBars.draw(spriteBatch, "Water: " + truck.getCurrentWater(), truck.getPosition().x,
                     truck.getPosition().y + truck.getHeight() + 10);
         }
@@ -664,33 +670,6 @@ public class PlayState extends State {
         fortress.dispose();
     }
 
-    /**
-     * Used to call the correct method to move the trucks position depending on potential obstacle overlap and which
-     * truck is currently selected.
-     * @param truck the truck which is currently selected
-     */
-    public void truckMovement(Firetruck truck) {
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            truck.setTexture(new Texture("truck.png"));
-            truck.move(3);
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            truck.setTexture(new Texture("truckdown.png"));
-            truck.move(4);
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            truck.setTexture(new Texture("truckleft.png"));
-            truck.move(1);
-
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            truck.setTexture(new Texture("truckright.png"));
-            truck.move(2);
-        }
-    }
 
     /**
      * Used to spawn the Aliens around the fortress by accessing the spawnRate and alienPositions stored within
