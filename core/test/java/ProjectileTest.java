@@ -18,8 +18,22 @@ public class ProjectileTest {
             new Vector2(200, 200), 10.0f, 10, 1);
 
     //Using the other constructor to ensure it complies correctly
-    Projectile otherProjectileConstructor =  new Projectile(new Vector2(100, 100), 10, 10, textureMock,
+    Projectile otherProjectile =  new Projectile(new Vector2(100, 100), 10, 10, textureMock,
             new Vector2(200, 200), 10.0f, 10);
+
+
+    //ASSESSMENT 4 - Dalai Java
+    @Test
+    public void testEightParameterConstructorWorksAsExpected() {
+        assertEquals(testProjectile.getMaxLength(), 1);
+        assertEquals(testProjectile.getDamage(), 10);
+    }
+
+    //ASSESSMENT 4 - Dalai Java
+    @Test
+    public void testSevenParameterConstructorWorksAsExpected() {
+        assertEquals(otherProjectile.getDamage(), 10);
+    }
 
     //Test if setLength() correctly sets length with standard values
     @Test
