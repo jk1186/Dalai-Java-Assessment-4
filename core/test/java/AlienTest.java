@@ -104,5 +104,19 @@ public class AlienTest {
         assertEquals(wayPointAlien.getPosition(), new Vector2(1,100));
     }
 
+    @Test
+    public void alienShouldMoveToNewWaypointWhenReachedOldOneTest() {
+        wayPointAlien.setPosition(200,200);
+        wayPointAlien.update();
+        assertEquals(wayPointAlien.getCurrentIndex(), 1);
+    }
 
+    @Test
+    public void alienShouldGoBackToInitialWaypointWhenEndReachedTest() {
+        wayPointAlien.setPosition(200,200);
+        wayPointAlien.update();
+        wayPointAlien.setPosition(201,200);
+        wayPointAlien.update();
+        assertEquals(wayPointAlien.getCurrentIndex(), 0);
+    }
 }

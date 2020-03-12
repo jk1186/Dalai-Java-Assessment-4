@@ -14,8 +14,10 @@ import com.mygdx.game.states.PlayState;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.runner.RunWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -26,7 +28,9 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Graphics.class, Input.class, Timer.class, TileType.class})
@@ -43,14 +47,14 @@ public class testFireTruck {
 
     //ASSESSMENT 4 - Dalai Java
     TiledGameMap mockMap;
-    TileType mockTile;
+    @Mock TileType mockTile;
 
     //ASSESSMENT 4
     @Before
     public void setup() {
         Gdx.graphics = PowerMockito.mock(Graphics.class);
         Gdx.input = PowerMockito.mock(Input.class);
-        PowerMockito.mockStatic(Timer.class);
+        mockStatic(Timer.class);
         lenient().when(Gdx.graphics.getDeltaTime()).thenReturn(1f);
         //Need to work out why on earth this works, I just copied + pasted
         Application application = PowerMockito.mock(Application.class);
@@ -64,6 +68,7 @@ public class testFireTruck {
             }
         });
         mockMap = mock(TiledGameMap.class);
+        mockStatic(TileType.class);
         when(mockMap.getTileTypeByScreenCoordinate(anyFloat(),anyFloat())).thenReturn(mockTile);
     }
 
@@ -100,7 +105,7 @@ public class testFireTruck {
     @Test
     public void truckShouldMoveWhenCommandedTest() {
         PlayState.gameMap = mockMap;
-        when(mockTile.getCollidable()).thenReturn(false);
+        given(mockTile.getCollidable()).willReturn(false);
         testFireTruck.move(2);
         assertEquals(testFireTruck.getPosition().x, 110);
     }
@@ -109,11 +114,53 @@ public class testFireTruck {
     @Test
     public void movingEquallyInAllDirectionsShouldResultInOriginalPositionTest() {
         PlayState.gameMap = mockMap;
-        when(mockTile.getCollidable()).thenReturn(false);
+        given(mockTile.getCollidable()).willReturn(false);
         testFireTruck.move(1);
         testFireTruck.move(2);
         testFireTruck.move(3);
         testFireTruck.move(4);
+        assertEquals(testFireTruck.getPosition(), new Vector2(100,100));
+    }
+
+    //ASSESSMENT 4 - Dalai Java
+    @Test
+    public void truckShouldChangeDirectionWhenKeyPressedTest() {
+        PlayState.gameMap = mockMap;
+        given(mockTile.getCollidable()).willReturn(false);
+        testFireTruck.setSelected(true);
+        lenient().when(Gdx.input.isKeyPressed(Input.Keys.D)).thenReturn(true);
+        assertEquals(testFireTruck.getTruckRotation(), 270f);
+    }
+
+    //ASSESSMENT 4 - Dalai Java
+    @Test
+    public void truckShouldTurnDiagonalWhenTwoKeysPressedTest() {
+        PlayState.gameMap = mockMap;
+        given(mockTile.getCollidable()).willReturn(false);
+        testFireTruck.setSelected(true);
+        lenient().when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(true);
+        lenient().when(Gdx.input.isKeyPressed(Input.Keys.A)).thenReturn(true);
+        assertEquals(testFireTruck.getTruckRotation(), 45f);
+    }
+
+    //ASSESSMENT 4 - Dalai Java
+    @Test
+    public void truckShouldMoveWhenAbleToTest() {
+        PlayState.gameMap = mockMap;
+        given(mockTile.getCollidable()).willReturn(false);
+        lenient().when(Gdx.input.isKeyPressed(Input.Keys.W)).thenReturn(true);
+        testFireTruck.truckMovement();
+        assertEquals(testFireTruck.getPosition(), new Vector2(100,110));
+    }
+
+    //ASSESSMENT 4 - Dalai Java
+    @Test
+    public void truckShouldNotMoveWhenTouchingObstacleTest() {
+        PlayState.gameMap = mockMap;
+        given(mockTile.getCollidable()).willReturn(true);
+        lenient().when(Gdx.input.isKeyPressed(Input.Keys.A)).thenReturn(true);
+        lenient().when(Gdx.graphics.getDeltaTime()).thenReturn(1f);
+        testFireTruck.truckMovement();
         assertEquals(testFireTruck.getPosition(), new Vector2(100,100));
     }
 

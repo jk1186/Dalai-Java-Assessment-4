@@ -115,6 +115,9 @@ public class Alien extends Character {
         return attackCooldown;
     }
 
+    //ASSESSSMENT 4 - Dalai Java
+    public int getCurrentIndex () {return this.currentIndex; }
+
     public Vector2 getNextWaypoint() { return waypoints[currentIndex]; }
 }
 
