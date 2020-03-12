@@ -619,6 +619,13 @@ public class PlayState extends State {
         ui.draw(spriteBatch, "Truck 4 Health: " + Integer.toString(firetruck4.getCurrentHealth()),
         		1499, Kroy.HEIGHT - 920);
 
+        for (Firetruck truck: firetrucks) {
+            if (truck.getCurrentWater() < 20) {
+                spriteBatch.draw(new Texture("refillWarning.png"), truck.getPosition().x - 25,
+                        truck.getPosition().y + 40);
+            }
+        }
+
         // If end game reached, draws level fail or level won images to the screen
         if (levelLost) {
             spriteBatch.draw(new Texture("levelFail.png"), 0, 0);
