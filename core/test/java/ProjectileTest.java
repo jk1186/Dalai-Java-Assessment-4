@@ -1,9 +1,11 @@
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.sprites.Projectile;
+import com.mygdx.game.sprites.*;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.mock;
 
 //62% line coverage
@@ -41,6 +43,20 @@ public class ProjectileTest {
         testProjectile.update();
         testProjectile.setLength();
         assertEquals(10.0, testProjectile.getLength());
+    }
+
+    //ASSESSMENT 4 - Dalai Java
+    @Test
+    public void hitUnitShouldReturnTrueIfHitUnit() {
+        Fortress u = new Fortress(new Vector2(100,100), 5,5,textureMock,1, 1f,1);
+        Assertions.assertTrue(testProjectile.hitUnit((Unit) u));
+    }
+
+    //ASSESSMENT 4 - Dalai Java
+    @Test
+    public void hitUnitShouldReturnFalseIfNotHitUnit() {
+        Fortress u = new Fortress(new Vector2(0,0), 5,5,textureMock,1, 1f,1);
+        Assertions.assertFalse(testProjectile.hitUnit((Unit) u));
     }
 
 }

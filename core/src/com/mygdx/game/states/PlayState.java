@@ -691,7 +691,8 @@ public class PlayState extends State {
         if (fortress.getAlienPositions().size() > 0) {
             Vector2 coordinate = fortress.getAlienPositions().get(rand.nextInt(fortress.getAlienPositions().size()));
             Alien alien = new Alien(coordinate, 32, 32, new Texture("alien.gif"), 30 + rand.nextInt(60),
-                    300, null, 1, 5 + rand.nextInt(15), randomPatrolRoute(coordinate), 3 + rand.nextInt(3));
+                    300, null, 1, (int) (Kroy.difficultyMultiplier * (5 + rand.nextInt(15))), randomPatrolRoute(coordinate),
+                    (float) (2.5 - Kroy.difficultyMultiplier) * (1 + rand.nextInt(3)));
             aliens.add(alien);
             fortress.getAlienPositions().remove(coordinate);
         }
