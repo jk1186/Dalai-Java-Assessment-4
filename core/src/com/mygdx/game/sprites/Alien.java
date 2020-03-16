@@ -37,6 +37,12 @@ public class Alien extends Character {
         setPosition(newPos.x, newPos.y);
     }
 
+    //Assessment 4
+    public void updateToFireStation(Vector2 position){
+        Vector2 newPos = moveAlongGrid(new Vector2(position.x - 20, position.y + 126));
+        setPosition(newPos.x, newPos.y);
+    }
+
     /**
      * A method which checks if the alien is as its next waypoint, if so it will set the target waypoint to the next
      * in the array. If the alien is at the end of the array, it will return to the starting waypoint.
@@ -76,7 +82,7 @@ public class Alien extends Character {
      * The method which checks if a firetruck is in range and sets the aliens target accordingly
      * @param firetrucks the ArrayList containing the active firetrucks in the level
      */
-    public void truckInRange(ArrayList<Firetruck> firetrucks) {
+    public void truckInRange(ArrayList<Firetruck> firetrucks, FireStation station) {
         if (this.hasTarget() && getTarget().getCurrentHealth() == 0) {
             setTarget(null);
         }
@@ -93,10 +99,27 @@ public class Alien extends Character {
                 }
             }
         }
+        //Assessment 4
+        if (getTopRight().y + getRange() < station.getPosition().y || getPosition().y - getRange() > station.getTopRight().y ||
+        getTopRight().x + getRange() < station.getPosition().x || getPosition().x - getRange() > station.getTopRight().x){
+            if (getTarget() == station) {
+                setTarget(null);
+            }
+        }else {
+            if (getTarget() == null || station.getCurrentHealth() < getTarget().getCurrentHealth()){
+                System.out.println("Station Targeted, Current health " + station.getCurrentHealth());
+                setTarget(station);
+            }
+        }
     }
 
+    // Assessment 4
     public boolean hasTarget() {
-        return (getTarget() != null);
+        if (getTarget() == null){
+            return false;
+        }else {
+            return true;
+        }
     }
 
     public float getTimeSinceAttack() {
@@ -115,7 +138,7 @@ public class Alien extends Character {
         return attackCooldown;
     }
 
-    //ASSESSSMENT 4 - Dalai Java
+    //Assessment 4 - Dalai Java
     public int getCurrentIndex () {return this.currentIndex; }
 
     public Vector2 getNextWaypoint() { return waypoints[currentIndex]; }

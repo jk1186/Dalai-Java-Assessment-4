@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
 import com.mygdx.game.states.PlayState;
 
+import java.util.ArrayList;
+
 /**
  * The class which creates a firetruck object to be controlled by the user within the PlayState.
  *
@@ -29,8 +31,6 @@ public class Firetruck extends Character {
         this.selected = selected;
         this.infiniteHealth = false;
     }
-
-
 
     /**
      * Used to call the correct method to move the trucks position depending on potential obstacle overlap and which

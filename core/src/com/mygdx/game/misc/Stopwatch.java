@@ -12,14 +12,14 @@ import com.mygdx.game.Kroy;
  * @author Lucy Ivatt
  */
 
-
-public class Timer {
+// Assessment 4: we have renamed this class as LibGdx already uses a class called Timer which led to confusion
+public class Stopwatch {
     private float time;
     private float timeLimit;
     private String timeString;
 
 
-    public Timer(float timeLimit) {
+    public Stopwatch(float timeLimit) {
         time = 0;
         this.timeLimit = timeLimit;
         timeString = "0";
@@ -28,9 +28,13 @@ public class Timer {
     /**
      * A method which updates the time every game tick using Libgdx's in-built method Gdx.graphics.deltaTime()
      */
-    public void update(){
+    public void update() {
         time += (Gdx.graphics.getDeltaTime());
-        timeString = String.format("%.0f", timeLimit - time);
+        if ((timeLimit - time) > 0) {
+            timeString = String.format("%.0f", timeLimit - time);
+        } else {
+            timeString = String.format("%.0f", 0.0);
+        }
     }
 
     /**
@@ -43,6 +47,10 @@ public class Timer {
     }
 
     public float getTime() {
-        return time;
+        if (time < 0){
+            return 0;
+        }else {
+            return time;
+        }
     }
 }

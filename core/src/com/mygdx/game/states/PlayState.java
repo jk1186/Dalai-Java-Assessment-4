@@ -14,7 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Kroy;
 import com.mygdx.game.map.TiledGameMap;
 import com.mygdx.game.misc.Button;
-import com.mygdx.game.misc.Timer;
+import com.mygdx.game.misc.Stopwatch;
 import com.mygdx.game.sprites.*;
 
 import java.util.ArrayList;
@@ -31,7 +31,6 @@ import java.util.Random;
 
 public class PlayState extends State {
 
-
     private Texture background;
 
     private boolean levelLost;
@@ -43,14 +42,16 @@ public class PlayState extends State {
 
     private int levelNumber;
 
-    private Timer timer;
+    private Stopwatch stopwatch;
     private float alienSpawnCountdown;
     private float timeSinceAlienKilled;
     private float timeSinceLastFortressRegen;
     private float timeLimit;
     private float timeTaken;
 
-    private Entity fireStation;
+    //Assessment 4
+    private FireStation fireStation;
+
     private Fortress fortress;
     private Firetruck firetruck1;
     private Firetruck firetruck2;
@@ -65,6 +66,9 @@ public class PlayState extends State {
 
     //Assessment 4 - Create defensive weapons for fortresses
     private ArrayList<Projectile> bombs = new ArrayList<Projectile>();
+
+    //Assessment 4 - Array list of fire stations positions
+    private ArrayList<Vector2> fireStationPositions = new ArrayList<Vector2>();
 
     private BitmapFont ui;
     private BitmapFont healthBars;
@@ -155,8 +159,8 @@ public class PlayState extends State {
             timeLimit = 90;
 
             // Level 1 Firestation
-            fireStation = new Entity(new Vector2(33 + 8 * 32, 212 + 4 * 32), 128, 128,
-                    new Texture("teal.jpg"));
+            fireStation = new FireStation(new Vector2(33 + 8 * 32, 212 + 4 * 32), 128, 128,
+                    new Texture("teal.jpg"), 1000);
 
             // Level 1 Fortress
             fortress = new Fortress(new Vector2(33 + 24 * 32, 212 + 22 * 32), 6 * 32, 4 * 32,
@@ -176,8 +180,8 @@ public class PlayState extends State {
 
 
             // Level 2 Fire Station
-            fireStation = new Entity(new Vector2(33 + 1 * 32, 212 + 4 * 32), 64, 128,
-                    new Texture("teal.jpg"));
+            fireStation = new FireStation(new Vector2(33 + 1 * 32, 212 + 4 * 32), 64, 128,
+                    new Texture("teal.jpg"), 1000);
 
             // Level 2 Fortress
             fortress = new Fortress(new Vector2(33 + 36 * 32, 212 + 19 * 32), 4 * 32, 4 * 32, new Texture("grey.png"),
@@ -196,7 +200,7 @@ public class PlayState extends State {
             timeLimit = 60;
 
             // Level 3 Fire Station
-            fireStation = new Entity(new Vector2(33 + 27*32, 212), 6 * 32, 4 * 32, new Texture("teal.jpg"));
+            fireStation = new FireStation(new Vector2(33 + 27*32, 212), 6 * 32, 4 * 32, new Texture("teal.jpg"), 1000);
 
             // Level 3 Fortress
             fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
@@ -216,7 +220,7 @@ public class PlayState extends State {
             timeLimit = 90;
 
             // Level 4 Fire Station
-            fireStation = new Entity(new Vector2(33 + 5 * 32, 212 + 4 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
+            fireStation = new FireStation(new Vector2(33 + 5 * 32, 212 + 4 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"), 1000);
 
             // Level 4 Fortress
             fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
@@ -236,7 +240,7 @@ public class PlayState extends State {
             timeLimit = 90;
 
             // Level 5 Fire Station
-            fireStation = new Entity(new Vector2(33 + 24 * 32, 212 + 12 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
+            fireStation = new FireStation(new Vector2(33 + 24 * 32, 212 + 12 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"), 1000);
 
             // Level 5 Fortress
             fortress = new Fortress(new Vector2(33 + 4 * 32, 212 + 14 * 32), 4*32, 3*32, new Texture("grey.png"),
@@ -256,7 +260,7 @@ public class PlayState extends State {
             timeLimit = 60;
 
             // Level 6 Fire Station
-            fireStation = new Entity(new Vector2(33 + 6 * 32, 212 + 3 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
+            fireStation = new FireStation(new Vector2(33 + 6 * 32, 212 + 3 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"), 1000);
 
             // Level 3 Fortress
             fortress = new Fortress(new Vector2(33 + 24 * 32, 212 + 32 * 21), 224, 96, new Texture("grey.png"),
@@ -283,7 +287,7 @@ public class PlayState extends State {
         firetrucks.add(firetruck2);
         firetrucks.add(firetruck3);
         firetrucks.add(firetruck4);
-        timer = new Timer(timeLimit);
+        stopwatch = new Stopwatch(timeLimit);
 
 
     }
@@ -378,13 +382,15 @@ public class PlayState extends State {
     public void update(float deltaTime) {
         // Calls input handler and updates timer each tick of the game.
         handleInput();
-        timer.update();
+        stopwatch.update();
 
         // Updates aliens and attacks firetruck if there is a firetruck in range and the Aliens attack cooldown is over.
         // Adds the created bullet projectile to the ArrayList bullets
         for (Alien alien : aliens) {
+            //Assessment 4
+            if (timeLimit - stopwatch.getTime() > timeLimit / 2){
             alien.update();
-            alien.truckInRange(firetrucks);
+            alien.truckInRange(firetrucks, fireStation);
             if (alien.getTimeSinceAttack() >= alien.getAttackCooldown()) {
                 if (alien.hasTarget()) {
                     Projectile bullet = new Projectile(new Vector2(alien.getPosition().x + alien.getWidth() / 2, alien.getPosition().y + alien.getHeight() / 2), 5, 5,
@@ -395,6 +401,21 @@ public class PlayState extends State {
             }
             alien.updateTimeSinceAttack(deltaTime);
         }
+            if (timeLimit - stopwatch.getTime() <= timeLimit / 2) {
+                alien.updateToFireStation(fireStation.getPosition());
+                alien.truckInRange(firetrucks, fireStation);
+                if (alien.getTimeSinceAttack() >= alien.getAttackCooldown()) {
+                    if (alien.hasTarget()) {
+                        Projectile bullet = new Projectile(new Vector2(alien.getPosition().x + alien.getWidth() / 2, alien.getPosition().y + alien.getHeight() / 2), 5, 5,
+                                new Texture("red.png"), (new Vector2(alien.getTarget().getPosition().x, alien.getTarget().getPosition().y)), 5, alien.getDamage(), (alien.getRange()+50));
+                        bullets.add(bullet);
+                        alien.resetTimeSinceAttack();
+                    }
+                }
+                alien.updateTimeSinceAttack(deltaTime);
+            }
+            }
+
         alienSpawnCountdown -= deltaTime;
         timeSinceAlienKilled -= deltaTime;
 
@@ -423,7 +444,7 @@ public class PlayState extends State {
                         firetrucks.remove(truck);
                         if(firetrucks.size() == 0) {
                             levelLost = true;
-                            timeTaken = timer.getTime();
+                            timeTaken = stopwatch.getTime();
                         }
                         destroyedFiretrucks.add(truck);
                     }
@@ -439,6 +460,17 @@ public class PlayState extends State {
                 bullet.dispose();
                 bullets.remove(bullet);
             }
+
+            //Assessment 4 - Do damage to fire station
+            if (bullet.hitUnit(fireStation)){
+                fireStation.takeDamage(bullet.getDamage());
+                bullets.remove(bullet);
+                if (fireStation.getCurrentHealth() <= 0)  {
+                    levelLost = true;
+                    timeTaken = stopwatch.getTime();
+                }
+            }
+
             for (Firetruck truck : new ArrayList<Firetruck>(firetrucks)) {
                 if (bullet.hitUnit(truck)) {
                     truck.takeDamage(bullet.getDamage());
@@ -448,7 +480,7 @@ public class PlayState extends State {
                         firetrucks.remove(truck);
                         if(firetrucks.size() == 0) {
                             levelLost = true;
-                            timeTaken = timer.getTime();
+                            timeTaken = stopwatch.getTime();
                         }
                         destroyedFiretrucks.add(truck);
                     }
@@ -502,7 +534,7 @@ public class PlayState extends State {
                 fortress.takeDamage(drop.getDamage());
                 if (fortress.getCurrentHealth() == 0) {
                     levelWon = true;
-                    timeTaken = timer.getTime();
+                    timeTaken = stopwatch.getTime();
                     saveData.putBoolean(level, true);
                     saveData.flush();
                 }
@@ -517,12 +549,12 @@ public class PlayState extends State {
         timeSinceLastFortressRegen -= deltaTime;
 
         // If the time is greater than the time limit, calls end game state.
-        if (timer.getTime() > timeLimit) {
+        if (stopwatch.getTime() > timeLimit) {
             levelLost = true;
         }
 
         // Forces user back to level select screen, even without needing to press ENTER after 4 seconds.
-        if (timer.getTime() > timeLimit + 4) {
+        if (stopwatch.getTime() > timeLimit + 4) {
             gameStateManager.set(new LevelSelectState(gameStateManager));
         }
 
@@ -536,11 +568,11 @@ public class PlayState extends State {
         }
 
         // Speeds up the background music when the player begins to run out of time.
-        if ((14 < timeLimit - timer.getTime()) && (timeLimit - timer.getTime() < 16)){
+        if ((14 < timeLimit - stopwatch.getTime()) && (timeLimit - stopwatch.getTime() < 16)){
             Kroy.INTRO.setPitch(Kroy.ID, 2f);
         }
         // Assessment 4 - Power Ups
-        if ((int)timer.getTime() % 10 == 0 && this.spawn == false && timer.getTime() > 1){
+        if ((int) stopwatch.getTime() % 10 == 0 && this.spawn == false && stopwatch.getTime() > 1){
             Random rand = new Random() ;
             int r = rand.nextInt(5);
             Vector2 position = null;
@@ -557,8 +589,8 @@ public class PlayState extends State {
             this.spawn = true;
         }
         // Stops from spawning on every frame in the 10th second
-        if((int)timer.getTime() % 11 == 0 && this.spawn == true && timer.getTime() > 1){
-            System.out.println("Reset: " +  timer.getTime());
+        if((int) stopwatch.getTime() % 11 == 0 && this.spawn == true && stopwatch.getTime() > 1){
+            System.out.println("Reset: " +  stopwatch.getTime());
             this.spawn = false;
         }
     }
@@ -609,6 +641,10 @@ public class PlayState extends State {
         healthBars.draw(spriteBatch, "HP: " + fortress.getCurrentHealth(), fortress.getPosition().x + 70,
                 fortress.getPosition().y + fortress.getHeight() + 20);
 
+        //Assessment 4
+        healthBars.draw(spriteBatch, "HP: " + fireStation.getCurrentHealth(), fireStation.getPosition().x +70,
+                fireStation.getPosition().y + fortress.getHeight() + 20);
+
         // Draws updated alien locations
         for (Alien alien : aliens) {
             spriteBatch.draw(alien.getTexture(), alien.getPosition().x, alien.getPosition().y, alien.getWidth(),
@@ -641,11 +677,11 @@ public class PlayState extends State {
                     power.getHeight());
         }
 
-        timer.drawTime(spriteBatch, ui);
+        stopwatch.drawTime(spriteBatch, ui);
         ui.setColor(Color.WHITE);
 
         // Gives user 15 second warning as time limit approaches.
-        if ((timeLimit - 15) < timer.getTime() && timer.getTime() < (timeLimit - 10)) {
+        if ((timeLimit - 15) < stopwatch.getTime() && stopwatch.getTime() < (timeLimit - 10)) {
             ui.draw(spriteBatch, "The firestation is being attacked \n You have 15 seconds before it's destroyed!",
                     50, 1020);
         }
