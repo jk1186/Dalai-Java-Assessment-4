@@ -12,12 +12,19 @@ import java.util.ArrayList;
  */
 public class Fortress extends Unit {
 
+    //Assessment 4 - A unique spec in terms of the range of its defensive weapons and the amount of damage these weapons can deal to Fire Engines.
+    private int damage;
+    private float attackRange;
+
     private float spawnRate;
     private ArrayList<Vector2> alienPositions = new ArrayList<>();
 
-    public Fortress(Vector2 position, int width, int height, Texture texture, int maxHealth, float spawnRate, int level) {
+    public Fortress(Vector2 position, int width, int height, Texture texture, int maxHealth, float spawnRate, int level, int damage, float attackRange) {
         super(position, width, height, texture, maxHealth);
         this.spawnRate = spawnRate;
+        //Assessment 4 - Fortress's weapon
+        this.damage = damage;
+        this.attackRange = attackRange;
 
         if (level == 1) {
             alienPositions.add(new Vector2(22 * 32, 1044 - 3 * 32));
@@ -85,8 +92,10 @@ public class Fortress extends Unit {
     public float getSpawnRate() {
         return this.spawnRate;
     }
-
     public ArrayList<Vector2> getAlienPositions() {
         return alienPositions;
     }
+    //Assessment 4 - Fortress's weapon
+    public int getDamage() { return this.damage; }
+    public float getAttackRange() {return this.attackRange; }
 }

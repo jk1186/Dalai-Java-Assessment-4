@@ -63,6 +63,9 @@ public class PlayState extends State {
     private ArrayList<Projectile> bullets = new ArrayList<Projectile>();
     private ArrayList<Projectile> water = new ArrayList<Projectile>();
 
+    //Assessment 4 - Create defensive weapons for fortresses
+    private ArrayList<Projectile> bombs = new ArrayList<Projectile>();
+
     private BitmapFont ui;
     private BitmapFont healthBars;
     private String level;
@@ -71,7 +74,7 @@ public class PlayState extends State {
 
     private Sound waterShoot = Gdx.audio.newSound(Gdx.files.internal("honk.wav"));
 
-    //Assesment 4
+    //Assessment 4
     private boolean spawn;
     private   ArrayList<Texture> powerTexture = new ArrayList<Texture>();
     Texture maxHealthIncrease = new Texture("powerMaxHealth.png");
@@ -118,7 +121,7 @@ public class PlayState extends State {
         timeSinceLastFortressRegen = 0;
         timeSinceAlienKilled = -1;
 
-        // Assesment 4
+        // Assessment 4
         spawn = false;
         powerTexture.add(maxHealthIncrease);
         powerTexture.add(damageIncrease);
@@ -157,7 +160,7 @@ public class PlayState extends State {
 
             // Level 1 Fortress
             fortress = new Fortress(new Vector2(33 + 24 * 32, 212 + 22 * 32), 6 * 32, 4 * 32,
-                    new Texture("grey.png"), (int)(Kroy.difficultyMultiplier * 10000), 1.5f, levelNumber);
+                    new Texture("grey.png"), (int)(Kroy.difficultyMultiplier * 10000), 1.5f, levelNumber, 2, 150);
         }
 
         else if (levelNumber == 2) {
@@ -178,7 +181,7 @@ public class PlayState extends State {
 
             // Level 2 Fortress
             fortress = new Fortress(new Vector2(33 + 36 * 32, 212 + 19 * 32), 4 * 32, 4 * 32, new Texture("grey.png"),
-                    (int)(Kroy.difficultyMultiplier * 12500), 4, levelNumber);
+                    (int)(Kroy.difficultyMultiplier * 12500), 4, levelNumber, 4, 155);
         }
 
         else if (levelNumber == 3) {
@@ -197,7 +200,7 @@ public class PlayState extends State {
 
             // Level 3 Fortress
             fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
-                    (int)(Kroy.difficultyMultiplier * 15000), 2, levelNumber);
+                    (int)(Kroy.difficultyMultiplier * 15000), 2, levelNumber, 6, 160);
         }
 
 
@@ -217,7 +220,7 @@ public class PlayState extends State {
 
             // Level 4 Fortress
             fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
-                    (int)(Kroy.difficultyMultiplier * 15000), 2, levelNumber);
+                    (int)(Kroy.difficultyMultiplier * 15000), 2, levelNumber, 8, 165);
         }
 
 
@@ -237,7 +240,7 @@ public class PlayState extends State {
 
             // Level 5 Fortress
             fortress = new Fortress(new Vector2(33 + 4 * 32, 212 + 14 * 32), 4*32, 3*32, new Texture("grey.png"),
-                    (int)(Kroy.difficultyMultiplier * 15000), 2, levelNumber);
+                    (int)(Kroy.difficultyMultiplier * 15000), 2, levelNumber, 10, 170);
         }
 
 
@@ -257,7 +260,7 @@ public class PlayState extends State {
 
             // Level 3 Fortress
             fortress = new Fortress(new Vector2(33 + 24 * 32, 212 + 32 * 21), 224, 96, new Texture("grey.png"),
-                    (int)(Kroy.difficultyMultiplier * 15000), 2, levelNumber);
+                    (int)(Kroy.difficultyMultiplier * 15000), 2, levelNumber, 12, 175);
         }
 
 
@@ -316,6 +319,14 @@ public class PlayState extends State {
         // If the user presses the space bar, creates Projectile instance if the selected firetruck has water remaining.
         // Then adds this to the water ArrayList and removes 1 water from the firetrucks tank.
         for (Firetruck firetruck : firetrucks) {
+
+            //Assessment 4 - Fortress's weapon
+            if (firetruck.isSelected()) {
+                Projectile bomb = new Projectile(new Vector2(fortress.getPosition().x + fortress.getWidth() / 2, fortress.getPosition().y + fortress.getWidth() / 2), 5, 5,
+                        new Texture("red.png"), (new Vector2(firetruck.getPosition().x, firetruck.getPosition().y)), 10, fortress.getDamage(), fortress.getAttackRange());
+                bombs.add(bomb);
+            }
+
             if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && firetruck.isSelected() && firetruck.getCurrentWater() > 0) {
                 Projectile drop = new Projectile(new Vector2(firetruck.getPosition().x + firetruck.getWidth() / 2, firetruck.getPosition().y + firetruck.getHeight() / 2), 5, 5,
                         new Texture("lightblue.jpg"), (new Vector2(Gdx.input.getX(), Kroy.HEIGHT - Gdx.input.getY())), 5, firetruck.getDamage(), firetruck.getRange());
@@ -396,8 +407,32 @@ public class PlayState extends State {
             timeSinceAlienKilled = 0;
         }
 
+        // Assessment 4 - Fortress's weapon
+        for (Projectile bomb : new ArrayList<Projectile>(bombs)) {
+            bomb.update();
+            if (bomb.getLength() > bomb.getMaxLength()) {
+                bomb.dispose();
+                bombs.remove(bomb);
+            }
+            for (Firetruck truck: new ArrayList<Firetruck>(firetrucks)) {
+                if (bomb.hitUnit(truck)) {
+                    truck.takeDamage(bomb.getDamage());
+                    bombs.remove(bomb);
+                    if (truck.getCurrentHealth() == 0) {
+                        truck.setSelected(false);
+                        firetrucks.remove(truck);
+                        if(firetrucks.size() == 0) {
+                            levelLost = true;
+                            timeTaken = timer.getTime();
+                        }
+                        destroyedFiretrucks.add(truck);
+                    }
+                }
+            }
+        }
+
         // Updates all bullets each tick, checks if bullet collides with firetruck and then removes health from the
-       // firetruck. If a firetruck is destroyed, checks if all have been destroyed and then activates game over screen.
+        // firetruck. If a firetruck is destroyed, checks if all have been destroyed and then activates game over screen.
         for (Projectile bullet : new ArrayList<Projectile>(bullets)) {
             bullet.update();
             if (bullet.getLength() > bullet.getMaxLength()) {
@@ -504,7 +539,7 @@ public class PlayState extends State {
         if ((14 < timeLimit - timer.getTime()) && (timeLimit - timer.getTime() < 16)){
             Kroy.INTRO.setPitch(Kroy.ID, 2f);
         }
-        // Assesment 4 - Power Ups
+        // Assessment 4 - Power Ups
         if ((int)timer.getTime() % 10 == 0 && this.spawn == false && timer.getTime() > 1){
             Random rand = new Random() ;
             int r = rand.nextInt(5);
@@ -584,6 +619,13 @@ public class PlayState extends State {
         }
 
         // Draws updated projectile locations
+
+        //Assessment 4 - Fortress's weapon
+        for (Projectile bomb : bombs) {
+            spriteBatch.draw(bomb.getTexture(), bomb.getPosition().x, bomb.getPosition().y, bomb.getWidth(),
+                    bomb.getHeight());
+        }
+
         for (Projectile bullet : bullets) {
             spriteBatch.draw(bullet.getTexture(), bullet.getPosition().x, bullet.getPosition().y, bullet.getWidth(),
                     bullet.getHeight());
@@ -660,6 +702,11 @@ public class PlayState extends State {
 
         for (Firetruck firetruck : destroyedFiretrucks) {
             firetruck.dispose();
+        }
+
+        //Assessment 4 - Fortress's weapon
+        for (Projectile bomb : bombs) {
+            bomb.dispose();
         }
 
         for (Projectile bullet : bullets) {
