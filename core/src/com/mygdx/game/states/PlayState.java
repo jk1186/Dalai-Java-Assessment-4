@@ -174,7 +174,7 @@ public class PlayState extends State {
             firetruck1pos = new Vector2(33 + 2 * 32, 212 + 4 * 32);
             firetruck2pos = new Vector2(33 + 2 * 32, 212 + 5 * 32);
             firetruck3pos = new Vector2(33 + 2 * 32, 212 + 6 * 32);
-            firetruck4pos = new Vector2(33 + 2 * 32, 212 + 7 * 32);
+            firetruck4pos = new Vector2(33 + 1 * 32, 212 + 4 * 32);
 
             timeLimit = 120;
 
@@ -192,10 +192,10 @@ public class PlayState extends State {
 
         	gameMap = new TiledGameMap("level3map.tmx");
 
-            firetruck1pos = new Vector2(33 + 27 * 32, 212 + 3 * 32);
-            firetruck2pos = new Vector2(33 + 28 * 32, 212 + 3 * 32);
-            firetruck3pos = new Vector2(33 + 29 * 32, 212 + 3 * 32);
-            firetruck4pos = new Vector2(33 + 27 * 32, 212 + 2 * 32);
+            firetruck1pos = new Vector2(33 + 29 * 32, 212 + 3 * 32);
+            firetruck2pos = new Vector2(33 + 29 * 32, 212 + 2 * 32);
+            firetruck3pos = new Vector2(33 + 30 * 32, 212 + 3 * 32);
+            firetruck4pos = new Vector2(33 + 30 * 32, 212 + 2 * 32);
 
             timeLimit = 60;
 
@@ -272,7 +272,7 @@ public class PlayState extends State {
         //Firetrucks created here | Health, range, speed, dps, capacity
         firetruck1 = new Firetruck(firetruck1pos, 25,25,
                 new Texture("truck.png"), 200, 100,
-                null, 100, 2,  175, true);
+                null, 100, 2,  175, false);
         firetruck2 = new Firetruck(firetruck2pos, 25,25,
                 new Texture("truck.png"), 100, 200,
                 null, 100,  2,  175, false);
