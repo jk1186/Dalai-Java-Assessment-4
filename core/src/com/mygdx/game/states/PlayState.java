@@ -81,11 +81,11 @@ public class PlayState extends State {
     //Assessment 4
     private boolean spawn;
     private   ArrayList<Texture> powerTexture = new ArrayList<Texture>();
-    Texture maxHealthIncrease = new Texture("powerMaxHealth.png");
+    Texture maxHealthIncrease = new Texture("powerMaxHealth1.png");
     Texture damageIncrease = new Texture("powerDamage.png");
-    Texture infiniteHealth = new Texture("powerInfiniteHealth.png");
+    Texture infiniteHealth = new Texture("powerInfiniteHealth1.png");
     Texture rangeIncrease = new Texture("powerRange.png");
-    Texture speedIncrease = new Texture("powerSpeed.png");
+    Texture speedIncrease = new Texture("powerSpeed1.png");
 
     private ArrayList<String> powerUpTypes = new ArrayList<String>();
 
@@ -584,7 +584,7 @@ public class PlayState extends State {
                 position = new Vector2(33 + x * 32, 212 + y * 32);
                 blocked = (PlayState.gameMap.getTileTypeByScreenCoordinate(position.x,position.y).getCollidable());
             }
-            PowerUps powerUp = new PowerUps(position, 32, 32, powerTexture.get(r), powerUpTypes.get(r));
+            PowerUps powerUp = new PowerUps(position, 50, 50, powerTexture.get(r), powerUpTypes.get(r));
             powerList.add(powerUp);
             this.spawn = true;
         }
