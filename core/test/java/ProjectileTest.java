@@ -48,14 +48,14 @@ public class ProjectileTest {
     //ASSESSMENT 4 - Dalai Java
     @Test
     public void hitUnitShouldReturnTrueIfHitUnit() {
-        Fortress u = new Fortress(new Vector2(100,100), 5,5,textureMock,1, 1f,1);
+        Fortress u = new Fortress(new Vector2(100,100), 5,5,textureMock,1, 1f,1, 0, 0f);
         Assertions.assertTrue(testProjectile.hitUnit((Unit) u));
     }
 
     //ASSESSMENT 4 - Dalai Java
     @Test
     public void hitUnitShouldReturnFalseIfNotHitUnit() {
-        Fortress u = new Fortress(new Vector2(0,0), 5,5,textureMock,1, 1f,1);
+        Fortress u = new Fortress(new Vector2(0,0), 5,5,textureMock,1, 1f,1, 0, 0f);
         Assertions.assertFalse(testProjectile.hitUnit((Unit) u));
     }
 
