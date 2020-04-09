@@ -13,12 +13,16 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Json;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mygdx.game.Kroy;
 import com.mygdx.game.map.TiledGameMap;
 import com.mygdx.game.misc.Button;
 import com.mygdx.game.misc.Timer;
 import com.mygdx.game.sprites.*;
-import jdk.nashorn.internal.parser.JSONParser;
+import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
+import com.sun.tools.javac.util.Convert;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.*;
@@ -94,6 +98,7 @@ public class PlayState extends State {
     private ArrayList<PowerUps> clearList = new ArrayList<PowerUps>();
 
     Gson gson = new Gson();
+
 
     //TODO: Add way to save level state to continue later
     //TODO: Add PowerUp effects to map
@@ -295,7 +300,7 @@ public class PlayState extends State {
 
     }
 
-   /* public PlayState(GameStateManager gsm, String filePath) throws FileNotFoundException {
+   public PlayState(GameStateManager gsm, String filePath){
         super(gsm);
 
         background = new Texture("LevelProportions.png");
@@ -342,42 +347,149 @@ public class PlayState extends State {
 
        Json json = new Json();
 
+        if(filePath != null) {
+            System.out.println("here bois");
+            try {
+                JSONParser parser = new JSONParser();
+                Object stuff = parser.parse(new FileReader(filePath));
+                JSONArray data = new JSONArray();
+                data.add(stuff);
+                System.out.println(data);
+
+                for(int i = 0 ; i < data.size() ; i++){
+                    System.out.println(data.get(i));
+                    System.out.println(data.size());
+                }
+
+                JSONObject data1 = (JSONObject) data.get(0);
+
+                timeLimit = (float) Integer.parseInt(data1.get("time-left").toString());
+                //double timeLimit2 = (double)((double) timeLimit1);
+                System.out.println("boi "+timeLimit);
+
+                levelNumber = (int) Integer.parseInt(data1.get("level").toString());
+                levelNum = levelNumber - 1; // Need to get value from json file
+                level = Integer.toString(levelNumber); // Used as a key when saving level progress
+                //fortress = gson.fromJson(data1.get("fortress").toString(), Fortress.class);
+
+                JSONObject fort = (JSONObject) data1.get("fortress");
 
 
-        timeLimit = (float)data.get("time-left");
-        levelNumber = (int)data.get("level");
-        levelNum = levelNumber-1; // Need to get value from json file
-        level = Integer.toString(levelNumber); // Used as a key when saving level progress
-        fortress = gson.fromJson((JsonElement) data.get("fortress"), Fortress.class);
 
-        if (levelNumber == 1) { // Bottom left coordinate of map --> (33, 212) Each grid square = 32px
-            gameMap = new TiledGameMap("level1map.tmx");
-            fireStation = new Entity(new Vector2(33 + 8 * 32, 212 + 4 * 32), 128, 128,
-                    new Texture("teal.jpg"));
-         }
-        else if (levelNumber == 2) {
-            gameMap = new TiledGameMap("level2map.tmx");
-            fireStation = new Entity(new Vector2(33 + 1 * 32, 212 + 4 * 32), 64, 128,
-                    new Texture("teal.jpg"));
-        }
-        else if (levelNumber == 3) {
-            gameMap = new TiledGameMap("level3map.tmx");
-            fireStation = new Entity(new Vector2(33 + 27*32, 212), 6 * 32, 4 * 32, new Texture("teal.jpg"));
-        }
-        else if (levelNumber == 4) {
-            gameMap = new TiledGameMap("level4map.tmx");
-            fireStation = new Entity(new Vector2(33 + 5 * 32, 212 + 4 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
-        }
-        else if (levelNumber == 5) {
-            gameMap = new TiledGameMap("level5map.tmx");
-            fireStation = new Entity(new Vector2(33 + 24 * 32, 212 + 12 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
-        }
-        else if (levelNumber == 6) {
-            gameMap = new TiledGameMap("level6map.tmx");
-            fireStation = new Entity(new Vector2(33 + 6 * 32, 212 + 3 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
-        }
+                Vector2 fortPos = new Vector2( Float.parseFloat(((JSONObject)fort.get("sprite")).get("x").toString()),
+                        Float.parseFloat(((JSONObject)fort.get("sprite")).get("y").toString()));
 
-    }*/
+                int fortWidth = (int)Float.parseFloat(((JSONObject)fort.get("sprite")).get("width").toString());
+
+                int fortHeight = (int)Float.parseFloat(((JSONObject)fort.get("sprite")).get("height").toString());
+                int fortMaxHP = 15000;
+                if(levelNumber == 1){
+                    fortMaxHP = 10000;
+                }else if(levelNumber == 2){
+                    fortMaxHP = 12500;
+                }else if(levelNumber == 3){
+                    fortMaxHP = 15000;
+                }else{
+                    fortMaxHP = 15000;
+                }
+
+                float fortSPR = Float.parseFloat(fort.get("spawnRate").toString());
+                System.out.println(fortSPR);
+
+
+                System.out.println("FortPos"+fortPos);
+                System.out.println(fortHeight);
+
+                System.out.println(levelNumber);
+
+                fortress = new Fortress(fortPos, fortWidth, fortHeight, new Texture("grey.png"), fortMaxHP, fortSPR, levelNumber);
+
+                fortress.setHealth(Integer.parseInt(fort.get("currentHealth").toString()));
+
+                System.out.println("wahey");
+
+                if (levelNumber == 1) { // Bottom left coordinate of map --> (33, 212) Each grid square = 32px
+                    gameMap = new TiledGameMap("level1map.tmx");
+                    fireStation = new Entity(new Vector2(33 + 8 * 32, 212 + 4 * 32), 128, 128,
+                            new Texture("teal.jpg"));
+                } else if (levelNumber == 2) {
+                    gameMap = new TiledGameMap("level2map.tmx");
+                    fireStation = new Entity(new Vector2(33 + 1 * 32, 212 + 4 * 32), 64, 128,
+                            new Texture("teal.jpg"));
+                } else if (levelNumber == 3) {
+                    gameMap = new TiledGameMap("level3map.tmx");
+                    fireStation = new Entity(new Vector2(33 + 27 * 32, 212), 6 * 32, 4 * 32, new Texture("teal.jpg"));
+                } else if (levelNumber == 4) {
+                    gameMap = new TiledGameMap("level4map.tmx");
+                    fireStation = new Entity(new Vector2(33 + 5 * 32, 212 + 4 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
+                } else if (levelNumber == 5) {
+                    gameMap = new TiledGameMap("level5map.tmx");
+                    fireStation = new Entity(new Vector2(33 + 24 * 32, 212 + 12 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
+                } else if (levelNumber == 6) {
+                    gameMap = new TiledGameMap("level6map.tmx");
+                    fireStation = new Entity(new Vector2(33 + 6 * 32, 212 + 3 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
+                }
+
+
+                JSONArray importedFiretrucks = (JSONArray) data1.get("Firetrucks");
+
+                ArrayList<Vector2> positions = new ArrayList<>();
+                ArrayList<Integer> currentWaters = new ArrayList<>();
+                ArrayList<Integer> currentHealths = new ArrayList<>();
+
+                for(int i = 0 ; i < importedFiretrucks.size() ; i++){
+                    System.out.println(importedFiretrucks.get(i));
+
+                    positions.add( new Vector2( Float.parseFloat((((JSONObject) ( (JSONObject) importedFiretrucks.get(i)).get("sprite")).get("x")).toString()) ,
+                            Float.parseFloat((((JSONObject) ( (JSONObject) importedFiretrucks.get(i)).get("sprite")).get("y")).toString()) ) );
+
+                    currentWaters.add( Integer.parseInt( ((JSONObject) importedFiretrucks.get(i)).get("currentWater").toString()));
+                    currentHealths.add( Integer.parseInt( ((JSONObject)importedFiretrucks.get(i)).get("currentHealth").toString() ) );
+                }
+                System.out.println(currentWaters);
+
+                Vector2 firetruck1pos = positions.get(0);
+                Vector2 firetruck2pos = positions.get(1);
+                Vector2 firetruck3pos = positions.get(2);
+                Vector2 firetruck4pos = positions.get(3);
+
+
+
+                firetruck1 = new Firetruck(firetruck1pos, 25,25,
+                        new Texture("truck.png"), 200, 100,
+                        null, 100, 2,  175, true);
+                firetruck2 = new Firetruck(firetruck2pos, 25,25,
+                        new Texture("truck.png"), 100, 200,
+                        null, 100,  2,  175, false);
+                firetruck3 = new Firetruck(firetruck3pos, 25,25,
+                        new Texture("truck.png"), 100, 100,
+                        null, 200, 2,  175, false);
+                firetruck4 = new Firetruck(firetruck4pos, 25,25,
+                        new Texture("truck.png"), 100, 100,
+                        null, 100,  4,  175, false);
+
+                firetruck1.setCurrentWater(currentWaters.get(0));
+                firetruck2.setCurrentWater(currentWaters.get(1));
+                firetruck3.setCurrentWater(currentWaters.get(2));
+                firetruck4.setCurrentWater(currentWaters.get(3));
+
+                firetruck1.setCurrentHealth(currentHealths.get(0));
+                firetruck2.setCurrentHealth(currentHealths.get(1));
+                firetruck3.setCurrentHealth(currentHealths.get(2));
+                firetruck4.setCurrentHealth(currentHealths.get(3));
+
+
+                firetrucks.add(firetruck1);
+                firetrucks.add(firetruck2);
+                firetrucks.add(firetruck3);
+                firetrucks.add(firetruck4);
+
+                timer = new Timer(timeLimit);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+       }
+    }
 
 
     /**
@@ -388,6 +500,7 @@ public class PlayState extends State {
         if (quitGame.mouseInRegion()){
             quitGame.setActive(true);
             if (Gdx.input.isTouched()) {
+                serializeState();
                 Gdx.app.exit();
                 System.exit(0);
                 }
@@ -458,56 +571,63 @@ public class PlayState extends State {
 
     }
     // Assessment 4
-    /*private void serializeState() throws IOException {
-        String d = new SimpleDateFormat("'..\\saves\\'yyyyMMddHHmmss'.json'").format(new Date());
-        int i = 0;
-        //FileWriter writer = new FileWriter(d);
-        FileWriter writer = new FileWriter("..\\saves\\test.json");
-        writer.write("{\n\t\"Firetrucks\" : [\n");
+    private void serializeState(){
+        System.out.println("Here");
+        try {
+            String d = new SimpleDateFormat("'..\\saves\\'yyyyMMddHHmmss'.json'").format(new Date());
+            int i = 0;
+            //FileWriter writer = new FileWriter(d);
+            File file = new File("..\\saves\\test.json");
+            file.createNewFile();
+            FileWriter writer = new FileWriter("..\\saves\\test.json");
+            writer.write("{\n\t\"Firetrucks\" : [\n");
+            for (Firetruck f : firetrucks) {
+                if (!(i == 0)) {
+                    writer.write(", ");
+                }
+                i++;
+                writer.write("\t\t");
+                gson.toJson(f, writer);
+                writer.write("\n");
+            }
+            i = 0;
+            writer.write("\t],\n\t\"Aliens\" : [\n");
+            for (Alien a : aliens) {
+                if (!(i == 0)) {
+                    writer.write(", ");
+                }
+                i++;
+                writer.write("\t\t");
+                gson.toJson(a, writer);
+                writer.write("\n");
+            }
+            writer.write("\t],\n\t\"PowerUps\" : [\n");
+            i = 0;
+            for (PowerUps p : powerList) {
+                if (!(i == 0)) {
+                    writer.write(", ");
+                }
+                i++;
+                writer.write("\t\t");
+                gson.toJson(p, writer);
+                writer.write("\n");
 
-        for (Firetruck f: firetrucks) {
-            if (!(i ==0)){
-                writer.write(", ");
             }
-            i++;
-            writer.write("\t\t");
-            gson.toJson(f, writer);
-            writer.write("\n");
-        }
-        i = 0;
-        writer.write("\t],\n\t\"Aliens\" : [\n");
-        for(Alien a: aliens){
-            if (!(i ==0)){
-                writer.write(", ");
-            }
-            i++;
-            writer.write("\t\t");
-            gson.toJson(a, writer);
-            writer.write("\n");
-        }
-        writer.write("\t],\n\t\"PowerUps\" : [\n");
-        i = 0;
-        for (PowerUps p :powerList){
-            if (!(i == 0)){
-                writer.write(", ");
-            }
-            i++;
-            writer.write("\t\t");
-            gson.toJson(p, writer);
-            writer.write("\n");
+            writer.write("\t],\n\t\"fortress\" : ");
+            gson.toJson(fortress, writer);
+            writer.write(",\n\t\"level\" : ");
+            gson.toJson(level, writer);
+            writer.write(",\n\t\"time-left\" : ");
+            gson.toJson((int) (timeLimit - timer.getTime()), writer);
+            writer.write("\n}");
+            writer.flush();
+            writer.close();
 
+        }catch(Exception e){
+            e.printStackTrace();
         }
-        writer.write("\t],\n\t\"fortress\" : ");
-        gson.toJson(fortress, writer);
-        writer.write(",\n\t\"level\" : ");
-        gson.toJson(level, writer);
-        writer.write(",\n\t\"time-left\" : ");
-        gson.toJson((int)(timeLimit- timer.getTime()), writer);
-        writer.write("\n}");
-        writer.flush();
-        writer.close();
     }
-    */
+
 
     /**
      * Updates the game logic before the next render() is called
@@ -730,6 +850,7 @@ public class PlayState extends State {
             spriteBatch.draw(power.getTexture(), power.getPosition().x, power.getPosition().y, power.getWidth(),
                     power.getHeight());
         }
+        System.out.println(timeLimit);
         if (timeLimit > timer.getTime()) {
             timer.drawTime(spriteBatch, ui);
         }else{

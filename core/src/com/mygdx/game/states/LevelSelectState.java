@@ -136,7 +136,7 @@ public class LevelSelectState extends State{
      * Checks if mouse is hovering over a button and plays the animation accordingly as well as checking for
      * mouse clicks which will activate the function of the button.
      */
-    public void handleInput() throws FileNotFoundException {
+    public void handleInput(){
         if (back.mouseInRegion()) {
             back.setActive(true);
             if (Gdx.input.isTouched()) {

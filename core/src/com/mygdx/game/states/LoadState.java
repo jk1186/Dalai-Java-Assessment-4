@@ -15,7 +15,7 @@ import java.io.IOException;
 public class LoadState  extends State {
 
     private Texture background = new Texture("Menu.jpg");
-    private Texture buttonPressed = new Texture("PressedLoad.png");
+    private Texture buttonPressed = new Texture("notPressedLoad.png");
     private Texture buttonNotPressed = new Texture("notPressedLoad.png");
     private Button save1;
     private Button save2;
@@ -40,7 +40,7 @@ public class LoadState  extends State {
                 new Vector2((Kroy.WIDTH/2) - 175, Kroy.HEIGHT - 2* (Kroy.HEIGHT/3) -100),false, false);
         save3 = new Button(buttonPressed, buttonNotPressed, 350, 100,
                 new Vector2((Kroy.WIDTH/2) - 175, Kroy.HEIGHT - 3*(Kroy.HEIGHT/3) -50 + 150),false, false);
-        saveFile1 = "..\\saves\\save1.json";
+        saveFile1 = "..\\saves\\test.json";
         saveFile2 = "..\\saves\\save2.json";
         saveFile3 = "..\\saves\\save3.json";
     }
@@ -64,7 +64,7 @@ public class LoadState  extends State {
                 if (saveData.getBoolean("effects")) {
                     click.play();
                 }
-                //gameStateManager.push(new GameState(gameStateManager, saveFile1));
+                gameStateManager.push(new PlayState(gameStateManager, saveFile1));
             }
         } else {
             save1.setActive(false);

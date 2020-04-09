@@ -132,6 +132,10 @@ public class Firetruck extends Character {
         this.currentWater = currentWater;
     }
 
+    public void setCurrentHealth(int currentHealth){
+        this.currentHealth = currentHealth;
+    }
+
     public void updateCurrentWater(int waterUsed) {
         if ((this.currentWater - waterUsed) < 0) {
             this.currentWater = 0;

@@ -86,6 +86,10 @@ public class Fortress extends Unit {
         return this.spawnRate;
     }
 
+    public void setHealth(int health){
+        this.currentHealth = health;
+    }
+
     public ArrayList<Vector2> getAlienPositions() {
         return alienPositions;
     }
