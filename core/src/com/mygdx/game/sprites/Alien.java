@@ -142,6 +142,18 @@ public class Alien extends Character {
     public int getCurrentIndex () {return this.currentIndex; }
 
     public Vector2 getNextWaypoint() { return waypoints[currentIndex]; }
+
+    public void setHealth(int health){
+        this.currentHealth = health;
+    }
+
+    public void setTimeSinceAttack(float time){
+        this.timeSinceAttack = time;
+    }
+
+    public void setCurrentIndex(int index){
+        this.currentIndex = index;
+    }
 }
 
 

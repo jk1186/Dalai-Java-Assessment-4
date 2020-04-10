@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Kroy;
 import com.mygdx.game.misc.Button;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -30,10 +31,10 @@ public class LevelSelectState extends State{
     private Button level6;
     private Button back;
     private ArrayList<Button> buttons;
+
     private Preferences saveData;
     private Sound click = Gdx.audio.newSound(Gdx.files.internal("click.wav"));
     private Sound honk = Gdx.audio.newSound(Gdx.files.internal("honk.wav"));
-
 
     //DJ - Added all textures here to fix the memory leak that NPStudios had (new textures were being created each
     // update() call
@@ -147,7 +148,7 @@ public class LevelSelectState extends State{
      * Checks if mouse is hovering over a button and plays the animation accordingly as well as checking for
      * mouse clicks which will activate the function of the button.
      */
-    public void handleInput() {
+    public void handleInput(){
         if (back.mouseInRegion()) {
             back.setActive(true);
             if (Gdx.input.isTouched()) {
@@ -242,6 +243,7 @@ public class LevelSelectState extends State{
         // Assessment 4
         if(easy.mouseInRegion()){
             if(Gdx.input.isTouched()) {
+                saveData.putFloat("Diff", (float)EASY);
                 easy.setActive(true);
                 normal.setActive(false);
                 hard.setActive(false);
@@ -255,6 +257,7 @@ public class LevelSelectState extends State{
         }
         else if(normal.mouseInRegion()){
             if(Gdx.input.isTouched()) {
+                saveData.putFloat("Diff", (float)NORMAL);
                 normal.setActive(true);
                 easy.setActive(false);
                 hard.setActive(false);
@@ -266,6 +269,7 @@ public class LevelSelectState extends State{
         }
         else if(hard.mouseInRegion()){
             if(Gdx.input.isTouched()) {
+                saveData.putFloat("Diff", (float)HARD);
                 hard.setActive(true);
                 normal.setActive(false);
                 easy.setActive(false);

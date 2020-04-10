@@ -92,10 +92,19 @@ public class Fortress extends Unit {
     public float getSpawnRate() {
         return this.spawnRate;
     }
+
+    public void setHealth(int health){
+        this.currentHealth = health;
+    }
+
     public ArrayList<Vector2> getAlienPositions() {
         return alienPositions;
     }
     //Assessment 4 - Fortress's weapon
     public int getDamage() { return this.damage; }
     public float getAttackRange() {return this.attackRange; }
+
+    public void setAlienPositions(ArrayList<Vector2>alienPositions){
+        this.alienPositions = alienPositions;
+    }
 }

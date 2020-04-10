@@ -11,14 +11,28 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Json;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mygdx.game.Kroy;
 import com.mygdx.game.map.TiledGameMap;
 import com.mygdx.game.misc.Button;
 import com.mygdx.game.misc.Stopwatch;
 import com.mygdx.game.sprites.*;
+import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
+import com.sun.tools.javac.util.Convert;
+import com.sun.tools.javac.util.Position;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
+import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  * Implementation of the abstract class State which contains the methods and attributes required to control the
@@ -30,6 +44,7 @@ import java.util.Random;
  */
 
 public class PlayState extends State {
+
 
     private Texture background;
 
@@ -49,9 +64,7 @@ public class PlayState extends State {
     private float timeLimit;
     private float timeTaken;
 
-    //Assessment 4
-    private FireStation fireStation;
-
+    private Entity fireStation;
     private Fortress fortress;
     private Firetruck firetruck1;
     private Firetruck firetruck2;
@@ -92,10 +105,12 @@ public class PlayState extends State {
     private ArrayList<PowerUps> powerList = new ArrayList<PowerUps>();
     private ArrayList<PowerUps> clearList = new ArrayList<PowerUps>();
 
+    Gson gson = new Gson();
+
 
     //TODO: Add way to save level state to continue later
     //TODO: Add PowerUp effects to map
-    public PlayState(GameStateManager gsm, int levelNumber) {
+    public PlayState(GameStateManager gsm,  int levelNumber){
         super(gsm);
         this.levelNumber = levelNumber;
         background = new Texture("LevelProportions.png");
@@ -147,7 +162,7 @@ public class PlayState extends State {
         Vector2 firetruck4pos = null;
 
         // Assessment 4 - Added Kroy.difficultyMultiplier to fortresses.
-
+        Kroy.setDifficultyMultiplier(saveData.getFloat("diff"));
         if (levelNumber == 1) { // Bottom left coordinate of map --> (33, 212) Each grid square = 32px
 
         	gameMap = new TiledGameMap("level1map.tmx");
@@ -159,12 +174,13 @@ public class PlayState extends State {
             timeLimit = 90;
 
             // Level 1 Firestation
-            fireStation = new FireStation(new Vector2(33 + 8 * 32, 212 + 4 * 32), 128, 128,
-                    new Texture("teal.jpg"), 1000);
+            fireStation = new Entity(new Vector2(33 + 8 * 32, 212 + 4 * 32), 128, 128,
+                    new Texture("teal.jpg"));
 
             // Level 1 Fortress
             fortress = new Fortress(new Vector2(33 + 24 * 32, 212 + 22 * 32), 6 * 32, 4 * 32,
-                    new Texture("grey.png"), (int)(Kroy.difficultyMultiplier * 10000), 1.5f, levelNumber, 2, 150);
+                   new Texture("grey.png"), (int)(Kroy.difficultyMultiplier * 10000), 1.5f, levelNumber);
+
         }
 
         else if (levelNumber == 2) {
@@ -180,8 +196,8 @@ public class PlayState extends State {
 
 
             // Level 2 Fire Station
-            fireStation = new FireStation(new Vector2(33 + 1 * 32, 212 + 4 * 32), 64, 128,
-                    new Texture("teal.jpg"), 1000);
+            fireStation = new Entity(new Vector2(33 + 1 * 32, 212 + 4 * 32), 64, 128,
+                    new Texture("teal.jpg"));
 
             // Level 2 Fortress
             fortress = new Fortress(new Vector2(33 + 36 * 32, 212 + 19 * 32), 4 * 32, 4 * 32, new Texture("grey.png"),
@@ -200,7 +216,7 @@ public class PlayState extends State {
             timeLimit = 60;
 
             // Level 3 Fire Station
-            fireStation = new FireStation(new Vector2(33 + 27*32, 212), 6 * 32, 4 * 32, new Texture("teal.jpg"), 1000);
+            fireStation = new Entity(new Vector2(33 + 27*32, 212), 6 * 32, 4 * 32, new Texture("teal.jpg"));
 
             // Level 3 Fortress
             fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
@@ -220,7 +236,7 @@ public class PlayState extends State {
             timeLimit = 90;
 
             // Level 4 Fire Station
-            fireStation = new FireStation(new Vector2(33 + 5 * 32, 212 + 4 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"), 1000);
+            fireStation = new Entity(new Vector2(33 + 5 * 32, 212 + 4 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
 
             // Level 4 Fortress
             fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
@@ -240,7 +256,7 @@ public class PlayState extends State {
             timeLimit = 90;
 
             // Level 5 Fire Station
-            fireStation = new FireStation(new Vector2(33 + 24 * 32, 212 + 12 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"), 1000);
+            fireStation = new Entity(new Vector2(33 + 24 * 32, 212 + 12 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
 
             // Level 5 Fortress
             fortress = new Fortress(new Vector2(33 + 4 * 32, 212 + 14 * 32), 4*32, 3*32, new Texture("grey.png"),
@@ -260,7 +276,7 @@ public class PlayState extends State {
             timeLimit = 60;
 
             // Level 6 Fire Station
-            fireStation = new FireStation(new Vector2(33 + 6 * 32, 212 + 3 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"), 1000);
+            fireStation = new Entity(new Vector2(33 + 6 * 32, 212 + 3 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
 
             // Level 3 Fortress
             fortress = new Fortress(new Vector2(33 + 24 * 32, 212 + 32 * 21), 224, 96, new Texture("grey.png"),
@@ -272,7 +288,7 @@ public class PlayState extends State {
         //Firetrucks created here | Health, range, speed, dps, capacity
         firetruck1 = new Firetruck(firetruck1pos, 25,25,
                 new Texture("truck.png"), 200, 100,
-                null, 100, 2,  175, false);
+                null, 100, 2,  175, true);
         firetruck2 = new Firetruck(firetruck2pos, 25,25,
                 new Texture("truck.png"), 100, 200,
                 null, 100,  2,  175, false);
@@ -292,6 +308,273 @@ public class PlayState extends State {
 
     }
 
+   public PlayState(GameStateManager gsm, String filePath){
+        super(gsm);
+
+        background = new Texture("LevelProportions.png");
+
+        quitLevel = new Button(new Texture("PressedQuitLevel.png"),
+                new Texture("NotPressedQuitLevel.png"),350 / 2, 100 / 2,
+                new Vector2(30, 30), false, false);
+
+        quitGame = new Button(new Texture("PressedQuitGame.png"),
+                new Texture("NotPressedQuitGame.png"), 350 / 2, 100 / 2,
+                new Vector2(1920 - 30 - 350 / 2, 30), false, false);
+
+
+
+        levelLost = false;
+        levelWon = false;
+
+        saveData = Gdx.app.getPreferences("Kroy");
+
+        ui = new BitmapFont(Gdx.files.internal("font.fnt"));
+        ui.setColor(Color.DARK_GRAY);
+
+        healthBars = new BitmapFont();
+
+        alienSpawnCountdown = 0;
+        timeSinceLastFortressRegen = 0;
+        timeSinceAlienKilled = -1;
+
+        // Assesment 4
+        spawn = false;
+        powerTexture.add(maxHealthIncrease);
+        powerTexture.add(damageIncrease);
+        powerTexture.add(infiniteHealth);
+        powerTexture.add(rangeIncrease);
+        powerTexture.add(speedIncrease);
+
+        powerUpTypes.add("Max Health");
+        powerUpTypes.add("Damage");
+        powerUpTypes.add("Infinite Health");
+        powerUpTypes.add("Range");
+        powerUpTypes.add("Speed");
+
+        // Get Data From json and convert to the required objects and attributes
+
+       Json json = new Json();
+
+        if(filePath != null) {
+            try {
+                JSONParser parser = new JSONParser();
+                Object stuff = parser.parse(new FileReader(filePath));
+                JSONArray data = new JSONArray();
+                data.add(stuff);
+                System.out.println(data);
+
+                for(int i = 0 ; i < data.size() ; i++){
+                    System.out.println(data.get(i));
+                    System.out.println(data.size());
+                }
+
+                JSONObject data1 = (JSONObject) data.get(0);
+
+                timeLimit = (float) Integer.parseInt(data1.get("time-left").toString());
+                //double timeLimit2 = (double)((double) timeLimit1);
+                System.out.println("boi "+timeLimit);
+
+                levelNumber = (int) Integer.parseInt(data1.get("level").toString());
+                levelNum = levelNumber - 1; // Need to get value from json file
+                level = Integer.toString(levelNumber); // Used as a key when saving level progress
+                //fortress = gson.fromJson(data1.get("fortress").toString(), Fortress.class);
+
+                JSONObject fort = (JSONObject) data1.get("fortress");
+
+
+
+                Vector2 fortPos = new Vector2( Float.parseFloat(((JSONObject)fort.get("sprite")).get("x").toString()),
+                        Float.parseFloat(((JSONObject)fort.get("sprite")).get("y").toString()));
+
+                int fortWidth = (int)Float.parseFloat(((JSONObject)fort.get("sprite")).get("width").toString());
+
+                int fortHeight = (int)Float.parseFloat(((JSONObject)fort.get("sprite")).get("height").toString());
+                int fortMaxHP = 15000;
+                if(levelNumber == 1){
+                    fortMaxHP = 10000;
+                }else if(levelNumber == 2){
+                    fortMaxHP = 12500;
+                }else if(levelNumber == 3){
+                    fortMaxHP = 15000;
+                }else{
+                    fortMaxHP = 15000;
+                }
+
+                float fortSPR = Float.parseFloat(fort.get("spawnRate").toString());
+                System.out.println(fortSPR);
+
+
+                System.out.println("FortPos"+fortPos);
+                System.out.println(fortHeight);
+
+                System.out.println(levelNumber);
+
+                fortress = new Fortress(fortPos, fortWidth, fortHeight, new Texture("grey.png"), fortMaxHP, fortSPR, levelNumber);
+
+                fortress.setHealth(Integer.parseInt(fort.get("currentHealth").toString()));
+                System.out.println("Health: "+fort.get("currentHealth").toString());
+
+                ArrayList<Vector2> alienPos = new ArrayList<>();
+                JSONArray aPoss = (JSONArray) fort.get("alienPositions");
+                System.out.println(aPoss);
+                for(int i = 0 ; i < aPoss.size() ; i++){
+                    JSONObject pos = (JSONObject) aPoss.get(i);
+                    alienPos.add( new Vector2( Float.parseFloat(pos.get("x").toString()),
+                                                Float.parseFloat(pos.get("y").toString())));
+                }
+                fortress.setAlienPositions(alienPos);
+
+
+                System.out.println("wahey");
+
+                if (levelNumber == 1) { // Bottom left coordinate of map --> (33, 212) Each grid square = 32px
+                    gameMap = new TiledGameMap("level1map.tmx");
+                    fireStation = new Entity(new Vector2(33 + 8 * 32, 212 + 4 * 32), 128, 128,
+                            new Texture("teal.jpg"));
+                } else if (levelNumber == 2) {
+                    gameMap = new TiledGameMap("level2map.tmx");
+                    fireStation = new Entity(new Vector2(33 + 1 * 32, 212 + 4 * 32), 64, 128,
+                            new Texture("teal.jpg"));
+                } else if (levelNumber == 3) {
+                    gameMap = new TiledGameMap("level3map.tmx");
+                    fireStation = new Entity(new Vector2(33 + 27 * 32, 212), 6 * 32, 4 * 32, new Texture("teal.jpg"));
+                } else if (levelNumber == 4) {
+                    gameMap = new TiledGameMap("level4map.tmx");
+                    fireStation = new Entity(new Vector2(33 + 5 * 32, 212 + 4 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
+                } else if (levelNumber == 5) {
+                    gameMap = new TiledGameMap("level5map.tmx");
+                    fireStation = new Entity(new Vector2(33 + 24 * 32, 212 + 12 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
+                } else if (levelNumber == 6) {
+                    gameMap = new TiledGameMap("level6map.tmx");
+                    fireStation = new Entity(new Vector2(33 + 6 * 32, 212 + 3 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
+                }
+
+
+                JSONArray importedFiretrucks = (JSONArray) data1.get("Firetrucks");
+
+                for(int i = 0 ; i < importedFiretrucks.size() ; i++){
+                    JSONObject importedTruck = (JSONObject) importedFiretrucks.get(i);
+
+                    System.out.println(importedFiretrucks.get(i));
+                    Vector2 pos = new Vector2( Float.parseFloat(((JSONObject)importedTruck.get("sprite")).get("x").toString()),
+                            Float.parseFloat(((JSONObject)importedTruck.get("sprite")).get("y").toString()) );
+
+                    int currentWater = Integer.parseInt(importedTruck.get("currentWater").toString());
+                    int currentHealth = Integer.parseInt(importedTruck.get("currentHealth").toString());
+
+
+                    Firetruck truck = new Firetruck(pos, 25,25,
+                            new Texture("truck.png"), 200, 100,
+                            null, 100, 2,  175, true);
+                    truck.setCurrentHealth(currentHealth);
+                    truck.setCurrentWater(currentWater);
+                    truck.setSelected( Boolean.parseBoolean(importedTruck.get("selected").toString()));
+                    firetrucks.add(truck);
+                    /**
+                    positions.add( new Vector2( Float.parseFloat((((JSONObject) ( (JSONObject) importedFiretrucks.get(i)).get("sprite")).get("x")).toString()) ,
+                            Float.parseFloat((((JSONObject) ( (JSONObject) importedFiretrucks.get(i)).get("sprite")).get("y")).toString()) ) );
+
+                    currentWaters.add( Integer.parseInt( ((JSONObject) importedFiretrucks.get(i)).get("currentWater").toString()));
+                    currentHealths.add( Integer.parseInt( ((JSONObject)importedFiretrucks.get(i)).get("currentHealth").toString() ) );
+                    **/
+
+                }
+
+
+                /**
+                Vector2 firetruck1pos = positions.get(0);
+                Vector2 firetruck2pos = positions.get(1);
+                Vector2 firetruck3pos = positions.get(2);
+                Vector2 firetruck4pos = positions.get(3);
+
+
+
+                firetruck1 = new Firetruck(firetruck1pos, 25,25,
+                        new Texture("truck.png"), 200, 100,
+                        null, 100, 2,  175, true);
+                firetruck2 = new Firetruck(firetruck2pos, 25,25,
+                        new Texture("truck.png"), 100, 200,
+                        null, 100,  2,  175, false);
+                firetruck3 = new Firetruck(firetruck3pos, 25,25,
+                        new Texture("truck.png"), 100, 100,
+                        null, 200, 2,  175, false);
+                firetruck4 = new Firetruck(firetruck4pos, 25,25,
+                        new Texture("truck.png"), 100, 100,
+                        null, 100,  4,  175, false);
+
+                firetruck1.setCurrentWater(currentWaters.get(0));
+                firetruck2.setCurrentWater(currentWaters.get(1));
+                firetruck3.setCurrentWater(currentWaters.get(2));
+                firetruck4.setCurrentWater(currentWaters.get(3));
+
+                firetruck1.setCurrentHealth(currentHealths.get(0));
+                firetruck2.setCurrentHealth(currentHealths.get(1));
+                firetruck3.setCurrentHealth(currentHealths.get(2));
+                firetruck4.setCurrentHealth(currentHealths.get(3));
+
+
+                firetrucks.add(firetruck1);
+                firetrucks.add(firetruck2);
+                firetrucks.add(firetruck3);
+                firetrucks.add(firetruck4);
+
+                 **/
+
+                JSONArray importedAliens = (JSONArray) data1.get("Aliens");
+
+
+                ArrayList<Alien> loadAliens = new ArrayList<>();
+
+                for(int i = 0 ; i < importedAliens.size() ; i++){
+                    int aHealth, aMHealth, aSpeed, aDamage, aRange, aWidth, aHeight, aCurrentIndex;
+                    float aPx, aPy, aAttackCooldown, aTSinceAttack;
+                    System.out.println(importedAliens.get(i));
+                    JSONObject Alien = ((JSONObject) (importedAliens.get(i)));
+                    aHealth = Integer.parseInt(Alien.get("currentHealth").toString());
+                    aMHealth = Integer.parseInt(Alien.get("maxHealth").toString());
+                    aSpeed = Integer.parseInt(Alien.get("speed").toString());
+                    aDamage = Integer.parseInt(Alien.get("damage").toString());
+                    aRange = Integer.parseInt(Alien.get("range").toString());
+                    aWidth = (int)Float.parseFloat((((JSONObject) Alien.get("sprite")).get("width")).toString());
+                    aHeight = (int)Float.parseFloat((((JSONObject) Alien.get("sprite")).get("height")).toString());
+                    aPx = Float.parseFloat((((JSONObject) Alien.get("sprite")).get("x")).toString());
+                    aPy = Float.parseFloat((((JSONObject) Alien.get("sprite")).get("y")).toString());
+                    Vector2 aPos = new Vector2(aPx, aPy);
+                    aAttackCooldown = Float.parseFloat(Alien.get("attackCooldown").toString());
+                    aTSinceAttack = Float.parseFloat(Alien.get("timeSinceAttack").toString());
+                    aCurrentIndex = Integer.parseInt(Alien.get("currentIndex").toString());
+
+                    JSONArray importedWaypoints = (JSONArray) Alien.get("waypoints");
+                    ArrayList<Vector2> wayP = new ArrayList<>();
+                    for(int j = 0 ; j < importedWaypoints.size() ; j++){
+                        JSONObject wp = (JSONObject) importedWaypoints.get(j);
+                        wayP.add(new Vector2( Float.parseFloat(wp.get("x").toString()),
+                                Float.parseFloat(wp.get("y").toString()) ));
+                        System.out.println(importedWaypoints.get(j));
+                    }
+                    Vector2[] waypoints = new Vector2[wayP.size()];
+                    for(int j = 0 ; j < wayP.size() ; j++){
+                        waypoints[j] = wayP.get(j);
+                    }
+                    Alien al = new Alien(aPos, aWidth, aHeight, new Texture("alien.gif"), aMHealth,
+                            aRange, null, aSpeed, aDamage, waypoints, aAttackCooldown);
+                    al.setHealth(aHealth);
+                    al.setCurrentIndex(aCurrentIndex);
+                    al.setTimeSinceAttack(aTSinceAttack);
+                    aliens.add(al);
+
+                }
+
+
+                stopwatch = new Stopwatch(timeLimit);
+            }catch (Exception e){
+
+                e.printStackTrace();
+            }
+       }
+    }
+
+
     /**
      * The game logic which is executed due to specific user inputs. Is called in the update method.
      */
@@ -300,6 +583,7 @@ public class PlayState extends State {
         if (quitGame.mouseInRegion()){
             quitGame.setActive(true);
             if (Gdx.input.isTouched()) {
+                serializeState();
                 Gdx.app.exit();
                 System.exit(0);
                 }
@@ -312,6 +596,8 @@ public class PlayState extends State {
         if (quitLevel.mouseInRegion()){
             quitLevel.setActive(true);
             if (Gdx.input.isTouched()) {
+                // Assessment 4
+                //serializeState();
                 gameStateManager.pop();
             }
         }
@@ -365,21 +651,79 @@ public class PlayState extends State {
         }
 
         // Changes which truck is moving and calls the truckMovement() method with the selected truck as input.
-
-
         for(Firetruck firetruck: firetrucks){
             if(firetruck.isSelected()) {
                 firetruck.truckMovement();
             }
         }
     }
+    // Assessment 4
+    private void serializeState(){
+        System.out.println("Here");
+        try {
+            String d = new SimpleDateFormat("'..\\saves\\'yyyyMMddHHmmss'.json'").format(new Date());
+            int i = 0;
+            //FileWriter writer = new FileWriter(d);
+            File file = new File("..\\saves\\test.json");
+            file.createNewFile();
+            FileWriter writer = new FileWriter("..\\saves\\test.json");
+            writer.write("{\n\t\"Firetrucks\" : [\n");
+            for (Firetruck f : firetrucks) {
+                if (!(i == 0)) {
+                    writer.write(", ");
+                }
+                i++;
+                writer.write("\t\t");
+                gson.toJson(f, writer);
+                writer.write("\n");
+            }
+            i = 0;
+            writer.write("\t],\n\t\"Aliens\" : [\n");
+            for (Alien a : aliens) {
+                if (!(i == 0)) {
+                    writer.write(", ");
+                }
+                i++;
+                writer.write("\t\t");
+                gson.toJson(a, writer);
+                writer.write("\n");
+            }
+            writer.write("\t],\n\t\"PowerUps\" : [\n");
+            i = 0;
+            for (PowerUps p : powerList) {
+                if (!(i == 0)) {
+                    writer.write(", ");
+                }
+                i++;
+                writer.write("\t\t");
+                gson.toJson(p, writer);
+                writer.write("\n");
+
+            }
+            writer.write("\t],\n\t\"fortress\" : ");
+            gson.toJson(fortress, writer);
+            writer.write(",\n\t\"level\" : ");
+            gson.toJson(level, writer);
+            writer.write(",\n\t\"difficulty\" : ");
+            gson.toJson(Kroy.difficultyMultiplier, writer);
+            writer.write(",\n\t\"time-left\" : ");
+            gson.toJson((int) (timeLimit - timer.getTime()), writer);
+            writer.write("\n}");
+            writer.flush();
+            writer.close();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Updates the game logic before the next render() is called
      * @param deltaTime the amount of time which has passed since the last render() call
      */
     @Override
-    public void update(float deltaTime) {
+    public void update(float deltaTime)  {
         // Calls input handler and updates timer each tick of the game.
         handleInput();
         stopwatch.update();
@@ -678,6 +1022,12 @@ public class PlayState extends State {
         }
 
         stopwatch.drawTime(spriteBatch, ui);
+        System.out.println(timeLimit);
+        if (timeLimit > stopwatch.getTime()) {
+            stopwatch.drawTime(spriteBatch, ui);
+        }else{
+            stopwatch.expiredTime(spriteBatch, ui);
+        }
         ui.setColor(Color.WHITE);
 
         // Gives user 15 second warning as time limit approaches.
@@ -687,14 +1037,33 @@ public class PlayState extends State {
         }
 
         // Draws UI Text onto the screen
+        int t1HP, t2HP, t3HP, t4HP;
+        t1HP = 0;
+        t2HP = 0;
+        t3HP = 0;
+        t4HP = 0;
+
+        for(int i = 0 ; i < firetrucks.size() ; i++){
+            if(i == 0){
+                t1HP = firetrucks.get(0).getCurrentHealth();
+            }else if(i == 1){
+                t2HP = firetrucks.get(1).getCurrentHealth();
+            }else if(i == 2){
+                t3HP = firetrucks.get(2).getCurrentHealth();
+            }else if(i == 3){
+                t4HP = firetrucks.get(3).getCurrentHealth();
+            }
+        }
+
+
         ui.setColor(Color.DARK_GRAY);
-        ui.draw(spriteBatch, "Truck 1 Health: " + Integer.toString(firetruck1.getCurrentHealth()),
+        ui.draw(spriteBatch, "Truck 1 Health: " + (t1HP),
         		70, Kroy.HEIGHT - 920);
-        ui.draw(spriteBatch, "Truck 2 Health: " + Integer.toString(firetruck2.getCurrentHealth()),
+        ui.draw(spriteBatch, "Truck 2 Health: " + (t2HP),
         		546, Kroy.HEIGHT - 920);
-        ui.draw(spriteBatch, "Truck 3 Health: " + Integer.toString(firetruck3.getCurrentHealth()),
+        ui.draw(spriteBatch, "Truck 3 Health: " + (t3HP),
         		1023, Kroy.HEIGHT - 920);
-        ui.draw(spriteBatch, "Truck 4 Health: " + Integer.toString(firetruck4.getCurrentHealth()),
+        ui.draw(spriteBatch, "Truck 4 Health: " + (t4HP),
         		1499, Kroy.HEIGHT - 920);
 
         for (Firetruck truck: firetrucks) {
@@ -703,6 +1072,8 @@ public class PlayState extends State {
                         truck.getPosition().y + 40);
             }
         }
+
+
 
         // If end game reached, draws level fail or level won images to the screen
         if (levelLost) {

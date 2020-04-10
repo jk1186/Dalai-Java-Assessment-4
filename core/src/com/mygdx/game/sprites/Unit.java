@@ -64,10 +64,7 @@ public abstract class Unit extends Entity {
         return currentHealth;
     }
 
-    //ASSESSMENT 4 - Dalai Java
-    public int getMaxHealth() {
-        return this.maxHealth;
-    }
+    public int getMaxHealth(){return maxHealth;}
 
     /**
      * Adds subtracts the value from currentHealth while preventing currentHealth from being less than 0
