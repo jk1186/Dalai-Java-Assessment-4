@@ -78,7 +78,7 @@ public class LevelSelectState extends State{
 
 
 
-    //TODO: Difficulty Select, Tick Boxes at bottom of screen, Some sort of global multiplier for health, damage etc.
+
     protected LevelSelectState(GameStateManager gameStateManager) {
         super(gameStateManager);
         background = new Texture("LevelSelectBackground.png");

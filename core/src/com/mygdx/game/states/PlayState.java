@@ -64,7 +64,9 @@ public class PlayState extends State {
     private float timeLimit;
     private float timeTaken;
 
-    private Entity fireStation;
+    //private Entity fireStation;
+    private FireStation fireStation;
+
     private Fortress fortress;
     private Firetruck firetruck1;
     private Firetruck firetruck2;
@@ -108,8 +110,6 @@ public class PlayState extends State {
     Gson gson = new Gson();
 
 
-    //TODO: Add way to save level state to continue later
-    //TODO: Add PowerUp effects to map
     public PlayState(GameStateManager gsm,  int levelNumber){
         super(gsm);
         this.levelNumber = levelNumber;
@@ -174,8 +174,8 @@ public class PlayState extends State {
             timeLimit = 90;
 
             // Level 1 Firestation
-            fireStation = new Entity(new Vector2(33 + 8 * 32, 212 + 4 * 32), 128, 128,
-                    new Texture("teal.jpg"));
+            fireStation = new FireStation(new Vector2(33 + 8 * 32, 212 + 4 * 32), 128, 128,
+                    new Texture("teal.jpg"), 1000);
 
             // Level 1 Fortress
             fortress = new Fortress(new Vector2(33 + 24 * 32, 212 + 22 * 32), 6 * 32, 4 * 32,
@@ -196,8 +196,8 @@ public class PlayState extends State {
 
 
             // Level 2 Fire Station
-            fireStation = new Entity(new Vector2(33 + 1 * 32, 212 + 4 * 32), 64, 128,
-                    new Texture("teal.jpg"));
+            fireStation = new FireStation(new Vector2(33 + 1 * 32, 212 + 4 * 32), 64, 128,
+                    new Texture("teal.jpg"), 1500);
 
             // Level 2 Fortress
             fortress = new Fortress(new Vector2(33 + 36 * 32, 212 + 19 * 32), 4 * 32, 4 * 32, new Texture("grey.png"),
@@ -216,7 +216,7 @@ public class PlayState extends State {
             timeLimit = 60;
 
             // Level 3 Fire Station
-            fireStation = new Entity(new Vector2(33 + 27*32, 212), 6 * 32, 4 * 32, new Texture("teal.jpg"));
+            fireStation = new FireStation(new Vector2(33 + 27*32, 212), 6 * 32, 4 * 32, new Texture("teal.jpg"), 2000);
 
             // Level 3 Fortress
             fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
@@ -236,7 +236,7 @@ public class PlayState extends State {
             timeLimit = 90;
 
             // Level 4 Fire Station
-            fireStation = new Entity(new Vector2(33 + 5 * 32, 212 + 4 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
+            fireStation = new FireStation(new Vector2(33 + 5 * 32, 212 + 4 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"), 2500);
 
             // Level 4 Fortress
             fortress = new Fortress(new Vector2(33 + 24*32, 212 + 32*21), 224, 96, new Texture("grey.png"),
@@ -256,7 +256,7 @@ public class PlayState extends State {
             timeLimit = 90;
 
             // Level 5 Fire Station
-            fireStation = new Entity(new Vector2(33 + 24 * 32, 212 + 12 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
+            fireStation = new FireStation(new Vector2(33 + 24 * 32, 212 + 12 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"), 3000);
 
             // Level 5 Fortress
             fortress = new Fortress(new Vector2(33 + 4 * 32, 212 + 14 * 32), 4*32, 3*32, new Texture("grey.png"),
@@ -276,7 +276,7 @@ public class PlayState extends State {
             timeLimit = 60;
 
             // Level 6 Fire Station
-            fireStation = new Entity(new Vector2(33 + 6 * 32, 212 + 3 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
+            fireStation = new FireStation(new Vector2(33 + 6 * 32, 212 + 3 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"), 3000);
 
             // Level 3 Fortress
             fortress = new Fortress(new Vector2(33 + 24 * 32, 212 + 32 * 21), 224, 96, new Texture("grey.png"),
@@ -429,24 +429,24 @@ public class PlayState extends State {
 
                 if (levelNumber == 1) { // Bottom left coordinate of map --> (33, 212) Each grid square = 32px
                     gameMap = new TiledGameMap("level1map.tmx");
-                    fireStation = new Entity(new Vector2(33 + 8 * 32, 212 + 4 * 32), 128, 128,
-                            new Texture("teal.jpg"));
+                    fireStation = new FireStation(new Vector2(33 + 8 * 32, 212 + 4 * 32), 128, 128,
+                            new Texture("teal.jpg"), 500);
                 } else if (levelNumber == 2) {
                     gameMap = new TiledGameMap("level2map.tmx");
-                    fireStation = new Entity(new Vector2(33 + 1 * 32, 212 + 4 * 32), 64, 128,
-                            new Texture("teal.jpg"));
+                    fireStation = new FireStation(new Vector2(33 + 1 * 32, 212 + 4 * 32), 64, 128,
+                            new Texture("teal.jpg"), 1000);
                 } else if (levelNumber == 3) {
                     gameMap = new TiledGameMap("level3map.tmx");
-                    fireStation = new Entity(new Vector2(33 + 27 * 32, 212), 6 * 32, 4 * 32, new Texture("teal.jpg"));
+                    fireStation = new FireStation(new Vector2(33 + 27 * 32, 212), 6 * 32, 4 * 32, new Texture("teal.jpg"), 1500);
                 } else if (levelNumber == 4) {
                     gameMap = new TiledGameMap("level4map.tmx");
-                    fireStation = new Entity(new Vector2(33 + 5 * 32, 212 + 4 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
+                    fireStation = new FireStation(new Vector2(33 + 5 * 32, 212 + 4 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"),2000);
                 } else if (levelNumber == 5) {
                     gameMap = new TiledGameMap("level5map.tmx");
-                    fireStation = new Entity(new Vector2(33 + 24 * 32, 212 + 12 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
+                    fireStation = new FireStation(new Vector2(33 + 24 * 32, 212 + 12 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"),2500);
                 } else if (levelNumber == 6) {
                     gameMap = new TiledGameMap("level6map.tmx");
-                    fireStation = new Entity(new Vector2(33 + 6 * 32, 212 + 3 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"));
+                    fireStation = new FireStation(new Vector2(33 + 6 * 32, 212 + 3 * 32), 4 * 32, 3 * 32, new Texture("teal.jpg"),3000);
                 }
 
 
@@ -734,7 +734,6 @@ public class PlayState extends State {
             //Assessment 4
             if (timeLimit - stopwatch.getTime() > timeLimit / 2){
             alien.update();
-                // TODO: Need to fix this. Should be able to set fireStation to fireStation in constructir without breaking everything
             alien.truckInRange(firetrucks, fireStation);
             if (alien.getTimeSinceAttack() >= alien.getAttackCooldown()) {
                 if (alien.hasTarget()) {
@@ -748,7 +747,6 @@ public class PlayState extends State {
         }
             if (timeLimit - stopwatch.getTime() <= timeLimit / 2) {
                 alien.updateToFireStation(fireStation.getPosition());
-                // TODO: Need to fix this. Should be able to set fireStation to fireStation in constructir without breaking everything
                 alien.truckInRange(firetrucks, fireStation);
                 if (alien.getTimeSinceAttack() >= alien.getAttackCooldown()) {
                     if (alien.hasTarget()) {
@@ -808,7 +806,6 @@ public class PlayState extends State {
             }
 
             //Assessment 4 - Do damage to fire station
-            // TODO: Need to fix this. Should be able to set fireStation to fireStation in constructir without breaking everything
             if (bullet.hitUnit(fireStation)){
                 fireStation.takeDamage(bullet.getDamage());
                 bullets.remove(bullet);
@@ -989,7 +986,6 @@ public class PlayState extends State {
                 fortress.getPosition().y + fortress.getHeight() + 20);
 
         //Assessment 4
-        // TODO: Need to fix this. Should be able to set fireStation to fireStation in constructir without breaking everything
 
         healthBars.draw(spriteBatch, "HP: " + fireStation.getCurrentHealth(), fireStation.getPosition().x +70,
                 fireStation.getPosition().y + fortress.getHeight() + 20);
@@ -1170,7 +1166,7 @@ public class PlayState extends State {
     			{new Vector2(33 + 20 * 32, 212 + 5 * 32), new Vector2(33 + 45 * 32, 212 + 19 * 32)},	//Level 2
     			{new Vector2(33 + 15 * 32, 212 + 15 * 32), new Vector2(33 + 40 * 32, 212 + 19 * 32)},	//Level 3
     			{new Vector2(33 + 15 * 32, 212 + 10 * 32), new Vector2(33 + 35 * 32, 212 + 25 * 32)},	//Level 4
-    			{new Vector2(33 + 2 * 32, 212 + 5 * 32), new Vector2(33 + 15 * 32, 212 + 25 * 32)},	//Level 5	TODO
+    			{new Vector2(33 + 2 * 32, 212 + 5 * 32), new Vector2(33 + 15 * 32, 212 + 25 * 32)},	//Level 5
     			{new Vector2(33 + 15 * 32, 212 + 10 * 32), new Vector2(33 + 40 * 32, 212 + 25 * 32)},	//Level 6
     	};
     	Vector2[] patrolRoute = new Vector2[(2 + rand.nextInt(4))];	//Create patrol of random length
