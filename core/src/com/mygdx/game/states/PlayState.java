@@ -406,6 +406,17 @@ public class PlayState extends State {
 
                 fortress.setHealth(Integer.parseInt(fort.get("currentHealth").toString()));
 
+                ArrayList<Vector2> alienPos = new ArrayList<>();
+                JSONArray aPoss = (JSONArray) fort.get("alienPositions");
+                System.out.println(aPoss);
+                for(int i = 0 ; i < aPoss.size() ; i++){
+                    JSONObject pos = (JSONObject) aPoss.get(i);
+                    alienPos.add( new Vector2( Float.parseFloat(pos.get("x").toString()),
+                                                Float.parseFloat(pos.get("y").toString())));
+                }
+                fortress.setAlienPositions(alienPos);
+
+
                 System.out.println("wahey");
 
                 if (levelNumber == 1) { // Bottom left coordinate of map --> (33, 212) Each grid square = 32px
@@ -449,6 +460,7 @@ public class PlayState extends State {
                             null, 100, 2,  175, true);
                     truck.setCurrentHealth(currentHealth);
                     truck.setCurrentWater(currentWater);
+                    truck.setSelected( Boolean.parseBoolean(importedTruck.get("selected").toString()));
                     firetrucks.add(truck);
                     /**
                     positions.add( new Vector2( Float.parseFloat((((JSONObject) ( (JSONObject) importedFiretrucks.get(i)).get("sprite")).get("x")).toString()) ,

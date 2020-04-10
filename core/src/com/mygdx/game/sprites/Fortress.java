@@ -94,7 +94,7 @@ public class Fortress extends Unit {
         return alienPositions;
     }
 
-    public void setAlienPositions(ArrayList<Vector2>alienPositons){
-        this.alienPositions = alienPositons;
+    public void setAlienPositions(ArrayList<Vector2>alienPositions){
+        this.alienPositions = alienPositions;
     }
 }
