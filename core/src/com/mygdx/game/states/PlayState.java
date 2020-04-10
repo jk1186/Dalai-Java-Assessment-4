@@ -439,7 +439,7 @@ public class PlayState extends State {
                 if (bomb.hitUnit(truck)) {
                     truck.takeDamage(bomb.getDamage());
                     bombs.remove(bomb);
-                    if (truck.getCurrentHealth() == 0) {
+                    if (truck.getCurrentHealth() <= 0) {
                         truck.setSelected(false);
                         firetrucks.remove(truck);
                         if(firetrucks.size() == 0) {
