@@ -161,8 +161,7 @@ public class PlayState extends State {
         Vector2 firetruck3pos = null;
         Vector2 firetruck4pos = null;
 
-        // Assessment 4 - Added Kroy.difficultyMultiplier to fortresses.
-        Kroy.setDifficultyMultiplier(saveData.getFloat("diff"));
+        // Assesment 4 - Added difficulty to fortreses
         if (levelNumber == 1) { // Bottom left coordinate of map --> (33, 212) Each grid square = 32px
 
         	gameMap = new TiledGameMap("level1map.tmx");
@@ -409,7 +408,7 @@ public class PlayState extends State {
 
                 System.out.println(levelNumber);
                 // TODO: Import fortress damage and range
-                fortress = new Fortress(fortPos, fortWidth, fortHeight, new Texture("grey.png"), fortMaxHP, fortSPR, levelNumber);
+                fortress = new Fortress(fortPos, fortWidth, fortHeight, new Texture("grey.png"), fortMaxHP, fortSPR, levelNumber, 20, 20);
 
                 fortress.setHealth(Integer.parseInt(fort.get("currentHealth").toString()));
                 System.out.println("Health: "+fort.get("currentHealth").toString());
@@ -727,7 +726,7 @@ public class PlayState extends State {
         // Calls input handler and updates timer each tick of the game.
         handleInput();
         stopwatch.update();
-
+        System.out.println((Kroy.difficultyMultiplier));
         // Updates aliens and attacks firetruck if there is a firetruck in range and the Aliens attack cooldown is over.
         // Adds the created bullet projectile to the ArrayList bullets
         for (Alien alien : aliens) {

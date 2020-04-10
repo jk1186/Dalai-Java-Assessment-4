@@ -115,7 +115,7 @@ public class LevelSelectState extends State{
                 350, 100, new Vector2(Kroy.WIDTH / 2 + 350 / 2 + 100, 200), false,
                 true);
 
-        buttons = new ArrayList<>(Arrays.asList(level1, level2, level3, level4, level5, level6, back));
+
 
         // Assessment 4
         tick = new Texture("tick.png");
@@ -126,9 +126,8 @@ public class LevelSelectState extends State{
         hard = new Button(tick, cross, 100, 100, new Vector2(Kroy.WIDTH / 2 + 350 / 2 + 225  , 50), saveData.getBoolean("hard"), (!(saveData.getBoolean("hard"))));
 
 
-        buttons.add(easy);
-        buttons.add(normal);
-        buttons.add(hard);
+        buttons = new ArrayList<>(Arrays.asList(level1, level2, level3, level4, level5, level6, back, easy , normal, hard));
+
 
         if(saveData.getBoolean("easy")){
             Kroy.setDifficultyMultiplier(EASY);

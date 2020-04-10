@@ -48,8 +48,8 @@ public class Kroy extends ApplicationAdapter {
 		gameStateManager.push(new MenuState(gameStateManager)); // Initializes game with menu state
 		saveData = Gdx.app.getPreferences("Kroy");
 
-		if(saveData.getBoolean("easy", true) && saveData.getBoolean("normal", true) &&
-			saveData.getBoolean("hard", true)){
+		if(saveData.getBoolean("easy", true) && saveData.getBoolean("normal", true)
+				&& saveData.getBoolean("hard", true)){
 			saveData.putBoolean("easy", false);
 			saveData.putBoolean("normal", true);
 			saveData.putBoolean("hard",false);
