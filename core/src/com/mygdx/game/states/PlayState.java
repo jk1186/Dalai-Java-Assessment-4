@@ -179,7 +179,7 @@ public class PlayState extends State {
 
             // Level 1 Fortress
             fortress = new Fortress(new Vector2(33 + 24 * 32, 212 + 22 * 32), 6 * 32, 4 * 32,
-                   new Texture("grey.png"), (int)(Kroy.difficultyMultiplier * 10000), 1.5f, levelNumber);
+                   new Texture("grey.png"), (int)(Kroy.difficultyMultiplier * 10000), 1.5f, levelNumber, 2, 120);
 
         }
 
@@ -408,7 +408,7 @@ public class PlayState extends State {
                 System.out.println(fortHeight);
 
                 System.out.println(levelNumber);
-
+                // TODO: Import fortress damage and range
                 fortress = new Fortress(fortPos, fortWidth, fortHeight, new Texture("grey.png"), fortMaxHP, fortSPR, levelNumber);
 
                 fortress.setHealth(Integer.parseInt(fort.get("currentHealth").toString()));
@@ -707,7 +707,7 @@ public class PlayState extends State {
             writer.write(",\n\t\"difficulty\" : ");
             gson.toJson(Kroy.difficultyMultiplier, writer);
             writer.write(",\n\t\"time-left\" : ");
-            gson.toJson((int) (timeLimit - timer.getTime()), writer);
+            gson.toJson((int) (timeLimit - stopwatch.getTime()), writer);
             writer.write("\n}");
             writer.flush();
             writer.close();
@@ -734,6 +734,7 @@ public class PlayState extends State {
             //Assessment 4
             if (timeLimit - stopwatch.getTime() > timeLimit / 2){
             alien.update();
+                // TODO: Need to fix this. Should be able to set fireStation to fireStation in constructir without breaking everything
             alien.truckInRange(firetrucks, fireStation);
             if (alien.getTimeSinceAttack() >= alien.getAttackCooldown()) {
                 if (alien.hasTarget()) {
@@ -747,6 +748,7 @@ public class PlayState extends State {
         }
             if (timeLimit - stopwatch.getTime() <= timeLimit / 2) {
                 alien.updateToFireStation(fireStation.getPosition());
+                // TODO: Need to fix this. Should be able to set fireStation to fireStation in constructir without breaking everything
                 alien.truckInRange(firetrucks, fireStation);
                 if (alien.getTimeSinceAttack() >= alien.getAttackCooldown()) {
                     if (alien.hasTarget()) {
@@ -806,6 +808,7 @@ public class PlayState extends State {
             }
 
             //Assessment 4 - Do damage to fire station
+            // TODO: Need to fix this. Should be able to set fireStation to fireStation in constructir without breaking everything
             if (bullet.hitUnit(fireStation)){
                 fireStation.takeDamage(bullet.getDamage());
                 bullets.remove(bullet);
@@ -986,6 +989,8 @@ public class PlayState extends State {
                 fortress.getPosition().y + fortress.getHeight() + 20);
 
         //Assessment 4
+        // TODO: Need to fix this. Should be able to set fireStation to fireStation in constructir without breaking everything
+
         healthBars.draw(spriteBatch, "HP: " + fireStation.getCurrentHealth(), fireStation.getPosition().x +70,
                 fireStation.getPosition().y + fortress.getHeight() + 20);
 
