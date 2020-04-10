@@ -405,6 +405,7 @@ public class PlayState extends State {
                 fortress = new Fortress(fortPos, fortWidth, fortHeight, new Texture("grey.png"), fortMaxHP, fortSPR, levelNumber);
 
                 fortress.setHealth(Integer.parseInt(fort.get("currentHealth").toString()));
+                System.out.println("Health: "+fort.get("currentHealth").toString());
 
                 ArrayList<Vector2> alienPos = new ArrayList<>();
                 JSONArray aPoss = (JSONArray) fort.get("alienPositions");
@@ -700,6 +701,8 @@ public class PlayState extends State {
             gson.toJson(fortress, writer);
             writer.write(",\n\t\"level\" : ");
             gson.toJson(level, writer);
+            writer.write(",\n\t\"difficulty\" : ");
+            gson.toJson(Kroy.difficultyMultiplier, writer);
             writer.write(",\n\t\"time-left\" : ");
             gson.toJson((int) (timeLimit - timer.getTime()), writer);
             writer.write("\n}");
