@@ -21,6 +21,7 @@ import com.mygdx.game.misc.Timer;
 import com.mygdx.game.sprites.*;
 import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 import com.sun.tools.javac.util.Convert;
+import com.sun.tools.javac.util.Position;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -348,7 +349,6 @@ public class PlayState extends State {
        Json json = new Json();
 
         if(filePath != null) {
-            System.out.println("here bois");
             try {
                 JSONParser parser = new JSONParser();
                 Object stuff = parser.parse(new FileReader(filePath));
@@ -433,21 +433,35 @@ public class PlayState extends State {
 
                 JSONArray importedFiretrucks = (JSONArray) data1.get("Firetrucks");
 
-                ArrayList<Vector2> positions = new ArrayList<>();
-                ArrayList<Integer> currentWaters = new ArrayList<>();
-                ArrayList<Integer> currentHealths = new ArrayList<>();
-
                 for(int i = 0 ; i < importedFiretrucks.size() ; i++){
-                    System.out.println(importedFiretrucks.get(i));
+                    JSONObject importedTruck = (JSONObject) importedFiretrucks.get(i);
 
+                    System.out.println(importedFiretrucks.get(i));
+                    Vector2 pos = new Vector2( Float.parseFloat(((JSONObject)importedTruck.get("sprite")).get("x").toString()),
+                            Float.parseFloat(((JSONObject)importedTruck.get("sprite")).get("y").toString()) );
+
+                    int currentWater = Integer.parseInt(importedTruck.get("currentWater").toString());
+                    int currentHealth = Integer.parseInt(importedTruck.get("currentHealth").toString());
+
+
+                    Firetruck truck = new Firetruck(pos, 25,25,
+                            new Texture("truck.png"), 200, 100,
+                            null, 100, 2,  175, true);
+                    truck.setCurrentHealth(currentHealth);
+                    truck.setCurrentWater(currentWater);
+                    firetrucks.add(truck);
+                    /**
                     positions.add( new Vector2( Float.parseFloat((((JSONObject) ( (JSONObject) importedFiretrucks.get(i)).get("sprite")).get("x")).toString()) ,
                             Float.parseFloat((((JSONObject) ( (JSONObject) importedFiretrucks.get(i)).get("sprite")).get("y")).toString()) ) );
 
                     currentWaters.add( Integer.parseInt( ((JSONObject) importedFiretrucks.get(i)).get("currentWater").toString()));
                     currentHealths.add( Integer.parseInt( ((JSONObject)importedFiretrucks.get(i)).get("currentHealth").toString() ) );
-                }
-                System.out.println(currentWaters);
+                    **/
 
+                }
+
+
+                /**
                 Vector2 firetruck1pos = positions.get(0);
                 Vector2 firetruck2pos = positions.get(1);
                 Vector2 firetruck3pos = positions.get(2);
@@ -484,8 +498,57 @@ public class PlayState extends State {
                 firetrucks.add(firetruck3);
                 firetrucks.add(firetruck4);
 
+                 **/
+
+                JSONArray importedAliens = (JSONArray) data1.get("Aliens");
+
+
+                ArrayList<Alien> loadAliens = new ArrayList<>();
+
+                for(int i = 0 ; i < importedAliens.size() ; i++){
+                    int aHealth, aMHealth, aSpeed, aDamage, aRange, aWidth, aHeight, aCurrentIndex;
+                    float aPx, aPy, aAttackCooldown, aTSinceAttack;
+                    System.out.println(importedAliens.get(i));
+                    JSONObject Alien = ((JSONObject) (importedAliens.get(i)));
+                    aHealth = Integer.parseInt(Alien.get("currentHealth").toString());
+                    aMHealth = Integer.parseInt(Alien.get("maxHealth").toString());
+                    aSpeed = Integer.parseInt(Alien.get("speed").toString());
+                    aDamage = Integer.parseInt(Alien.get("damage").toString());
+                    aRange = Integer.parseInt(Alien.get("range").toString());
+                    aWidth = (int)Float.parseFloat((((JSONObject) Alien.get("sprite")).get("width")).toString());
+                    aHeight = (int)Float.parseFloat((((JSONObject) Alien.get("sprite")).get("height")).toString());
+                    aPx = Float.parseFloat((((JSONObject) Alien.get("sprite")).get("x")).toString());
+                    aPy = Float.parseFloat((((JSONObject) Alien.get("sprite")).get("y")).toString());
+                    Vector2 aPos = new Vector2(aPx, aPy);
+                    aAttackCooldown = Float.parseFloat(Alien.get("attackCooldown").toString());
+                    aTSinceAttack = Float.parseFloat(Alien.get("timeSinceAttack").toString());
+                    aCurrentIndex = Integer.parseInt(Alien.get("currentIndex").toString());
+
+                    JSONArray importedWaypoints = (JSONArray) Alien.get("waypoints");
+                    ArrayList<Vector2> wayP = new ArrayList<>();
+                    for(int j = 0 ; j < importedWaypoints.size() ; j++){
+                        JSONObject wp = (JSONObject) importedWaypoints.get(j);
+                        wayP.add(new Vector2( Float.parseFloat(wp.get("x").toString()),
+                                Float.parseFloat(wp.get("y").toString()) ));
+                        System.out.println(importedWaypoints.get(j));
+                    }
+                    Vector2[] waypoints = new Vector2[wayP.size()];
+                    for(int j = 0 ; j < wayP.size() ; j++){
+                        waypoints[j] = wayP.get(j);
+                    }
+                    Alien al = new Alien(aPos, aWidth, aHeight, new Texture("alien.gif"), aMHealth,
+                            aRange, null, aSpeed, aDamage, waypoints, aAttackCooldown);
+                    al.setHealth(aHealth);
+                    al.setCurrentIndex(aCurrentIndex);
+                    al.setTimeSinceAttack(aTSinceAttack);
+                    aliens.add(al);
+
+                }
+
+
                 timer = new Timer(timeLimit);
             }catch (Exception e){
+
                 e.printStackTrace();
             }
        }
@@ -559,6 +622,13 @@ public class PlayState extends State {
         }
 
         // Changes which truck is moving and calls the truckMovement() method with the selected truck as input.
+
+        for(Firetruck truck : firetrucks){
+            if(truck.isSelected()){
+                truckMovement(truck);
+            }
+        }
+        /**
         if (firetruck1.isSelected()) {
             truckMovement(firetruck1);
         } else if (firetruck2.isSelected()) {
@@ -568,6 +638,7 @@ public class PlayState extends State {
         } else if (firetruck4.isSelected()) {
             truckMovement(firetruck4);
         }
+         **/
 
     }
     // Assessment 4
@@ -865,15 +936,36 @@ public class PlayState extends State {
         }
 
         // Draws UI Text onto the screen
+        int t1HP, t2HP, t3HP, t4HP;
+        t1HP = 0;
+        t2HP = 0;
+        t3HP = 0;
+        t4HP = 0;
+
+        for(int i = 0 ; i < firetrucks.size() ; i++){
+            if(i == 0){
+                t1HP = firetrucks.get(0).getCurrentHealth();
+            }else if(i == 1){
+                t2HP = firetrucks.get(1).getCurrentHealth();
+            }else if(i == 2){
+                t3HP = firetrucks.get(2).getCurrentHealth();
+            }else if(i == 3){
+                t4HP = firetrucks.get(3).getCurrentHealth();
+            }
+        }
+
+
         ui.setColor(Color.DARK_GRAY);
-        ui.draw(spriteBatch, "Truck 1 Health: " + (firetruck1.getCurrentHealth()),
+        ui.draw(spriteBatch, "Truck 1 Health: " + (t1HP),
         		70, Kroy.HEIGHT - 920);
-        ui.draw(spriteBatch, "Truck 2 Health: " + (firetruck2.getCurrentHealth()),
+        ui.draw(spriteBatch, "Truck 2 Health: " + (t2HP),
         		546, Kroy.HEIGHT - 920);
-        ui.draw(spriteBatch, "Truck 3 Health: " + (firetruck3.getCurrentHealth()),
+        ui.draw(spriteBatch, "Truck 3 Health: " + (t3HP),
         		1023, Kroy.HEIGHT - 920);
-        ui.draw(spriteBatch, "Truck 4 Health: " + (firetruck4.getCurrentHealth()),
+        ui.draw(spriteBatch, "Truck 4 Health: " + (t4HP),
         		1499, Kroy.HEIGHT - 920);
+
+
 
         // If end game reached, draws level fail or level won images to the screen
         if (levelLost) {
