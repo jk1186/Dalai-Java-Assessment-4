@@ -152,6 +152,7 @@ public class Firetruck extends Character {
 
         else if (type == "Speed") {
             this.setSpeed(this.getSpeed() * 2);
+
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {

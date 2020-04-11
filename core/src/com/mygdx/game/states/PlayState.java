@@ -26,6 +26,7 @@ import com.sun.tools.javac.util.Position;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -360,12 +361,6 @@ public class PlayState extends State {
                 Object stuff = parser.parse(new FileReader(filePath));
                 JSONArray data = new JSONArray();
                 data.add(stuff);
-                System.out.println(data);
-
-                for(int i = 0 ; i < data.size() ; i++){
-                    System.out.println(data.get(i));
-                    System.out.println(data.size());
-                }
 
                 JSONObject data1 = (JSONObject) data.get(0);
 
@@ -401,17 +396,16 @@ public class PlayState extends State {
 
                 float fortSPR = Float.parseFloat(fort.get("spawnRate").toString());
                 System.out.println(fortSPR);
+                float fAR = Float.parseFloat(fort.get("attackRange").toString());
+                int fDmg = Integer.parseInt(fort.get("damage").toString());
 
 
-                System.out.println("FortPos"+fortPos);
-                System.out.println(fortHeight);
+                float diffM = Float.parseFloat(data1.get("difficulty").toString());
 
-                System.out.println(levelNumber);
-                // TODO: Import fortress damage and range
-                fortress = new Fortress(fortPos, fortWidth, fortHeight, new Texture("grey.png"), fortMaxHP, fortSPR, levelNumber, 20, 20);
+                fortress = new Fortress(fortPos, fortWidth, fortHeight, new Texture("grey.png"), (int)(fortMaxHP * diffM), fortSPR, levelNumber, fDmg, fAR);
 
                 fortress.setHealth(Integer.parseInt(fort.get("currentHealth").toString()));
-                System.out.println("Health: "+fort.get("currentHealth").toString());
+
 
                 ArrayList<Vector2> alienPos = new ArrayList<>();
                 JSONArray aPoss = (JSONArray) fort.get("alienPositions");
@@ -424,7 +418,7 @@ public class PlayState extends State {
                 fortress.setAlienPositions(alienPos);
 
 
-                System.out.println("wahey");
+
 
                 if (levelNumber == 1) { // Bottom left coordinate of map --> (33, 212) Each grid square = 32px
                     gameMap = new TiledGameMap("level1map.tmx");
@@ -454,7 +448,7 @@ public class PlayState extends State {
                 for(int i = 0 ; i < importedFiretrucks.size() ; i++){
                     JSONObject importedTruck = (JSONObject) importedFiretrucks.get(i);
 
-                    System.out.println(importedFiretrucks.get(i));
+
                     Vector2 pos = new Vector2( Float.parseFloat(((JSONObject)importedTruck.get("sprite")).get("x").toString()),
                             Float.parseFloat(((JSONObject)importedTruck.get("sprite")).get("y").toString()) );
 
@@ -527,7 +521,7 @@ public class PlayState extends State {
                 for(int i = 0 ; i < importedAliens.size() ; i++){
                     int aHealth, aMHealth, aSpeed, aDamage, aRange, aWidth, aHeight, aCurrentIndex;
                     float aPx, aPy, aAttackCooldown, aTSinceAttack;
-                    System.out.println(importedAliens.get(i));
+
                     JSONObject Alien = ((JSONObject) (importedAliens.get(i)));
                     aHealth = Integer.parseInt(Alien.get("currentHealth").toString());
                     aMHealth = Integer.parseInt(Alien.get("maxHealth").toString());
@@ -549,7 +543,7 @@ public class PlayState extends State {
                         JSONObject wp = (JSONObject) importedWaypoints.get(j);
                         wayP.add(new Vector2( Float.parseFloat(wp.get("x").toString()),
                                 Float.parseFloat(wp.get("y").toString()) ));
-                        System.out.println(importedWaypoints.get(j));
+
                     }
                     Vector2[] waypoints = new Vector2[wayP.size()];
                     for(int j = 0 ; j < wayP.size() ; j++){
@@ -562,6 +556,21 @@ public class PlayState extends State {
                     al.setTimeSinceAttack(aTSinceAttack);
                     aliens.add(al);
 
+
+
+                    }
+
+
+                JSONArray importedPowerUps = (JSONArray)data1.get("PowerUps");
+                for(int i = 0 ; i < importedPowerUps.size() ; i++){
+                    JSONObject powerUp = (JSONObject) importedPowerUps.get(i);
+                    float xCoord = Float.parseFloat(((JSONObject)powerUp.get("sprite")).get("x").toString());
+                    float yCoord = Float.parseFloat(((JSONObject)powerUp.get("sprite")).get("y").toString());
+                    Vector2 pos = new Vector2( xCoord , yCoord );
+                    String type = powerUp.get("type").toString().trim();
+                    Texture powerUpTexture;
+                    String texturePath = ((JSONObject)((JSONObject)((JSONObject)((JSONObject)((JSONObject)powerUp.get("sprite")).get("texture")).get("data")).get("file")).get("file")).get("path").toString();
+                    powerList.add(new PowerUps(pos, 50, 50, new Texture(texturePath), type) );
                 }
 
 
@@ -818,7 +827,7 @@ public class PlayState extends State {
                 if (bullet.hitUnit(truck)) {
                     truck.takeDamage(bullet.getDamage());
                     bullets.remove(bullet);
-                    if (truck.getCurrentHealth() == 0) {
+                    if (truck.getCurrentHealth() <= 0) {
                         truck.setSelected(false);
                         firetrucks.remove(truck);
                         if(firetrucks.size() == 0) {
