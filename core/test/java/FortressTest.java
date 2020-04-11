@@ -84,4 +84,13 @@ public class FortressTest {
         Assertions.assertTrue(f.getAlienPositions().contains(new Vector2(961, 756)));
     }
 
+    //ASSESSMENT 4 - Dalai Java
+    @Test
+    public void gettersForWeaponsShouldReturnCorrectValues() {
+        Fortress f = new Fortress(new Vector2(100, 100), 100, 100, textureMock,
+                100, 5.0f, 3, 1, 2f);
+        assertEquals(f.getAttackRange(),2);
+        assertEquals(f.getDamage(),1);
+    }
+
 }

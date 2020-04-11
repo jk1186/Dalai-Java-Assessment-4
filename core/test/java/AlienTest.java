@@ -121,4 +121,19 @@ public class AlienTest {
         wayPointAlien.update();
         assertEquals(wayPointAlien.getCurrentIndex(), 0);
     }
+
+    @Test
+    public void alienShouldMoveAlongYTowardsFireStationWhenCalledTest() {
+        wayPointAlien.setPosition(30,200);
+        wayPointAlien.updateToFireStation(new Vector2 (50, 50));
+        assertEquals(wayPointAlien.getPosition(), new Vector2(30,199));
+        //speed = 1
+        //30, 176
+    }
+    @Test
+    public void alienShouldMoveAlongXTowardsFireStationWhenCalledTest() {
+        wayPointAlien.setPosition(200,200);
+        wayPointAlien.updateToFireStation(new Vector2 (50, 50));
+        assertEquals(wayPointAlien.getPosition(), new Vector2(199,200));
+    }
 }
