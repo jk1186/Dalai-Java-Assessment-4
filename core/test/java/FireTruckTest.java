@@ -9,16 +9,11 @@ import com.mygdx.game.map.TileType;
 import com.mygdx.game.map.TiledGameMap;
 import com.mygdx.game.sprites.Entity;
 import com.mygdx.game.sprites.Firetruck;
-import com.mygdx.game.sprites.Unit;
 import com.mygdx.game.states.PlayState;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.runner.RunWith;
-import org.junit.jupiter.params.ParameterizedTest;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
@@ -34,7 +29,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Graphics.class, Input.class, Timer.class, TileType.class})
-public class testFireTruck {
+public class FireTruckTest {
 
     Texture textureMock = mock(Texture.class);
 
@@ -199,6 +194,20 @@ public class testFireTruck {
         testFireTruck.powerUp("Infinite Health");
         testFireTruck.takeDamage(50);
         assertEquals(testFireTruck.getCurrentHealth(),103);
+    }
+
+    //ASSESSMENT 4 - Dalai Java
+    @Test
+    public void currentWaterShouldUpdateCorrectlyTest() {
+        testFireTruck.setCurrentWater(25);
+        assertEquals(testFireTruck.getCurrentWater(),25);
+    }
+
+    //ASSESSMENT 4 - Dalai Java
+    @Test
+    public void currentHealthShouldUpdateCorrectlyTest() {
+        testFireTruck.setCurrentHealth(25);
+        assertEquals(testFireTruck.getCurrentHealth(),25);
     }
 
 }

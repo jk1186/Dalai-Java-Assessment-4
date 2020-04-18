@@ -4,6 +4,9 @@ import com.mygdx.game.sprites.Fortress;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
@@ -91,6 +94,24 @@ public class FortressTest {
                 100, 5.0f, 3, 1, 2f);
         assertEquals(f.getAttackRange(),2);
         assertEquals(f.getDamage(),1);
+    }
+
+    //ASSESSMENT 4 - Dalai Java
+    @Test
+    public void healthShouldChangeCorrectlyTest() {
+        Fortress f = new Fortress(new Vector2(100, 100), 100, 100, textureMock,
+                100, 5.0f, 3, 1, 2f);
+        f.setHealth(50);
+        assertEquals(f.getCurrentHealth(),50);
+    }
+
+    //ASSESSMENT 4 - Dalai Java
+    @Test
+    public void alienPositionsShouldChangeCorrectlyTest() {
+        Fortress f = new Fortress(new Vector2(100, 100), 100, 100, textureMock,
+                100, 5.0f, 3, 1, 2f);
+        f.setAlienPositions(new ArrayList<Vector2>(Arrays.asList(new Vector2(5,10))));
+        assertEquals(f.getAlienPositions(), new ArrayList<Vector2>(Arrays.asList(new Vector2(5,10))));
     }
 
 }
