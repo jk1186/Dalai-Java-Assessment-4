@@ -12,6 +12,11 @@ import com.mygdx.game.misc.Button;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 
 public class LoadState  extends State {
 
@@ -44,6 +49,95 @@ public class LoadState  extends State {
         File folder = new File("..\\saves\\");
         File[] saveFiles = folder.listFiles();
 
+        if(saveFiles.length > 3) {
+
+            Date d;
+            Date currentOldest;
+            try {
+                currentOldest = new SimpleDateFormat("yyyyMMddHHmmss").parse(saveFiles[0].getName());
+            } catch (Exception e) {
+                currentOldest = new Date(01 / 02 / 03);
+                e.printStackTrace();
+            }
+            int marker = 0;
+            for (int i = 1; i < saveFiles.length; i++) {
+                try {
+                    d = new SimpleDateFormat("yyyyMMddHHmmss").parse(saveFiles[i].getName());
+                } catch (Exception e) {
+                    System.out.println("Invalid Filename");
+                    d = new Date(01 / 02 / 03);
+                    e.printStackTrace();
+                }
+                if (d.before(currentOldest)) {
+                    currentOldest = d;
+                    marker = i;
+                }
+            }
+            saveFiles[marker].delete();
+
+
+
+
+            File[] saveFiles2 = folder.listFiles();
+            saveFiles = new File[saveFiles2.length];
+
+            File oldest = saveFiles2[0];
+            Date oldestDate;
+            try {
+                oldestDate = new SimpleDateFormat("yyyyMMddHHmmss").parse(saveFiles2[0].getName());
+            } catch (Exception e) {
+                System.out.println("Invalid Filename");
+                oldestDate = new Date(01 / 02 / 03);
+                e.printStackTrace();
+            }
+
+            File youngest = saveFiles2[0];
+            Date youngestDate;
+            try {
+                youngestDate = new SimpleDateFormat("yyyyMMddHHmmss").parse(saveFiles2[0].getName());
+            } catch (Exception e) {
+                System.out.println("Invalid Filename");
+                youngestDate = new Date(01 / 02 / 03);
+                e.printStackTrace();
+            }
+
+            File mid = saveFiles2[0];
+            Date midDate;
+            try {
+                midDate = new SimpleDateFormat("yyyyMMddHHmmss").parse(saveFiles2[0].getName());
+            } catch (Exception e) {
+                System.out.println("Invalid Filename");
+                midDate = new Date(01 / 02 / 03);
+                e.printStackTrace();
+            }
+
+
+            for (int i = 0; i < saveFiles2.length; i++) {
+                try {
+                    d = new SimpleDateFormat("yyyyMMddHHmmss").parse(saveFiles2[i].getName());
+                } catch (Exception e) {
+                    System.out.println("Invalid Filename");
+                    d = new Date(01 / 02 / 03);
+                    e.printStackTrace();
+                }
+                if (d.after(oldestDate)) {
+                    oldest = saveFiles2[i];
+                    oldestDate = d;
+                } else if (d.before(youngestDate)) {
+                    youngest = saveFiles2[i];
+                    youngestDate = d;
+                } else {
+                    mid = saveFiles2[i];
+                    midDate = d;
+                }
+
+            }
+
+            saveFiles[0] = youngest;
+            saveFiles[1] = mid;
+            saveFiles[2] = oldest;
+
+        }
 
         try{
             saveFile1 = saveFiles[0].getCanonicalPath();
@@ -63,6 +157,7 @@ public class LoadState  extends State {
 
     }
 
+
     @Override
     public void update(float deltaTime){
         if (back.mouseInRegion()) {
@@ -78,7 +173,7 @@ public class LoadState  extends State {
         }
         if (save1.mouseInRegion()) {
             save1.setActive(true);
-            if (Gdx.input.isTouched()) {
+            if (Gdx.input.isTouched() && saveFile1 != "empty") {
                 if (saveData.getBoolean("effects")) {
                     click.play();
                 }
@@ -89,7 +184,7 @@ public class LoadState  extends State {
         }
         if (save2.mouseInRegion()) {
             save2.setActive(true);
-            if (Gdx.input.isTouched()) {
+            if (Gdx.input.isTouched() && saveFile2 != "empty") {
                 if (saveData.getBoolean("effects")) {
                     click.play();
                 }
@@ -100,7 +195,7 @@ public class LoadState  extends State {
         }
         if (save3.mouseInRegion()) {
             save3.setActive(true);
-            if (Gdx.input.isTouched()) {
+            if (Gdx.input.isTouched() && saveFile3 != "empty") {
                 if (saveData.getBoolean("effects")) {
                     click.play();
                 }

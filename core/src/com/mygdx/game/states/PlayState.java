@@ -21,6 +21,7 @@ import com.mygdx.game.misc.Button;
 import com.mygdx.game.misc.Stopwatch;
 import com.mygdx.game.sprites.*;
 import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
+
 import com.sun.tools.javac.util.Convert;
 import com.sun.tools.javac.util.Position;
 import org.json.simple.parser.JSONParser;
@@ -453,11 +454,15 @@ public class PlayState extends State {
 
                     int currentWater = Integer.parseInt(importedTruck.get("currentWater").toString());
                     int currentHealth = Integer.parseInt(importedTruck.get("currentHealth").toString());
-
+                    int maxHealth = Integer.parseInt(importedTruck.get("maxHealth").toString());
+                    int range = Integer.parseInt(importedTruck.get("range").toString());
+                    int speed = Integer.parseInt(importedTruck.get("speed").toString());
+                    int damage = Integer.parseInt(importedTruck.get("damage").toString());
+                    int maxWater = Integer.parseInt(importedTruck.get("maxWater").toString());
 
                     Firetruck truck = new Firetruck(pos, 25,25,
-                            new Texture("truck.png"), 200, 100,
-                            null, 100, 2,  175, true);
+                            new Texture("truck.png"), maxHealth, range,
+                            null, speed, damage,  maxWater, true);
                     truck.setCurrentHealth(currentHealth);
                     truck.setCurrentWater(currentWater);
                     truck.setSelected( Boolean.parseBoolean(importedTruck.get("selected").toString()));
