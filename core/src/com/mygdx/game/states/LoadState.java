@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Kroy;
 import com.mygdx.game.misc.Button;
 
+import java.io.File;
 import java.io.IOException;
 
 public class LoadState  extends State {
@@ -40,9 +41,26 @@ public class LoadState  extends State {
                 new Vector2((Kroy.WIDTH/2) - 175, Kroy.HEIGHT - 2* (Kroy.HEIGHT/3) -100),false, false);
         save3 = new Button(buttonPressed, buttonNotPressed, 350, 100,
                 new Vector2((Kroy.WIDTH/2) - 175, Kroy.HEIGHT - 3*(Kroy.HEIGHT/3) -50 + 150),false, false);
-        saveFile1 = "..\\saves\\test.json";
-        saveFile2 = "..\\saves\\save2.json";
-        saveFile3 = "..\\saves\\save3.json";
+        File folder = new File("..\\saves\\");
+        File[] saveFiles = folder.listFiles();
+
+
+        try{
+            saveFile1 = saveFiles[0].getCanonicalPath();
+        }catch(Exception e){
+            saveFile1 = "empty";
+        }
+        try{
+            saveFile2 = saveFiles[1].getCanonicalPath();
+        }catch(Exception e){
+            saveFile2 = "empty";
+        }
+        try{
+            saveFile3 = saveFiles[2].getCanonicalPath();
+        }catch(Exception e){
+            saveFile3 = "empty";
+        }
+
     }
 
     @Override
@@ -75,7 +93,7 @@ public class LoadState  extends State {
                 if (saveData.getBoolean("effects")) {
                     click.play();
                 }
-                // gameStateManager.push(new GameState(gameStateManager, saveFile2));
+                gameStateManager.push(new PlayState(gameStateManager, saveFile2));
             }
         } else {
             save2.setActive(false);
@@ -86,7 +104,7 @@ public class LoadState  extends State {
                 if (saveData.getBoolean("effects")) {
                     click.play();
                 }
-                // gameStateManager.push(new GameState(gameStateManager, saveFile3));
+                gameStateManager.push(new PlayState(gameStateManager, saveFile3));
             }
         } else {
             save3.setActive(false);

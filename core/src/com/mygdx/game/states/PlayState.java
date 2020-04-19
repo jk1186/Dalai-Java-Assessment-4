@@ -361,7 +361,6 @@ public class PlayState extends State {
                 Object stuff = parser.parse(new FileReader(filePath));
                 JSONArray data = new JSONArray();
                 data.add(stuff);
-
                 JSONObject data1 = (JSONObject) data.get(0);
 
                 timeLimit = (float) Integer.parseInt(data1.get("time-left").toString());
@@ -667,14 +666,14 @@ public class PlayState extends State {
     }
     // Assessment 4
     private void serializeState(){
-        System.out.println("Here");
+
         try {
             String d = new SimpleDateFormat("'..\\saves\\'yyyyMMddHHmmss'.json'").format(new Date());
             int i = 0;
             //FileWriter writer = new FileWriter(d);
-            File file = new File("..\\saves\\test.json");
+            File file = new File(d);
             file.createNewFile();
-            FileWriter writer = new FileWriter("..\\saves\\test.json");
+            FileWriter writer = new FileWriter(d);
             writer.write("{\n\t\"Firetrucks\" : [\n");
             for (Firetruck f : firetrucks) {
                 if (!(i == 0)) {
