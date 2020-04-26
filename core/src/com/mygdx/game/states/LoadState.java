@@ -3,6 +3,7 @@ package com.mygdx.game.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -46,15 +47,29 @@ public class LoadState  extends State {
                 new Vector2((Kroy.WIDTH/2) - 175, Kroy.HEIGHT - 2* (Kroy.HEIGHT/3) -100),false, false);
         save3 = new Button(buttonPressed, buttonNotPressed, 350, 100,
                 new Vector2((Kroy.WIDTH/2) - 175, Kroy.HEIGHT - 3*(Kroy.HEIGHT/3) -50 + 150),false, false);
-        File folder = new File("..\\saves\\");
-        File[] saveFiles = folder.listFiles();
+
+        //File folder = new File("..\\saves\\");
+
+        String locRoot = Gdx.files.getLocalStoragePath();
+
+        System.out.println(locRoot+"saves/");
+        FileHandle[] saveFiles = Gdx.files.absolute(locRoot+"/saves/").list();
+
+        for(FileHandle file : saveFiles){
+            System.out.println(file);
+        }
+
+        //File[] saveFiles = folder.listFiles();
+
+        //System.out.println(folder);
+        System.out.println(saveFiles);
 
         if(saveFiles.length > 3) {
 
             Date d;
             Date currentOldest;
             try {
-                currentOldest = new SimpleDateFormat("yyyyMMddHHmmss").parse(saveFiles[0].getName());
+                currentOldest = new SimpleDateFormat("yyyyMMddHHmmss").parse(saveFiles[0].name());
             } catch (Exception e) {
                 currentOldest = new Date(01 / 02 / 03);
                 e.printStackTrace();
@@ -62,7 +77,7 @@ public class LoadState  extends State {
             int marker = 0;
             for (int i = 1; i < saveFiles.length; i++) {
                 try {
-                    d = new SimpleDateFormat("yyyyMMddHHmmss").parse(saveFiles[i].getName());
+                    d = new SimpleDateFormat("yyyyMMddHHmmss").parse(saveFiles[i].name());
                 } catch (Exception e) {
                     System.out.println("Invalid Filename");
                     d = new Date(01 / 02 / 03);
@@ -77,34 +92,34 @@ public class LoadState  extends State {
 
 
 
+            FileHandle[] saveFiles2 = Gdx.files.local(locRoot+"/saves/").list();
+            //File[] saveFiles2 = folder.listFiles();
+            saveFiles = new FileHandle[saveFiles2.length];
 
-            File[] saveFiles2 = folder.listFiles();
-            saveFiles = new File[saveFiles2.length];
-
-            File oldest = saveFiles2[0];
+            FileHandle oldest = saveFiles2[0];
             Date oldestDate;
             try {
-                oldestDate = new SimpleDateFormat("yyyyMMddHHmmss").parse(saveFiles2[0].getName());
+                oldestDate = new SimpleDateFormat("yyyyMMddHHmmss").parse(saveFiles2[0].name());
             } catch (Exception e) {
                 System.out.println("Invalid Filename");
                 oldestDate = new Date(01 / 02 / 03);
                 e.printStackTrace();
             }
 
-            File youngest = saveFiles2[0];
+            FileHandle youngest = saveFiles2[0];
             Date youngestDate;
             try {
-                youngestDate = new SimpleDateFormat("yyyyMMddHHmmss").parse(saveFiles2[0].getName());
+                youngestDate = new SimpleDateFormat("yyyyMMddHHmmss").parse(saveFiles2[0].name());
             } catch (Exception e) {
                 System.out.println("Invalid Filename");
                 youngestDate = new Date(01 / 02 / 03);
                 e.printStackTrace();
             }
 
-            File mid = saveFiles2[0];
+            FileHandle mid = saveFiles2[0];
             Date midDate;
             try {
-                midDate = new SimpleDateFormat("yyyyMMddHHmmss").parse(saveFiles2[0].getName());
+                midDate = new SimpleDateFormat("yyyyMMddHHmmss").parse(saveFiles2[0].name());
             } catch (Exception e) {
                 System.out.println("Invalid Filename");
                 midDate = new Date(01 / 02 / 03);
@@ -114,7 +129,7 @@ public class LoadState  extends State {
 
             for (int i = 0; i < saveFiles2.length; i++) {
                 try {
-                    d = new SimpleDateFormat("yyyyMMddHHmmss").parse(saveFiles2[i].getName());
+                    d = new SimpleDateFormat("yyyyMMddHHmmss").parse(saveFiles2[i].name());
                 } catch (Exception e) {
                     System.out.println("Invalid Filename");
                     d = new Date(01 / 02 / 03);
@@ -140,17 +155,17 @@ public class LoadState  extends State {
         }
 
         try{
-            saveFile1 = saveFiles[0].getCanonicalPath();
+            saveFile1 = saveFiles[0].path();
         }catch(Exception e){
             saveFile1 = "empty";
         }
         try{
-            saveFile2 = saveFiles[1].getCanonicalPath();
+            saveFile2 = saveFiles[1].path();
         }catch(Exception e){
             saveFile2 = "empty";
         }
         try{
-            saveFile3 = saveFiles[2].getCanonicalPath();
+            saveFile3 = saveFiles[2].path();
         }catch(Exception e){
             saveFile3 = "empty";
         }

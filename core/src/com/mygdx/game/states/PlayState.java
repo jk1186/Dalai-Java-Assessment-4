@@ -20,10 +20,7 @@ import com.mygdx.game.map.TiledGameMap;
 import com.mygdx.game.misc.Button;
 import com.mygdx.game.misc.Stopwatch;
 import com.mygdx.game.sprites.*;
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
-import com.sun.tools.javac.util.Convert;
-import com.sun.tools.javac.util.Position;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -673,9 +670,15 @@ public class PlayState extends State {
     private void serializeState(){
 
         try {
-            String d = new SimpleDateFormat("'..\\saves\\'yyyyMMddHHmmss'.json'").format(new Date());
+
+            String locRoot = Gdx.files.getLocalStoragePath();
+            String da = new SimpleDateFormat("yyyyMMddHHmmss'.json'").format(new Date());
+            String dir = locRoot+"/saves/";
+            String d = dir+da;
+            System.out.println(d);
             int i = 0;
             //FileWriter writer = new FileWriter(d);
+            new File(dir).mkdirs();
             File file = new File(d);
             file.createNewFile();
             FileWriter writer = new FileWriter(d);
